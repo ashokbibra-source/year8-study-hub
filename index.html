@@ -221,7 +221,7 @@ nav{flex:1;padding:12px 8px;overflow-y:auto}
 .f-val{font-family:var(--mono);font-size:13px;color:var(--accent)}
 
 /* MOBILE TOP BAR */
-.mobile-topbar{display:none;position:fixed;top:0;left:0;right:0;height:56px;height:calc(56px + env(safe-area-inset-top));background:var(--surface);border-bottom:1px solid var(--border);z-index:150;align-items:flex-end;padding:0 16px calc(8px) 16px;padding-top:max(8px, env(safe-area-inset-top));gap:12px}
+.mobile-topbar{display:none;position:fixed;top:0;left:0;right:0;height:56px;background:var(--surface);border-bottom:1px solid var(--border);z-index:200;align-items:center;padding:0 16px;gap:12px}
 .mobile-topbar .mob-logo-title{font-size:14px;font-weight:800;color:var(--text)}
 .mobile-topbar .mob-logo-sub{font-size:10px;color:var(--muted)}
 .hamburger{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
@@ -235,7 +235,7 @@ nav{flex:1;padding:12px 8px;overflow-y:auto}
   .sidebar.open{transform:translateX(0)}
   .overlay.show{display:block}
   .main{margin-left:0}
-  .page{padding:72px 16px 28px;padding-top:calc(72px + env(safe-area-inset-top));padding-bottom:calc(28px + env(safe-area-inset-bottom))}
+  .page{padding:72px 16px 32px}
   .kpi-grid{grid-template-columns:1fr 1fr}
   .grid-2{grid-template-columns:1fr}
   .grid-3{grid-template-columns:1fr}
@@ -427,11 +427,11 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 }
 </style>
 </head>
-<body onclick="void(0)">
+<body>
 
 <!-- MOBILE TOP BAR -->
 <div class="mobile-topbar">
-  <button class="hamburger" onclick="toggleSidebar()" aria-label="Open menu">
+  <button class="hamburger" aria-label="Open menu" type="button">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
   </button>
   <div>
@@ -2360,15 +2360,60 @@ function toggleSidebar() {
   }
 }
 
-// Close sidebar when clicking overlay area (outside sidebar width)
-document.addEventListener('click', function(e) {
-  const sidebar = document.getElementById('sidebar');
-  if (!sidebar.classList.contains('open')) return;
-  const rect = sidebar.getBoundingClientRect();
-  if (e.clientX > rect.right) {
-    sidebar.classList.remove('open');
-    document.getElementById('overlay').classList.remove('show');
-  }
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+// ─── iOS Touch Fix: wire touchend + click for all interactive elements ───
+// On iOS Safari, onclick attributes on fixed/transformed elements are unreliable.
+// touchend fires instantly (no 300ms delay) and is 100% reliable.
+function _iosTouch(el, fn) {
+  if (!el) return;
+  var touched = false;
+  el.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    touched = true;
+    fn.call(el, e);
+    setTimeout(function(){ touched = false; }, 600);
+  }, { passive: false });
+  el.addEventListener('click', function(e) {
+    if (touched) return;
+    fn.call(el, e);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Hamburger
+  _iosTouch(document.querySelector('.hamburger'), toggleSidebar);
+
+  // Overlay tap closes sidebar
+  _iosTouch(document.getElementById('overlay'), closeSidebar);
+
+  // All nav items — read the page ID from onclick attribute
+  document.querySelectorAll('.nav-item').forEach(function(btn) {
+    var onclickVal = btn.getAttribute('onclick');
+    if (!onclickVal) return;
+    var match = onclickVal.match(/showPage\('([^']+)'/);
+    if (!match) return;
+    var pageId = match[1];
+    // Remove old onclick to avoid double-fire
+    btn.removeAttribute('onclick');
+    _iosTouch(btn, function() { showPage(pageId, btn); });
+    // Also keep a plain click for desktop
+    // (already handled by _iosTouch's click listener above)
+  });
+
+  // Cheat sheet tabs
+  document.querySelectorAll('.cheat-tab').forEach(function(tab) {
+    var onclickVal = tab.getAttribute('onclick');
+    if (!onclickVal) return;
+    var match = onclickVal.match(/showCheatTab\('([^']+)'/);
+    if (!match) return;
+    var tabId = match[1];
+    tab.removeAttribute('onclick');
+    _iosTouch(tab, function() { if(typeof showCheatTab==='function') showCheatTab(tabId, tab); });
+  });
 });
 
 // ============================================================
@@ -3061,6 +3106,40 @@ function updatePlannerProgress() {
   renderFunMaths();
   renderLeaderboard();
   updateDashboard();
+
+  // iOS touch fix for dynamically-rendered elements (cheat tabs, etc.)
+  document.querySelectorAll('.cheat-tab').forEach(function(tab) {
+    var origOnclick = tab.onclick;
+    if (!origOnclick) return;
+    tab.onclick = null;
+    _iosTouch(tab, origOnclick);
+  });
+
+  // Event delegation for quiz options (created dynamically by startQuiz)
+  // touchend on the quiz-questions container bubbles up from button.q-opt
+  var quizContainer = document.getElementById('quiz-questions');
+  if (quizContainer) {
+    quizContainer.addEventListener('touchend', function(e) {
+      var btn = e.target.closest('button.q-opt');
+      if (!btn) return;
+      e.preventDefault();
+      // Parse qIdx and optIdx from id: opt-{qIdx}-{optIdx}
+      var parts = btn.id.split('-');
+      if (parts.length >= 3) selectAnswer(parseInt(parts[1]), parseInt(parts[2]));
+    }, { passive: false });
+  }
+
+  // Event delegation for drill options
+  var drillContainer = document.getElementById('drill-container');
+  if (drillContainer) {
+    drillContainer.addEventListener('touchend', function(e) {
+      var btn = e.target.closest('button.drill-opt');
+      if (!btn) return;
+      e.preventDefault();
+      var parts = btn.id.split('-'); // dopt-{j}
+      if (parts.length >= 2) selectDrillAnswer(parseInt(parts[1]));
+    }, { passive: false });
+  }
 })();
 </script>
 
