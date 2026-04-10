@@ -2054,8 +2054,8 @@ function generateHint(q) {
   // (it typically describes the method without spoiling the number)
   const firstSentence = exp.split(/\.\s+/)[0];
   // If it starts with the answer itself, return the whole exp as a gentle clue
-  if (firstSentence.length < 20) return '💡 ' + exp;
-  return '💡 ' + firstSentence + '...';
+  if (firstSentence.length < 20) return '🔍 Hint: ' + exp;
+  return '🔍 Hint: ' + firstSentence + '...';
 }
 
 function startDrillMode() {
@@ -2106,7 +2106,7 @@ function renderDrillCard() {
         ${q.opts.map((opt, j) => `<div class="drill-opt" id="dopt-${j}" onclick="selectDrillAnswer(${j})">${String.fromCharCode(65 + j)}. ${opt}</div>`).join('')}
       </div>
 
-      <div class="drill-exp" id="drill-exp">💡 ${q.exp}</div>
+      <div class="drill-exp" id="drill-exp"><strong style="color:var(--sci-light)">✅ Full Explanation:</strong> ${q.exp}</div>
 
       <div class="drill-actions">
         <button class="drill-check-btn" id="drill-check-btn" onclick="checkDrillAnswer()">Check Answer</button>
@@ -2844,11 +2844,9 @@ function markSolved(id, color) {
   btn.style.color = '#fff';
   card.style.borderColor = color;
   updateSolvedCount();
-  // Show leaderboard modal to capture name + time
-  const elapsed = timerElapsed[id] || null;
-  if (elapsed !== null && elapsed > 0) {
-    openLeaderboardModal(id, elapsed);
-  }
+  // Show leaderboard modal to capture name + time (always open, even if timer not started)
+  const elapsed = timerElapsed[id] != null ? timerElapsed[id] : 0;
+  openLeaderboardModal(id, elapsed);
 }
 
 function updateSolvedCount() {
@@ -2870,7 +2868,7 @@ function openLeaderboardModal(id, secs) {
   pendingSolve = { id, secs };
   const challenge = funChallenges.find(c => c.id === id);
   const label = challenge ? challenge.title : 'Challenge';
-  const timeLabel = secs >= 60 ? '60s (full time!)' : `${secs}s`;
+  const timeLabel = secs <= 0 ? 'No timer used' : secs >= 60 ? '60s (full time!)' : `${secs}s`;
   const modal = document.getElementById('lb-modal');
   const timeEl = document.getElementById('lb-modal-time');
   const input = document.getElementById('lb-name-input');
