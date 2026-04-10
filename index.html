@@ -1,0 +1,3049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Year 8 Study Hub — Maths & Science Victoria</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #161b22;
+  --surface2: #21262d;
+  --border: #30363d;
+  --text: #e6edf3;
+  --muted: #8b949e;
+  --math: #3b82f6;
+  --math-light: #60a5fa;
+  --math-dim: #1d3a6e;
+  --sci: #10b981;
+  --sci-light: #34d399;
+  --sci-dim: #064e3b;
+  --accent: #f59e0b;
+  --accent-dim: #451a03;
+  --red: #ef4444;
+  --red-dim: #450a0a;
+  --purple: #a855f7;
+  --purple-dim: #3b0764;
+  --radius: 12px;
+  --font: 'Plus Jakarta Sans', sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden}
+
+/* SIDEBAR */
+.sidebar{width:240px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:100;transition:transform 0.3s ease}
+.logo{padding:20px 20px 16px;border-bottom:1px solid var(--border)}
+.logo-mark{display:flex;align-items:center;gap:10px}
+.logo-mark svg{flex-shrink:0}
+.logo-title{font-size:15px;font-weight:800;line-height:1.1;color:var(--text)}
+.logo-sub{font-size:11px;color:var(--muted);margin-top:2px}
+nav{flex:1;padding:12px 8px;overflow-y:auto}
+.nav-section{font-size:10px;font-weight:700;letter-spacing:0.1em;color:var(--muted);padding:8px 12px 4px;text-transform:uppercase}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:500;color:var(--muted);transition:all 0.15s;margin-bottom:1px}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--surface2);color:var(--text)}
+.nav-item .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.sidebar-footer{padding:16px;border-top:1px solid var(--border)}
+.vic-badge{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--muted);text-align:center}
+.vic-badge strong{color:var(--text);display:block;margin-bottom:2px}
+
+/* MAIN */
+.main{margin-left:240px;flex:1;min-height:100vh;overflow-y:auto}
+.page{display:none;padding:28px 32px;max-width:1200px}
+.page.active{display:block}
+
+/* TOP BAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:16px}
+.page-title{font-size:22px;font-weight:800;color:var(--text)}
+.page-subtitle{font-size:13px;color:var(--muted);margin-top:2px}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.card-sm{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px}
+
+/* KPI GRID */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;text-align:center}
+.kpi-val{font-size:28px;font-weight:800;font-family:var(--mono);margin-bottom:4px}
+.kpi-label{font-size:11px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.05em}
+
+/* GRID LAYOUTS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+
+/* PROGRESS BAR */
+.prog-bar-wrap{background:var(--surface2);border-radius:100px;height:8px;overflow:hidden;margin:8px 0}
+.prog-bar{height:100%;border-radius:100px;transition:width 0.4s ease}
+
+/* SECTION LABEL */
+.section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px}
+.section-title{font-size:17px;font-weight:700;margin-bottom:14px;color:var(--text)}
+
+/* STUDY TOPICS */
+.topic-list{display:flex;flex-direction:column;gap:6px}
+.topic-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all 0.15s}
+.topic-item:hover{border-color:var(--math)}
+.topic-item.sci-topic:hover{border-color:var(--sci)}
+.topic-item.completed{border-left:3px solid var(--math)}
+.topic-item.sci-topic.completed{border-left-color:var(--sci)}
+.topic-header{display:flex;align-items:center;gap:10px}
+.topic-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.topic-name{font-size:14px;font-weight:600;flex:1}
+.topic-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.05em}
+.topic-body{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border)}
+.topic-body.open{display:block}
+.topic-body h4{font-size:13px;font-weight:700;color:var(--text);margin:12px 0 6px}
+.topic-body h4:first-child{margin-top:0}
+.topic-body p,.topic-body li{font-size:13px;color:#c9d1d9;line-height:1.65}
+.topic-body ul,.topic-body ol{padding-left:18px;margin:4px 0 8px}
+.topic-body .formula{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:var(--mono);font-size:13px;color:var(--accent);margin:8px 0}
+.topic-body .example{background:var(--math-dim);border-left:3px solid var(--math);border-radius:0 8px 8px 0;padding:10px 14px;margin:8px 0;font-size:13px;line-height:1.6}
+.topic-body .example.sci{background:var(--sci-dim);border-left-color:var(--sci)}
+.topic-body .tip{background:var(--accent-dim);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:10px 14px;margin:8px 0;font-size:12.5px;line-height:1.55}
+.topic-body table{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+.topic-body th{background:var(--surface);padding:8px 10px;text-align:left;font-weight:600;color:var(--muted);border:1px solid var(--border)}
+.topic-body td{padding:8px 10px;border:1px solid var(--border);color:#c9d1d9;vertical-align:top}
+.complete-btn{margin-top:14px;padding:8px 20px;background:var(--math-dim);border:1px solid var(--math);color:var(--math-light);border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.15s;font-family:var(--font)}
+.complete-btn:hover{background:var(--math);color:#fff}
+.complete-btn.sci-btn{background:var(--sci-dim);border-color:var(--sci);color:var(--sci-light)}
+.complete-btn.sci-btn:hover{background:var(--sci);color:#fff}
+.complete-btn.done{background:var(--surface2);border-color:var(--border);color:var(--muted);cursor:default}
+
+/* QUIZ */
+.quiz-controls{display:flex;align-items:center;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.quiz-select{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:8px;font-size:13px;font-family:var(--font);cursor:pointer}
+.quiz-btn{padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:var(--font);transition:all 0.15s}
+.quiz-btn-primary{background:var(--math);color:#fff}
+.quiz-btn-primary:hover{background:var(--math-light)}
+.quiz-btn-sci{background:var(--sci);color:#fff}
+.quiz-btn-sci:hover{background:var(--sci-light)}
+.quiz-btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.quiz-btn-secondary:hover{background:var(--border)}
+.q-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:14px}
+.q-num{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px}
+.q-text{font-size:15px;font-weight:600;line-height:1.55;margin-bottom:18px}
+.q-options{display:flex;flex-direction:column;gap:8px}
+.q-opt{padding:12px 16px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--text);transition:all 0.15s;display:flex;align-items:center;gap:10px;background:var(--surface2)}
+.q-opt:hover{border-color:var(--math)}
+.q-opt.selected{border-color:var(--math);background:var(--math-dim)}
+.q-opt.correct{border-color:var(--sci);background:var(--sci-dim);color:#fff}
+.q-opt.wrong{border-color:var(--red);background:var(--red-dim);color:#fff}
+.q-explanation{background:var(--surface2);border-left:3px solid var(--sci);border-radius:0 8px 8px 0;padding:12px 16px;margin-top:12px;font-size:13px;line-height:1.6;display:none}
+.q-explanation.show{display:block}
+.q-score{display:flex;gap:16px;align-items:center;padding:16px 20px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:20px}
+.q-score-val{font-size:32px;font-weight:800;font-family:var(--mono)}
+.q-score-label{font-size:12px;color:var(--muted);font-weight:600}
+
+/* DRILL MODE */
+.drill-wrap{}
+.drill-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+.drill-title{font-size:15px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
+.drill-progress-text{font-size:13px;color:var(--muted);font-weight:600}
+.drill-progress-bar-wrap{background:var(--surface2);border-radius:100px;height:6px;overflow:hidden;margin-bottom:20px}
+.drill-progress-bar{height:100%;background:linear-gradient(90deg,#ef4444,#f59e0b);border-radius:100px;transition:width 0.4s ease}
+.drill-card{background:var(--surface);border:1.5px solid #ef444440;border-radius:14px;padding:24px;margin-bottom:16px;position:relative}
+.drill-q-num{font-size:12px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:#f87171;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.drill-q-text{font-size:15px;font-weight:600;color:var(--text);line-height:1.6;margin-bottom:4px}
+.drill-q-subj{font-size:11.5px;color:var(--muted);margin-bottom:16px}
+.drill-hint-toggle{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#f59e0b18;border:1px solid #f59e0b40;border-radius:8px;color:#fbbf24;font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:12px;transition:all 0.15s}
+.drill-hint-toggle:hover{background:#f59e0b28}
+.drill-hint{background:#f59e0b0d;border-left:3px solid #f59e0b;border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;line-height:1.65;color:var(--text);margin-bottom:14px;display:none}
+.drill-hint.show{display:block}
+.drill-hint strong{color:#fbbf24}
+.drill-options{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.drill-opt{padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--text);transition:all 0.15s;background:var(--surface2)}
+.drill-opt:hover:not(.locked){border-color:#f87171;background:#ef444412}
+.drill-opt.selected-drill{border-color:#f87171;background:#ef444418}
+.drill-opt.drill-correct{border-color:var(--sci);background:var(--sci-dim);color:#fff;pointer-events:none}
+.drill-opt.drill-wrong{border-color:#ef4444;background:#ef444420;color:#f87171;pointer-events:none}
+.drill-opt.locked{pointer-events:none;opacity:0.6}
+.drill-exp{background:var(--surface2);border-left:3px solid var(--sci);border-radius:0 8px 8px 0;padding:12px 16px;font-size:13px;line-height:1.65;display:none;margin-top:4px}
+.drill-exp.show{display:block}
+.drill-actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.drill-check-btn{padding:10px 24px;border-radius:8px;border:none;background:#ef4444;color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;transition:opacity 0.15s}
+.drill-check-btn:hover{opacity:0.85}
+.drill-next-btn{padding:10px 24px;border-radius:8px;border:none;background:var(--math);color:#fff;font-size:13.5px;font-weight:700;cursor:pointer;display:none;transition:opacity 0.15s}
+.drill-next-btn:hover{opacity:0.85}
+.drill-skip-btn{padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:none;color:var(--muted);font-size:13px;cursor:pointer}
+/* Drill complete screen */
+.drill-complete{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:32px;text-align:center}
+.drill-complete-icon{font-size:52px;margin-bottom:12px}
+.drill-complete h2{font-size:22px;font-weight:800;margin:0 0 8px;color:var(--text)}
+.drill-complete p{font-size:14px;color:var(--muted);margin:0 0 20px;line-height:1.6}
+.drill-score-chip{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:100px;font-size:15px;font-weight:800;margin-bottom:20px}
+.drill-score-chip.great{background:#10b98120;border:1px solid #10b98140;color:#34d399}
+.drill-score-chip.ok{background:#f59e0b20;border:1px solid #f59e0b40;color:#fbbf24}
+.drill-score-chip.retry{background:#ef444420;border:1px solid #ef444440;color:#f87171}
+.drill-btn-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+@media(max-width:768px){
+  .drill-card{padding:16px}
+  .drill-opt{font-size:12.5px;padding:10px 12px}
+  .drill-complete{padding:24px 16px}
+}
+
+/* CHEATSHEET */
+.cheat-nav{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.cheat-tab{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--muted);transition:all 0.15s}
+.cheat-tab:hover{color:var(--text)}
+.cheat-tab.active{background:var(--math-dim);border-color:var(--math);color:var(--math-light)}
+.cheat-tab.sci-tab.active{background:var(--sci-dim);border-color:var(--sci);color:var(--sci-light)}
+.cheat-section{display:none}
+.cheat-section.active{display:block}
+.cheat-box{background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:10px}
+.cheat-box h3{font-size:13px;font-weight:700;margin-bottom:10px;color:var(--text);display:flex;align-items:center;gap:6px}
+.cheat-box ul{padding-left:16px;font-size:12.5px;color:#c9d1d9;line-height:1.7}
+.cheat-box p{font-size:12.5px;color:#c9d1d9;line-height:1.65}
+.f-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+.f-item{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px}
+.f-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:4px}
+.f-val{font-family:var(--mono);font-size:13px;color:var(--accent)}
+
+/* MOBILE TOP BAR */
+.mobile-topbar{display:none;position:fixed;top:0;left:0;right:0;height:56px;background:var(--surface);border-bottom:1px solid var(--border);z-index:150;align-items:center;padding:0 16px;gap:12px}
+.mobile-topbar .mob-logo-title{font-size:14px;font-weight:800;color:var(--text)}
+.mobile-topbar .mob-logo-sub{font-size:10px;color:var(--muted)}
+.hamburger{width:36px;height:36px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:158;pointer-events:none;}
+.overlay.show{pointer-events:auto;}
+
+/* MOBILE */
+@media(max-width:768px){
+  .mobile-topbar{display:flex}
+  .sidebar{transform:translateX(-100%);z-index:160}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .main{margin-left:0}
+  .page{padding:72px 16px 28px}
+  .kpi-grid{grid-template-columns:1fr 1fr}
+  .grid-2{grid-template-columns:1fr}
+  .grid-3{grid-template-columns:1fr}
+  .page-title{font-size:18px}
+  .topbar{flex-direction:column;align-items:flex-start;gap:6px}
+  .quiz-controls{flex-wrap:wrap}
+  .quiz-select,.quiz-btn{font-size:12px}
+  .cheat-nav{gap:4px}
+  .cheat-tab{font-size:11px;padding:6px 10px}
+  .f-grid{grid-template-columns:1fr}
+  .topic-badge{display:none}
+  .q-text{font-size:14px}
+  .kpi-val{font-size:22px}
+}
+
+/* UTILS */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:700}
+.badge-math{background:var(--math-dim);color:var(--math-light)}
+.badge-sci{background:var(--sci-dim);color:var(--sci-light)}
+.badge-yellow{background:var(--accent-dim);color:var(--accent)}
+.tag{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.gap-8{gap:8px;display:flex;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.mt-16{margin-top:16px}
+.mt-12{margin-top:12px}
+.mb-12{margin-bottom:12px}
+hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
+.row{display:flex;align-items:center;gap:10px}
+.flex-1{flex:1}
+.scroll{overflow-y:auto;max-height:70vh;padding-right:4px}
+/* scrollbar */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+
+/* ===================== FUN MATHS ===================== */
+.fm-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.fm-tab{padding:7px 14px;border-radius:20px;font-size:12.5px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-family:var(--font);transition:all 0.2s}
+.fm-tab:hover{color:var(--text);border-color:var(--muted)}
+.fm-tab.active{color:var(--text)}
+.fm-stats{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 16px;margin-bottom:20px;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:8px}
+.fm-badge{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:12px;font-weight:700;color:var(--accent)}
+.fm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;padding-bottom:32px}
+.fm-card{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color 0.2s,transform 0.15s;display:flex;flex-direction:column}
+.fm-card:hover{transform:translateY(-2px)}
+.fm-card-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.fm-label{font-size:12px;font-weight:800;letter-spacing:0.06em;text-transform:uppercase}
+.fm-timer-wrap{display:flex;align-items:center;gap:8px}
+.fm-timer{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--muted);min-width:52px;text-align:right}
+.fm-start-btn{padding:5px 12px;border-radius:20px;border:none;color:#fff;font-size:11px;font-weight:800;cursor:pointer;font-family:var(--font);letter-spacing:0.04em;transition:opacity 0.15s}
+.fm-start-btn:hover{opacity:0.85}
+.fm-card-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:10px}
+.fm-title{font-size:16px;font-weight:800;color:var(--text);line-height:1.2}
+.fm-hook{font-size:13px;color:var(--muted);line-height:1.55;font-style:italic}
+.fm-divider{height:1px;background:var(--border);margin:2px 0}
+.fm-setup{font-size:13px;color:#c9d1d9;line-height:1.55;background:var(--surface2);border-radius:8px;padding:10px 12px}
+.fm-steps{background:var(--surface2);border-radius:10px;padding:12px 14px;animation:fadeIn 0.2s ease}
+.fm-steps-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:8px}
+.fm-step{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#c9d1d9;line-height:1.55;margin-bottom:6px}
+.fm-step:last-child{margin-bottom:0}
+.fm-step-num{min-width:22px;height:22px;border-radius:50%;background:var(--border);color:var(--muted);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.fm-challenge-wrap{display:flex;flex-direction:column;gap:8px;margin-top:auto}
+.fm-challenge{font-size:13.5px;color:var(--text);background:var(--surface2);border-radius:8px;padding:10px 12px;line-height:1.55}
+.fm-answer{font-size:13px;color:#c9d1d9;background:#064e3b;border:1px solid #10b98140;border-radius:8px;padding:10px 12px;line-height:1.55;animation:fadeIn 0.25s ease}
+.fm-btns{display:flex;gap:7px;flex-wrap:wrap}
+.fm-action-btn{padding:7px 13px;border-radius:8px;border:1.5px solid;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:opacity 0.15s}
+.fm-action-btn:hover{opacity:0.8}
+.fm-solve-btn{padding:7px 13px;border-radius:8px;border:1.5px solid;background:transparent;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all 0.2s;margin-left:auto}
+.fm-solve-btn:hover{opacity:0.85}
+.fm-solve-btn.solved-done{cursor:default}
+.fm-vcaa{font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:8px;margin-top:4px}
+.fm-vcaa span{font-weight:700}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:768px){
+  .fm-grid{grid-template-columns:1fr}
+  .fm-tabs{gap:6px}
+  .fm-tab{font-size:11.5px;padding:6px 11px}
+  .fm-stats{font-size:12px}
+}
+
+/* ========= LEADERBOARD ========= */
+.lb-wrap{background:var(--surface);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:24px}
+.lb-header{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.lb-title{font-size:15px;font-weight:800;color:var(--text-primary);display:flex;align-items:center;gap:8px}
+.lb-subtitle{font-size:12px;color:var(--text-secondary)}
+.lb-actions{display:flex;gap:8px;flex-wrap:wrap}
+.lb-copy-btn,.lb-clear-btn{border:none;border-radius:8px;padding:7px 14px;font-size:12.5px;font-weight:700;cursor:pointer;transition:opacity 0.15s}
+.lb-copy-btn{background:var(--math);color:#fff}
+.lb-copy-btn:hover{opacity:0.85}
+.lb-clear-btn{background:#ffffff12;color:var(--text-secondary);border:1px solid var(--border)}
+.lb-clear-btn:hover{background:#ffffff1f}
+.lb-tabs{display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto}
+.lb-tab{padding:9px 16px;font-size:12.5px;font-weight:600;color:var(--text-secondary);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;transition:color 0.15s,border-color 0.15s}
+.lb-tab.active{color:var(--accent);border-bottom-color:var(--accent)}
+.lb-empty{padding:32px;text-align:center;color:var(--text-secondary);font-size:13px}
+.lb-empty-icon{font-size:32px;margin-bottom:8px}
+.lb-list{}
+.lb-row{display:grid;grid-template-columns:40px 1fr auto auto;align-items:center;gap:8px 14px;padding:10px 18px;border-bottom:1px solid var(--border);transition:background 0.15s}
+.lb-row:last-child{border-bottom:none}
+.lb-row:hover{background:#ffffff05}
+.lb-rank{font-size:18px;font-weight:900;color:var(--text-secondary);text-align:center}
+.lb-rank.gold{color:#fbbf24}
+.lb-rank.silver{color:#94a3b8}
+.lb-rank.bronze{color:#b45309}
+.lb-name{font-weight:700;font-size:13.5px;color:var(--text-primary)}
+.lb-challenge{font-size:11.5px;color:var(--text-secondary)}
+.lb-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:600}
+.lb-time{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--accent);text-align:right;white-space:nowrap}
+.lb-time.fast{color:#10b981}
+.lb-time.medium{color:#f59e0b}
+.lb-time.slow{color:#94a3b8}
+.lb-medal{font-size:18px;text-align:center}
+/* Name entry modal */
+.lb-modal-overlay{position:fixed;inset:0;background:#00000088;z-index:400;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+.lb-modal{background:var(--bg-secondary, #161b22);border:1.5px solid var(--border);border-radius:16px;padding:24px;width:100%;max-width:360px;box-shadow:0 24px 64px #00000060}
+.lb-modal h3{font-size:17px;font-weight:800;margin:0 0 4px;color:var(--text-primary)}
+.lb-modal p{font-size:13px;color:var(--text-secondary);margin:0 0 18px}
+.lb-modal-time{font-size:28px;font-weight:900;color:var(--accent);font-family:'JetBrains Mono',monospace;text-align:center;margin:0 0 18px;padding:12px;background:#f59e0b12;border-radius:10px;border:1px solid #f59e0b30}
+.lb-modal-time small{font-size:13px;font-weight:400;color:var(--text-secondary);display:block;margin-top:2px}
+.lb-name-input{width:100%;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:#ffffff0a;color:var(--text-primary);font-size:14px;font-family:inherit;box-sizing:border-box;margin-bottom:14px;outline:none;transition:border-color 0.2s}
+.lb-name-input:focus{border-color:var(--math)}
+.lb-modal-btns{display:flex;gap:10px}
+.lb-modal-submit{flex:1;padding:10px;border:none;border-radius:10px;background:var(--math);color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:opacity 0.15s}
+.lb-modal-submit:hover{opacity:0.85}
+.lb-modal-skip{padding:10px 16px;border:1px solid var(--border);border-radius:10px;background:none;color:var(--text-secondary);font-size:14px;cursor:pointer}
+.lb-modal-skip:hover{background:#ffffff0a}
+@media(max-width:768px){
+  .lb-row{grid-template-columns:36px 1fr auto;}
+  .lb-badge{display:none}
+}
+
+/* ========= STUDY PLANNER ========= */
+.planner-intro{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.planner-intro-text{flex:1;min-width:200px}
+.planner-intro-text h3{font-size:14px;font-weight:700;margin:0 0 4px;color:var(--text-primary)}
+.planner-intro-text p{font-size:12.5px;color:var(--text-secondary);margin:0}
+.planner-print-btn{background:var(--math);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:opacity 0.15s}
+.planner-print-btn:hover{opacity:0.85}
+.planner-term{margin-bottom:28px}
+.planner-term-header{display:flex;align-items:center;gap:10px;margin-bottom:12px;padding:10px 16px;background:var(--surface);border-radius:10px;border-left:4px solid var(--math)}
+.planner-term-header.sci{border-left-color:var(--sci)}
+.planner-term-header.mixed{border-left-color:var(--accent)}
+.planner-term-title{font-size:15px;font-weight:800;color:var(--text-primary)}
+.planner-term-dates{font-size:12px;color:var(--text-secondary);margin-left:auto}
+.planner-table{width:100%;border-collapse:collapse;background:var(--surface);border-radius:10px;overflow:hidden;border:1px solid var(--border);font-size:12.5px}
+.planner-table th{padding:8px 12px;text-align:left;font-size:11px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;color:var(--text-secondary);background:#ffffff08;border-bottom:1px solid var(--border)}
+.planner-table td{padding:8px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text-primary)}
+.planner-table tr:last-child td{border-bottom:none}
+.planner-table tr:hover td{background:#ffffff05}
+.planner-week{font-weight:700;color:var(--accent);white-space:nowrap;min-width:60px}
+.planner-dates-cell{color:var(--text-secondary);font-size:11.5px;white-space:nowrap}
+.planner-strand{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:20px;font-size:11.5px;font-weight:600;margin:1px 2px 1px 0}
+.planner-strand.math{background:#3b82f620;color:#60a5fa;border:1px solid #3b82f640}
+.planner-strand.sci{background:#10b98120;color:#34d399;border:1px solid #10b98140}
+.planner-strand.both{background:#f59e0b20;color:#fbbf24;border:1px solid #f59e0b40}
+.planner-topic{font-size:11.5px;color:var(--text-secondary)}
+.planner-cb{display:flex;align-items:center;justify-content:center}
+.planner-cb input[type=checkbox]{width:16px;height:16px;accent-color:var(--math);cursor:pointer}
+.planner-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.planner-legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary)}
+.planner-progress-row{display:flex;align-items:center;gap:12px;margin-bottom:16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;flex-wrap:wrap}
+.planner-progress-label{font-size:12.5px;font-weight:700;color:var(--text-primary);min-width:100px}
+.planner-progress-bar{flex:1;min-width:120px;height:8px;background:#ffffff12;border-radius:4px;overflow:hidden}
+.planner-progress-fill{height:100%;background:linear-gradient(90deg,var(--math),#60a5fa);border-radius:4px;transition:width 0.4s ease}
+.planner-progress-count{font-size:12px;color:var(--text-secondary);white-space:nowrap}
+@media(max-width:768px){
+  .planner-table th:nth-child(3),.planner-table td:nth-child(3){display:none}
+  .planner-table{font-size:12px}
+}
+@media print{
+  body{background:#fff!important;color:#000!important}
+  .sidebar,.mobile-topbar,.planner-print-btn,.topbar{display:none!important}
+  main{margin-left:0!important;padding:0!important}
+  .page{display:block!important;padding:0!important}
+  .page:not(#page-planner){display:none!important}
+  #page-planner{display:block!important;padding:10mm!important}
+  .planner-table{background:#fff!important;color:#000!important;border:1px solid #ccc!important;font-size:10pt}
+  .planner-table th{background:#f0f0f0!important;color:#000!important;border-bottom:2px solid #333!important}
+  .planner-table td{border-bottom:1px solid #ddd!important;color:#000!important}
+  .planner-term-header{background:#f9f9f9!important;border-left-color:#3b82f6!important;color:#000!important}
+  .planner-term-title,.planner-term-dates{color:#000!important}
+  .planner-strand.math{background:#dbeafe!important;color:#1d4ed8!important;border-color:#93c5fd!important}
+  .planner-strand.sci{background:#d1fae5!important;color:#065f46!important;border-color:#6ee7b7!important}
+  .planner-strand.both{background:#fef3c7!important;color:#92400e!important;border-color:#fcd34d!important}
+  .planner-week{color:#000!important}
+  .planner-cb input[type=checkbox]{width:14px!important;height:14px!important}
+  .planner-progress-row,.planner-intro,.planner-legend{background:#f9f9f9!important;border:1px solid #ddd!important}
+  .planner-progress-label{color:#000!important}
+  .planner-progress-count{color:#555!important}
+  .planner-progress-fill{background:#3b82f6!important}
+  @page{size:A4;margin:10mm}
+}
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOP BAR -->
+<div class="mobile-topbar">
+  <button class="hamburger" onclick="toggleSidebar()" aria-label="Open menu">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+  <div>
+    <div class="mob-logo-title">Year 8 Study Hub</div>
+    <div class="mob-logo-sub">Maths &amp; Science · Victoria</div>
+  </div>
+</div>
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-label="Year 8 Study Hub Logo">
+        <rect width="32" height="32" rx="8" fill="#1d4ed8"/>
+        <rect x="4" y="4" width="11" height="11" rx="3" fill="#60a5fa"/>
+        <rect x="17" y="4" width="11" height="11" rx="3" fill="#10b981"/>
+        <rect x="4" y="17" width="11" height="11" rx="3" fill="#10b981" opacity="0.6"/>
+        <rect x="17" y="17" width="11" height="11" rx="3" fill="#60a5fa" opacity="0.6"/>
+      </svg>
+      <div>
+        <div class="logo-title">Year 8 Study Hub</div>
+        <div class="logo-sub">Maths & Science · Victoria</div>
+      </div>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-section">Overview</div>
+    <div class="nav-item active" onclick="showPage('dashboard',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      Dashboard
+    </div>
+
+    <div class="nav-section">Mathematics</div>
+    <div class="nav-item" onclick="showPage('math-number',this)">
+      <div class="dot" style="background:var(--math)"></div>Number & Algebra
+    </div>
+    <div class="nav-item" onclick="showPage('math-geometry',this)">
+      <div class="dot" style="background:var(--math)"></div>Measurement & Geometry
+    </div>
+    <div class="nav-item" onclick="showPage('math-stats',this)">
+      <div class="dot" style="background:var(--math)"></div>Statistics & Probability
+    </div>
+
+    <div class="nav-section">Science</div>
+    <div class="nav-item" onclick="showPage('sci-bio',this)">
+      <div class="dot" style="background:var(--sci)"></div>Biological Sciences
+    </div>
+    <div class="nav-item" onclick="showPage('sci-chem',this)">
+      <div class="dot" style="background:var(--sci)"></div>Chemical Sciences
+    </div>
+    <div class="nav-item" onclick="showPage('sci-earth',this)">
+      <div class="dot" style="background:var(--sci)"></div>Earth & Space
+    </div>
+    <div class="nav-item" onclick="showPage('sci-phys',this)">
+      <div class="dot" style="background:var(--sci)"></div>Physical Sciences
+    </div>
+
+    <div class="nav-section">Practice</div>
+    <div class="nav-item" onclick="showPage('quiz',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      Practice Quiz
+    </div>
+    <div class="nav-item" onclick="showPage('cheatsheet',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Cheat Sheet
+    </div>
+    <div class="nav-item" onclick="showPage('funmaths',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Fun Maths ⚡
+    </div>
+    <div class="nav-item" onclick="showPage('planner',this)">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      Study Planner
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="vic-badge">
+      <strong>Victorian Curriculum</strong>
+      F–10 · Level 8 · VCAA Aligned
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+
+<!-- ======================== DASHBOARD ======================== -->
+<section id="page-dashboard" class="page active">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Welcome to Year 8 Study Hub 👋</div>
+      <div class="page-subtitle">Victorian Curriculum · Maths & Science · All topics, quizzes, cheat sheets and real-world examples in one place.</div>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="kpi-val" id="kpi-topics" style="color:var(--math)">0</div>
+      <div class="kpi-label">Topics Completed</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val" id="kpi-score" style="color:var(--sci)">–</div>
+      <div class="kpi-label">Quiz Avg Score</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val" id="kpi-correct" style="color:var(--accent)">0</div>
+      <div class="kpi-label">Questions Correct</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val" id="kpi-streak" style="color:var(--purple)">0</div>
+      <div class="kpi-label">Quizzes Taken</div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="section-label">Mathematics Progress</div>
+      <div id="math-progress-items"></div>
+    </div>
+    <div class="card">
+      <div class="section-label">Science Progress</div>
+      <div id="sci-progress-items"></div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="section-label">Mathematics Strands</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6">
+        <div style="margin-bottom:10px"><span style="color:var(--math-light);font-weight:700">Number &amp; Algebra</span> — Indices, integers, percentages, rates, ratios, algebra, linear equations, graphing</div>
+        <div style="margin-bottom:10px"><span style="color:var(--math-light);font-weight:700">Measurement &amp; Geometry</span> — Area, volume, circles, Pythagoras, congruence, geometric reasoning</div>
+        <div><span style="color:var(--math-light);font-weight:700">Statistics &amp; Probability</span> — Data collection, sampling, Venn diagrams, chance &amp; events</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="section-label">Science Strands</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.6">
+        <div style="margin-bottom:10px"><span style="color:var(--sci-light);font-weight:700">Biological Sciences</span> — Cells, body systems, classification, food webs, ecosystems</div>
+        <div style="margin-bottom:10px"><span style="color:var(--sci-light);font-weight:700">Chemical Sciences</span> — Particle theory, states of matter, mixtures, chemical change</div>
+        <div style="margin-bottom:10px"><span style="color:var(--sci-light);font-weight:700">Earth &amp; Space Sciences</span> — Rock cycle, seasons, eclipses, water cycle, resources</div>
+        <div><span style="color:var(--sci-light);font-weight:700">Physical Sciences</span> — Forces, motion, energy, simple machines</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:0">
+    <div class="section-label">How to Use This Dashboard</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:4px">
+      <div style="background:var(--surface2);border-radius:8px;padding:14px">
+        <div style="font-size:20px;margin-bottom:8px">📖</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px">Read the Topic</div>
+        <div style="font-size:12px;color:var(--muted)">Click any topic in Maths or Science to expand full notes with real examples</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px">
+        <div style="font-size:20px;margin-bottom:8px">✅</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px">Mark Complete</div>
+        <div style="font-size:12px;color:var(--muted)">Hit "Mark as Complete" to track your progress on the dashboard</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px">
+        <div style="font-size:20px;margin-bottom:8px">🧠</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px">Test Yourself</div>
+        <div style="font-size:12px;color:var(--muted)">Go to Practice Quiz — pick Maths, Science or Mixed, choose 10–30 questions</div>
+      </div>
+      <div style="background:var(--surface2);border-radius:8px;padding:14px">
+        <div style="font-size:20px;margin-bottom:8px">⚡</div>
+        <div style="font-size:13px;font-weight:700;margin-bottom:4px">Quick Revision</div>
+        <div style="font-size:12px;color:var(--muted)">Cheat Sheet has all formulas, key terms and tables ready to review</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================== MATH: NUMBER & ALGEBRA ======================== -->
+<section id="page-math-number" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Number &amp; Algebra</div>
+      <div class="page-subtitle">Mathematics · Victorian Curriculum Level 8</div>
+    </div>
+    <span class="badge badge-math">Mathematics</span>
+  </div>
+  <div class="topic-list" id="topics-math-number"></div>
+</section>
+
+<!-- ======================== MATH: MEASUREMENT & GEOMETRY ======================== -->
+<section id="page-math-geometry" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Measurement &amp; Geometry</div>
+      <div class="page-subtitle">Mathematics · Victorian Curriculum Level 8</div>
+    </div>
+    <span class="badge badge-math">Mathematics</span>
+  </div>
+  <div class="topic-list" id="topics-math-geometry"></div>
+</section>
+
+<!-- ======================== MATH: STATS & PROBABILITY ======================== -->
+<section id="page-math-stats" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Statistics &amp; Probability</div>
+      <div class="page-subtitle">Mathematics · Victorian Curriculum Level 8</div>
+    </div>
+    <span class="badge badge-math">Mathematics</span>
+  </div>
+  <div class="topic-list" id="topics-math-stats"></div>
+</section>
+
+<!-- ======================== SCI: BIOLOGICAL ======================== -->
+<section id="page-sci-bio" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Biological Sciences</div>
+      <div class="page-subtitle">Science · Victorian Curriculum Level 8</div>
+    </div>
+    <span class="badge badge-sci">Science</span>
+  </div>
+  <div class="topic-list" id="topics-sci-bio"></div>
+</section>
+
+<!-- ======================== SCI: CHEMICAL ======================== -->
+<section id="page-sci-chem" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Chemical Sciences</div>
+      <div class="page-subtitle">Science · Victorian Curriculum Level 8</div>
+    </div>
+    <span class="badge badge-sci">Science</span>
+  </div>
+  <div class="topic-list" id="topics-sci-chem"></div>
+</section>
+
+<!-- ======================== SCI: EARTH & SPACE ======================== -->
+<section id="page-sci-earth" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Earth &amp; Space Sciences</div>
+      <div class="page-subtitle">Science · Victorian Curriculum Level 8</div>
+    </div>
+    <span class="badge badge-sci">Science</span>
+  </div>
+  <div class="topic-list" id="topics-sci-earth"></div>
+</section>
+
+<!-- ======================== SCI: PHYSICAL ======================== -->
+<section id="page-sci-phys" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Physical Sciences</div>
+      <div class="page-subtitle">Science · Victorian Curriculum Level 8</div>
+    </div>
+    <span class="badge badge-sci">Science</span>
+  </div>
+  <div class="topic-list" id="topics-sci-phys"></div>
+</section>
+
+<!-- ======================== QUIZ ======================== -->
+<section id="page-quiz" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Practice Quiz</div>
+      <div class="page-subtitle">150+ questions across Maths & Science — with instant explanations</div>
+    </div>
+  </div>
+
+  <div class="quiz-controls">
+    <select class="quiz-select" id="quiz-subject">
+      <option value="all">All Subjects</option>
+      <option value="math">Mathematics Only</option>
+      <option value="sci">Science Only</option>
+    </select>
+    <select class="quiz-select" id="quiz-count">
+      <option value="10">10 Questions</option>
+      <option value="15">15 Questions</option>
+      <option value="20">20 Questions</option>
+      <option value="30">30 Questions</option>
+    </select>
+    <button class="quiz-btn quiz-btn-primary" onclick="startQuiz()">Start Quiz</button>
+    <button class="quiz-btn quiz-btn-secondary" onclick="resetQuiz()">Reset</button>
+  </div>
+
+  <div id="quiz-score-bar" style="display:none" class="q-score">
+    <div>
+      <div class="q-score-val" id="qs-val" style="color:var(--sci)">0/0</div>
+      <div class="q-score-label">Current Score</div>
+    </div>
+    <div style="flex:1">
+      <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Progress</div>
+      <div class="prog-bar-wrap"><div class="prog-bar" id="qs-prog" style="background:var(--sci);width:0%"></div></div>
+    </div>
+    <div style="text-align:right">
+      <div style="font-size:13px;font-weight:700" id="qs-status">In Progress</div>
+      <div style="font-size:11px;color:var(--muted)">Keep going!</div>
+    </div>
+  </div>
+
+  <div id="quiz-container"></div>
+  <div id="quiz-result" style="display:none" class="card">
+    <div style="text-align:center;padding:20px">
+      <div style="font-size:48px;font-weight:800;font-family:var(--mono)" id="result-score"></div>
+      <div style="font-size:16px;color:var(--muted);margin-bottom:16px" id="result-msg"></div>
+      <div id="drill-launch-wrap" style="display:none;margin-bottom:14px">
+        <div style="background:#ef444412;border:1px solid #ef444430;border-radius:10px;padding:14px 18px;margin-bottom:14px;text-align:left">
+          <div style="font-size:13.5px;font-weight:700;color:#f87171;margin-bottom:4px">🔁 <span id="drill-wrong-count"></span> to drill</div>
+          <div style="font-size:12.5px;color:var(--muted)">Review each one with a hint, answer it again, and see the explanation.</div>
+        </div>
+        <button class="quiz-btn" style="background:#ef4444;color:#fff;padding:11px 28px;font-size:14px;font-weight:700" onclick="startDrillMode()">🔁 Drill Wrong Answers</button>
+      </div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+        <button class="quiz-btn quiz-btn-primary" onclick="startQuiz()">Try Again</button>
+        <button class="quiz-btn quiz-btn-secondary" onclick="showPage('cheatsheet',null)">Review Cheat Sheet</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRILL MODE CONTAINER -->
+  <div id="drill-container" style="display:none" class="drill-wrap"></div>
+
+</section>
+
+<!-- ======================== FUN MATHS ======================== -->
+<section id="page-funmaths" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Fun Maths in Real Life ⚡</div>
+      <div class="page-subtitle">60-second challenges — maths hiding inside the things you actually love</div>
+    </div>
+  </div>
+  <div id="funmaths-container"></div>
+
+  <!-- LEADERBOARD PANEL -->
+  <div class="lb-wrap" id="lb-wrap">
+    <div class="lb-header">
+      <div>
+        <div class="lb-title">🏆 Leaderboard <span id="lb-entry-count" style="font-size:12px;font-weight:500;color:var(--text-secondary)"></span></div>
+        <div class="lb-subtitle">Fastest solve times this session — who's the maths champion? 👑</div>
+      </div>
+      <div class="lb-actions">
+        <button class="lb-copy-btn" onclick="copyLeaderboard()" id="lb-copy-btn">📋 Share Results</button>
+        <button class="lb-clear-btn" onclick="clearLeaderboard()">🗑 Clear</button>
+      </div>
+    </div>
+    <div class="lb-tabs" id="lb-tabs">
+      <button class="lb-tab active" onclick="setLbFilter('all',this)">All Challenges</button>
+      <button class="lb-tab" onclick="setLbFilter('skate',this)">🛹 Skate</button>
+      <button class="lb-tab" onclick="setLbFilter('gaming',this)">🎮 Gaming</button>
+      <button class="lb-tab" onclick="setLbFilter('minecraft',this)">⛏️ Minecraft</button>
+      <button class="lb-tab" onclick="setLbFilter('afl',this)">🏉 AFL</button>
+      <button class="lb-tab" onclick="setLbFilter('bonus',this)">🎁 Bonus</button>
+    </div>
+    <div id="lb-list"></div>
+  </div>
+
+  <!-- NAME ENTRY MODAL (hidden by default) -->
+  <div class="lb-modal-overlay" id="lb-modal" style="display:none" onclick="handleModalOverlayClick(event)">
+    <div class="lb-modal">
+      <h3>🎉 Challenge Solved!</h3>
+      <p>Enter your name to add your time to the leaderboard.</p>
+      <div class="lb-modal-time" id="lb-modal-time">0s <small>your solve time</small></div>
+      <input class="lb-name-input" id="lb-name-input" type="text" placeholder="Your name (e.g. Alex 🔥)" maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter')submitLeaderboardEntry()">
+      <div class="lb-modal-btns">
+        <button class="lb-modal-submit" onclick="submitLeaderboardEntry()">Add to Leaderboard 🚀</button>
+        <button class="lb-modal-skip" onclick="skipLeaderboardEntry()">Skip</button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ======================== STUDY PLANNER ======================== -->
+<section id="page-planner" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">📅 Study Planner</div>
+      <div class="page-subtitle">Week-by-week 2026 term schedule — print it, tick it off, own it</div>
+    </div>
+  </div>
+
+  <div class="planner-intro">
+    <div class="planner-intro-text">
+      <h3>📋 How to use this planner</h3>
+      <p>Each row is one week. The coloured labels show which subject strand you'll be covering. Tick the checkbox when you finish the week's work. Hit <strong>Print Planner</strong> to get a clean A4 copy for your wall or folder — no sidebars, no dark background, just the table.</p>
+    </div>
+    <button class="planner-print-btn" onclick="window.print()">🖨️ Print Planner</button>
+  </div>
+
+  <div class="planner-legend">
+    <div class="planner-legend-item"><span class="planner-strand math">📐 Maths</span> Mathematics strand</div>
+    <div class="planner-legend-item"><span class="planner-strand sci">🔬 Science</span> Science strand</div>
+    <div class="planner-legend-item"><span class="planner-strand both">⭐ Both</span> Maths + Science week</div>
+  </div>
+
+  <div class="planner-progress-row">
+    <span class="planner-progress-label">Overall Progress</span>
+    <div class="planner-progress-bar"><div class="planner-progress-fill" id="planner-fill" style="width:0%"></div></div>
+    <span class="planner-progress-count" id="planner-count">0 / 36 weeks done</span>
+  </div>
+
+  <!-- TERM 1 -->
+  <div class="planner-term">
+    <div class="planner-term-header">
+      <span class="planner-term-title">☀️ Term 1 — 2026</span>
+      <span class="planner-term-dates">28 Jan – 2 Apr &nbsp;·&nbsp; 10 weeks</span>
+    </div>
+    <table class="planner-table">
+      <thead><tr><th>Week</th><th>Dates</th><th>Focus</th><th>Topic</th><th>Done?</th></tr></thead>
+      <tbody>
+        <tr><td class="planner-week">Wk 1</td><td class="planner-dates-cell">28 Jan – 1 Feb</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Number &amp; Algebra — Indices &amp; Powers</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 2</td><td class="planner-dates-cell">4 – 8 Feb</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Number &amp; Algebra — Integers &amp; Irrational Numbers</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 3</td><td class="planner-dates-cell">11 – 15 Feb</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Number &amp; Algebra — Percentages, Rates &amp; Ratios</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 4</td><td class="planner-dates-cell">18 – 22 Feb</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Biological Sciences — Cells &amp; Cell Theory</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 5</td><td class="planner-dates-cell">25 Feb – 1 Mar</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Maths: Algebra Expressions &nbsp;·&nbsp; Sci: Classification</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 6</td><td class="planner-dates-cell">4 – 8 Mar</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Biological Sciences — Body Systems</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 7</td><td class="planner-dates-cell">11 – 15 Mar</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Number &amp; Algebra — Linear Equations</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 8</td><td class="planner-dates-cell">18 – 22 Mar</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Maths: Linear Graphing &nbsp;·&nbsp; Sci: Food Webs &amp; Ecosystems</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 9</td><td class="planner-dates-cell">25 – 29 Mar</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Chemical Sciences — Particle Theory</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 10</td><td class="planner-dates-cell">1 – 2 Apr</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Revision Week — Number, Algebra &amp; Bio Sciences</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TERM 2 -->
+  <div class="planner-term">
+    <div class="planner-term-header sci">
+      <span class="planner-term-title">🍂 Term 2 — 2026</span>
+      <span class="planner-term-dates">20 Apr – 26 Jun &nbsp;·&nbsp; 10 weeks</span>
+    </div>
+    <table class="planner-table">
+      <thead><tr><th>Week</th><th>Dates</th><th>Focus</th><th>Topic</th><th>Done?</th></tr></thead>
+      <tbody>
+        <tr><td class="planner-week">Wk 1</td><td class="planner-dates-cell">20 – 24 Apr</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Measurement &amp; Geometry — Area &amp; Perimeter</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 2</td><td class="planner-dates-cell">28 Apr – 2 May</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Measurement &amp; Geometry — Circles &amp; π</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 3</td><td class="planner-dates-cell">5 – 9 May</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Chemical Sciences — Mixtures &amp; Pure Substances</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 4</td><td class="planner-dates-cell">12 – 16 May</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Maths: Pythagoras' Theorem &nbsp;·&nbsp; Sci: Chemical Change</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 5</td><td class="planner-dates-cell">19 – 23 May</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Measurement &amp; Geometry — Volume &amp; Capacity</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 6</td><td class="planner-dates-cell">26 – 30 May</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Earth &amp; Space — Seasons, Eclipses &amp; Moon Phases</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 7</td><td class="planner-dates-cell">2 – 6 Jun</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Measurement &amp; Geometry — Congruence &amp; Similarity</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 8</td><td class="planner-dates-cell">9 – 13 Jun</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Earth &amp; Space — Rock Cycle &amp; Earth's Layers</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 9</td><td class="planner-dates-cell">16 – 20 Jun</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Maths: Statistics &amp; Data Collection &nbsp;·&nbsp; Sci: Water Cycle</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 10</td><td class="planner-dates-cell">23 – 26 Jun</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Revision — Geometry, Chem Sciences &amp; Earth Sciences</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TERM 3 -->
+  <div class="planner-term">
+    <div class="planner-term-header mixed">
+      <span class="planner-term-title">🌸 Term 3 — 2026</span>
+      <span class="planner-term-dates">13 Jul – 18 Sep &nbsp;·&nbsp; 10 weeks</span>
+    </div>
+    <table class="planner-table">
+      <thead><tr><th>Week</th><th>Dates</th><th>Focus</th><th>Topic</th><th>Done?</th></tr></thead>
+      <tbody>
+        <tr><td class="planner-week">Wk 1</td><td class="planner-dates-cell">13 – 17 Jul</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Statistics &amp; Probability — Probability Basics</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 2</td><td class="planner-dates-cell">20 – 24 Jul</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Statistics &amp; Probability — Venn Diagrams &amp; Chance</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 3</td><td class="planner-dates-cell">27 – 31 Jul</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Physical Sciences — Forces &amp; Motion</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 4</td><td class="planner-dates-cell">3 – 7 Aug</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Maths: Data Displays &amp; Sampling &nbsp;·&nbsp; Sci: Energy Forms</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 5</td><td class="planner-dates-cell">10 – 14 Aug</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Physical Sciences — Energy Transfer &amp; Simple Machines</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 6</td><td class="planner-dates-cell">17 – 21 Aug</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Algebra Review — Expand, Factorise &amp; Solve</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 7</td><td class="planner-dates-cell">24 – 28 Aug</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Maths: Pythagoras Practice &nbsp;·&nbsp; Sci: Science Fair Prep</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 8</td><td class="planner-dates-cell">31 Aug – 4 Sep</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Number Review — Decimals, Fractions &amp; Percentages</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 9</td><td class="planner-dates-cell">7 – 11 Sep</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Science Review — All Strands Catchup</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 10</td><td class="planner-dates-cell">14 – 18 Sep</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Mid-Year Revision — Stats, Probability &amp; Physical Sciences</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- TERM 4 -->
+  <div class="planner-term">
+    <div class="planner-term-header">
+      <span class="planner-term-title">❄️ Term 4 — 2026</span>
+      <span class="planner-term-dates">5 Oct – 18 Dec &nbsp;·&nbsp; 11 weeks</span>
+    </div>
+    <table class="planner-table">
+      <thead><tr><th>Week</th><th>Dates</th><th>Focus</th><th>Topic</th><th>Done?</th></tr></thead>
+      <tbody>
+        <tr><td class="planner-week">Wk 1</td><td class="planner-dates-cell">5 – 9 Oct</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Full Curriculum Review — Maths Strands Overview</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 2</td><td class="planner-dates-cell">12 – 16 Oct</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Number &amp; Algebra — Exam Practice Questions</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 3</td><td class="planner-dates-cell">19 – 23 Oct</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Science Exam Practice — Bio &amp; Chem Sciences</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 4</td><td class="planner-dates-cell">26 – 30 Oct</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Measurement &amp; Geometry — Exam Practice Questions</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 5</td><td class="planner-dates-cell">2 – 6 Nov</td><td><span class="planner-strand sci">🔬 Science</span></td><td class="planner-topic">Science Exam Practice — Earth, Space &amp; Physical Sciences</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 6</td><td class="planner-dates-cell">9 – 13 Nov</td><td><span class="planner-strand math">📐 Maths</span></td><td class="planner-topic">Statistics &amp; Probability — Exam Practice Questions</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 7</td><td class="planner-dates-cell">16 – 20 Nov</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Mixed Revision — All Topics, Cheat Sheet Drill</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 8</td><td class="planner-dates-cell">23 – 27 Nov</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Practice Exams — Full Maths Mock Test</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 9</td><td class="planner-dates-cell">30 Nov – 4 Dec</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Practice Exams — Full Science Mock Test</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 10</td><td class="planner-dates-cell">7 – 11 Dec</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">Final Week — Review Mistakes, Rest &amp; Prepare</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+        <tr><td class="planner-week">Wk 11</td><td class="planner-dates-cell">14 – 18 Dec</td><td><span class="planner-strand both">⭐ Both</span></td><td class="planner-topic">🎉 End of Year — You made it! Celebrate the wins!</td><td class="planner-cb"><input type="checkbox" onchange="updatePlannerProgress()"></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+<!-- ======================== CHEAT SHEET ======================== -->
+<section id="page-cheatsheet" class="page">
+  <div class="topbar">
+    <div>
+      <div class="page-title">Cheat Sheet</div>
+      <div class="page-subtitle">All formulas, key terms, tables & memory tricks in one place</div>
+    </div>
+  </div>
+
+  <div class="cheat-nav" id="cheat-nav"></div>
+  <div id="cheat-sections"></div>
+</section>
+
+</main>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  completedTopics: {},
+  quizSessions: [],
+  totalCorrect: 0,
+  totalAnswered: 0,
+  quizzesTaken: 0,
+  currentQuiz: [],
+  currentAnswers: {},
+  quizSubmitted: false,
+  wrongQuestions: [],    // populated after submitQuiz
+  drillQueue: [],        // questions in current drill session
+  drillIdx: 0,          // current drill question index
+  drillAnswers: {},      // drillIdx -> chosen option
+  drillCorrect: 0       // correct answers in current drill
+};
+
+// ============================================================
+// TOPIC DATA — MATHEMATICS
+// ============================================================
+const mathNumberTopics = [
+  {
+    id: 'indices',
+    icon: '2ˣ',
+    name: 'Index Laws & Notation',
+    badge: 'VCMNA272',
+    html: `
+      <h4>What are Index Laws?</h4>
+      <p>Index notation is a shorthand way of writing repeated multiplication. The <strong>base</strong> is the number being multiplied, and the <strong>index (or exponent)</strong> tells you how many times to multiply it by itself.</p>
+      <div class="formula">a<sup>m</sup> × a<sup>n</sup> = a<sup>m+n</sup> &nbsp;|&nbsp; a<sup>m</sup> ÷ a<sup>n</sup> = a<sup>m−n</sup> &nbsp;|&nbsp; (a<sup>m</sup>)<sup>n</sup> = a<sup>m×n</sup> &nbsp;|&nbsp; a<sup>0</sup> = 1</div>
+      <h4>Real-World Example</h4>
+      <div class="example">
+        🎮 <strong>Minecraft worlds:</strong> A Minecraft world is 60 million × 60 million blocks. That's roughly 2<sup>30</sup> blocks wide! When game designers talk about world size, they use powers of 2 because computers think in binary. Now you speak the same language as a game programmer! 🚀
+      </div>
+      <h4>Worked Examples</h4>
+      <p><strong>Q:</strong> Simplify 3<sup>4</sup> × 3<sup>2</sup></p>
+      <p><strong>A:</strong> Same base (3) → add indices: 3<sup>4+2</sup> = 3<sup>6</sup> = 729</p>
+      <p style="margin-top:8px"><strong>Q:</strong> Simplify (2<sup>3</sup>)<sup>4</sup></p>
+      <p><strong>A:</strong> Multiply indices: 2<sup>3×4</sup> = 2<sup>12</sup> = 4096</p>
+      <p style="margin-top:8px"><strong>Q:</strong> What is 7<sup>0</sup>?</p>
+      <p><strong>A:</strong> Any number to the power of 0 = 1. So 7<sup>0</sup> = 1.</p>
+      <div class="tip">💡 <strong>Memory trick:</strong> When multiplying — ADD the indices. When dividing — SUBTRACT. When raising a power to a power — MULTIPLY.</div>
+    `
+  },
+  {
+    id: 'integers',
+    icon: '±',
+    name: 'Integers & Rational Numbers',
+    badge: 'VCMNA273',
+    html: `
+      <h4>Integers</h4>
+      <p>Integers include all whole numbers and their negatives: ..., −3, −2, −1, 0, 1, 2, 3, ...</p>
+      <p><strong>Rational numbers</strong> are numbers that can be written as a fraction p/q where p and q are integers and q ≠ 0. Examples: ½, −¾, 0.6, 3.</p>
+      <h4>Rules for Operations</h4>
+      <table><tr><th>Operation</th><th>Same Signs</th><th>Different Signs</th></tr>
+      <tr><td>Multiply / Divide</td><td>Answer is Positive</td><td>Answer is Negative</td></tr>
+      <tr><td>Add</td><td>Add magnitudes, keep sign</td><td>Subtract smaller from larger, use larger's sign</td></tr></table>
+      <h4>Real-World Example</h4>
+      <div class="example">
+        🎮 <strong>Gaming score:</strong> You're playing a game and lose 4 lives, then lose 7 more. Lives lost = (−4) + (−7) = −11. Your character is seriously struggling! But then you find a power-up worth +20 lives: −11 + 20 = +9 lives. Maths just saved your character! ❤️
+        <br><br>⛷️ <strong>Ski jump:</strong> A ramp starts 5 metres underground (−5 m), goes up to 18 m above ground. Total height gained = 18 − (−5) = 23 m. That's the power of negative numbers!
+      </div>
+      <h4>Worked Examples</h4>
+      <p><strong>(−4) × (−5) = +20</strong> (negative × negative = positive)</p>
+      <p><strong>(−6) ÷ (+3) = −2</strong> (negative ÷ positive = negative)</p>
+      <p><strong>−7 + (−3) = −10</strong> (both negative, add magnitudes)</p>
+      <p><strong>−8 − (−5) = −8 + 5 = −3</strong> (subtracting a negative = adding)</p>
+      <div class="tip">💡 "Two negatives make a positive" only applies to multiplication and division, NOT addition!</div>
+    `
+  },
+  {
+    id: 'decimals',
+    icon: '0.3̄',
+    name: 'Terminating & Recurring Decimals',
+    badge: 'VCMNA274',
+    html: `
+      <h4>Types of Decimals</h4>
+      <p><strong>Terminating decimals</strong> end after a finite number of digits. Example: ¼ = 0.25</p>
+      <p><strong>Recurring decimals</strong> have a digit or group that repeats forever. Example: ⅓ = 0.333... = 0.3̄</p>
+      <table><tr><th>Fraction</th><th>Decimal</th><th>Type</th></tr>
+      <tr><td>½</td><td>0.5</td><td>Terminating</td></tr>
+      <tr><td>¼</td><td>0.25</td><td>Terminating</td></tr>
+      <tr><td>⅓</td><td>0.333...</td><td>Recurring</td></tr>
+      <tr><td>⅙</td><td>0.1666...</td><td>Recurring</td></tr>
+      <tr><td>⅛</td><td>0.125</td><td>Terminating</td></tr>
+      <tr><td>⅑</td><td>0.111...</td><td>Recurring</td></tr></table>
+      <h4>Real-World Example</h4>
+      <div class="example">🎵 <strong>Music beats:</strong> A drum machine plays a beat every ⅓ of a second = 0.333... seconds. The beat repeats forever — just like the decimal! DJs and music producers deal with recurring numbers every time they set a tempo. You're literally doing DJ maths! 🎧</div>
+      <h4>Converting Recurring to Fraction</h4>
+      <p>Let x = 0.777...<br>
+      Then 10x = 7.777...<br>
+      10x − x = 7.777... − 0.777...<br>
+      9x = 7 → x = 7/9</p>
+    `
+  },
+  {
+    id: 'irrational',
+    icon: 'π',
+    name: 'Irrational Numbers & π',
+    badge: 'VCMNA275',
+    html: `
+      <h4>What is an Irrational Number?</h4>
+      <p>An irrational number <strong>cannot</strong> be written as a fraction. Its decimal goes on forever without repeating. Examples: π, √2, √3, √5, e.</p>
+      <div class="formula">π ≈ 3.14159265358979... (never ends, never repeats)</div>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        🎡 <strong>Ferris wheel:</strong> Ever ridden a Ferris wheel? Its spinning uses π! If the wheel has a 10 m diameter, it travels π × 10 ≈ 31.4 m per full rotation. Engineers can't write the exact distance — it's irrational! They just use π and let the maths do the work. 🎠
+        <br><br>📐 <strong>Your phone screen:</strong> A square phone screen of area 100 cm² has sides of exactly √100 = 10 cm. But if the screen was 50 cm²? Sides = √50 ≈ 7.07 cm — irrational! Screen designers deal with this daily.
+      </div>
+      <h4>Rational vs Irrational</h4>
+      <table><tr><th>Rational ✓</th><th>Irrational ✗</th></tr>
+      <tr><td>½, ¾, 0.25, −3</td><td>π, √2, √3, √5</td></tr>
+      <tr><td>0.333...(recurring)</td><td>π = 3.14159...(non-recurring)</td></tr>
+      <tr><td>Can write as fraction</td><td>Cannot write as fraction</td></tr></table>
+      <div class="tip">💡 √4 = 2 (rational!), √9 = 3 (rational!), but √2, √3, √5, √6, √7 are all irrational.</div>
+    `
+  },
+  {
+    id: 'percentages',
+    icon: '%',
+    name: 'Percentages, Profit & Loss',
+    badge: 'VCMNA276-278',
+    html: `
+      <h4>Key Formulas</h4>
+      <div class="formula">
+        % change = (change ÷ original) × 100<br>
+        % increase: new = original × (1 + rate/100)<br>
+        % decrease: new = original × (1 − rate/100)<br>
+        Profit = Selling Price − Cost Price<br>
+        % Profit = (Profit ÷ Cost Price) × 100
+      </div>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        🎮 <strong>Game skins sale:</strong> Your favourite skin costs $30, but there's a 20% off sale → Discount = 20% of $30 = $6 → You pay only $24! Knowing percentages means you'll never get ripped off by a store again. 💸
+        <br><br>🍔 <strong>Pocket money profit:</strong> You buy lollies for $2 and sell them to your mates for $3. Profit = $1. % Profit = (1 ÷ 2) × 100 = 50%! You're basically running a mini business. 🚀
+        <br><br>📱 <strong>Upgrade your phone:</strong> You saved $200, but the phone costs $250 — that's 25% more than you have. How many extra weeks of pocket money do you need? Percentages help you figure it out!
+      </div>
+      <h4>Percentage Error</h4>
+      <div class="formula">% Error = |estimated − actual| ÷ actual × 100</div>
+      <p><strong>Example:</strong> You estimate a crowd at 500, actual was 620. % Error = |500−620| ÷ 620 × 100 = 120 ÷ 620 × 100 ≈ 19.4%</p>
+    `
+  },
+  {
+    id: 'rates',
+    icon: '÷',
+    name: 'Rates & Ratios',
+    badge: 'VCMNA277',
+    html: `
+      <h4>Rates</h4>
+      <p>A rate compares two quantities with <strong>different units</strong>. Common rates: km/h, $/kg, L/100km.</p>
+      <div class="formula">Speed = Distance ÷ Time &nbsp;|&nbsp; Time = Distance ÷ Speed &nbsp;|&nbsp; Distance = Speed × Time</div>
+      <h4>Ratios</h4>
+      <p>A ratio compares quantities of the <strong>same type</strong> written as a:b. You can simplify ratios like fractions.</p>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        🚴 <strong>Cycling with your mates:</strong> You ride 12 km in 30 minutes. Speed = 12 ÷ 0.5 = 24 km/h. Your friend says they did it in 25 minutes — who was faster? Speed = 12 ÷ 0.417 ≈ 28.8 km/h. They win, but only by maths! 🏆
+        <br><br>🍹 <strong>Making slushies:</strong> Slushie mix ratio is 1:3 (syrup:ice). For a 400 mL cup: syrup = 100 mL, ice = 300 mL. Double the recipe? 200 mL syrup, 600 mL ice. Ratios = perfect slushie every time. 🎉
+      </div>
+      <div class="tip">💡 "Unitary method": find the value of ONE unit first, then scale up. e.g., 3 pens cost $7.50 → 1 pen costs $2.50 → 7 pens cost $17.50</div>
+    `
+  },
+  {
+    id: 'algebra',
+    icon: 'x',
+    name: 'Algebra: Expand & Factorise',
+    badge: 'VCMNA279-281',
+    html: `
+      <h4>Expanding (Distributive Law)</h4>
+      <div class="formula">a(b + c) = ab + ac</div>
+      <p>Multiply the term outside the bracket by <strong>each</strong> term inside.</p>
+      <p><strong>Examples:</strong><br>
+      3(x + 5) = 3x + 15<br>
+      −2(4x − 3) = −8x + 6<br>
+      x(x + 7) = x² + 7x</p>
+      <h4>Factorising</h4>
+      <p>The reverse of expanding — find the <strong>highest common factor (HCF)</strong> and take it outside.</p>
+      <p><strong>Examples:</strong><br>
+      6x + 10 = 2(3x + 5) → HCF = 2<br>
+      15x² − 10x = 5x(3x − 2) → HCF = 5x</p>
+      <h4>Simplifying Expressions</h4>
+      <p>Collect <strong>like terms</strong> (same variable and power):</p>
+      <p>3x + 2y + 5x − y = 8x + y</p>
+      <div class="example">
+        🎮 <strong>Battle Pass logic:</strong> A game costs $x per month and $5 for each extra skin. If you buy for 3 months and 4 skins: Total = 3x + 20. If your friend buys 2 months and 7 skins: Total = 2x + 35. Algebra lets you compare any plan instantly — you're basically writing game pricing formulas! 🚀
+      </div>
+    `
+  },
+  {
+    id: 'linear',
+    icon: 'y=mx',
+    name: 'Linear Equations & Graphing',
+    badge: 'VCMNA283-285',
+    html: `
+      <h4>Solving Linear Equations</h4>
+      <p>Goal: isolate the variable by doing the <strong>same operation to both sides</strong>.</p>
+      <p><strong>Example:</strong> Solve 3x + 7 = 22<br>
+      3x = 22 − 7 = 15<br>
+      x = 15 ÷ 3 = 5</p>
+      <p><strong>Example with brackets:</strong> Solve 2(x − 3) = 10<br>
+      2x − 6 = 10 → 2x = 16 → x = 8</p>
+      <h4>Gradient-Intercept Form</h4>
+      <div class="formula">y = mx + c &nbsp;|&nbsp; m = gradient (slope) &nbsp;|&nbsp; c = y-intercept</div>
+      <h4>Plotting a Linear Graph</h4>
+      <p>For y = 2x + 1: make a table of values:</p>
+      <table><tr><th>x</th><th>−2</th><th>−1</th><th>0</th><th>1</th><th>2</th></tr>
+      <tr><td>y</td><td>−3</td><td>−1</td><td>1</td><td>3</td><td>5</td></tr></table>
+      <div class="example">
+        🎮 <strong>Levelling up in a game:</strong> You earn 50 XP per minute of gameplay. XP = 50t (where t = time in minutes). Plot this — it's a straight line going up! Gradient = 50 means you gain 50 XP every minute. Game designers use exactly this maths to balance how fast players level up. 📈
+        <br><br>🚲 <strong>Race to school:</strong> You live 2 km away and walk at 4 km/h. Distance left = −4t + 2. When does it hit zero? That's when you arrive! Solve: 0 = −4t + 2 → t = 0.5 hours = 30 minutes. 🏃
+      </div>
+      <div class="tip">💡 <strong>Positive gradient</strong> → line goes up left to right. <strong>Negative gradient</strong> → goes down. <strong>Zero gradient</strong> → horizontal line.</div>
+    `
+  }
+];
+
+const mathGeometryTopics = [
+  {
+    id: 'area',
+    icon: '▭',
+    name: 'Area & Perimeter of Shapes',
+    badge: 'VCMMG287',
+    html: `
+      <h4>Key Formulas</h4>
+      <div class="formula">
+        Rectangle: A = l × w, P = 2(l + w)<br>
+        Triangle: A = ½ × b × h<br>
+        Parallelogram: A = b × h<br>
+        Trapezium: A = ½(a + b) × h<br>
+        Rhombus/Kite: A = ½ × d₁ × d₂
+      </div>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        🏟️ <strong>MCG turf:</strong> The playing surface is roughly a rectangle ~160m × ~140m. Area ≈ 22,400 m². Groundskeepers need to know this to order fertiliser.
+        <br><br>🏠 <strong>Tiling a bathroom:</strong> Floor is a trapezium with parallel sides 3m and 4m, height 2.5m. Area = ½ × (3+4) × 2.5 = 8.75 m² → need 8.75 m² of tiles.
+        <br><br>⛽ <strong>Solar panels:</strong> A rhombus-shaped panel has diagonals 1.2m and 0.8m. Area = ½ × 1.2 × 0.8 = 0.48 m²
+      </div>
+      <div class="tip">💡 Perimeter is always the total distance AROUND the outside. Area is always the INSIDE surface measured in square units.</div>
+    `
+  },
+  {
+    id: 'circles',
+    icon: '○',
+    name: 'Circles: Circumference & Area',
+    badge: 'VCMMG288',
+    html: `
+      <h4>Key Formulas</h4>
+      <div class="formula">
+        Circumference: C = 2πr = πd<br>
+        Area: A = πr²<br>
+        where r = radius, d = diameter = 2r, π ≈ 3.14159
+      </div>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        🚲 <strong>Bicycle wheel:</strong> A 26-inch (66 cm diameter) wheel → Circumference = π × 66 ≈ 207 cm per revolution. Bike travels 207 cm with each full turn of the wheel.
+        <br><br>🍕 <strong>Pizza:</strong> 30 cm diameter pizza → radius = 15 cm → Area = π × 15² ≈ 706 cm². 12-inch pizza → 1145 cm². You get 62% more pizza!
+        <br><br>🏊 <strong>Circular pool:</strong> Radius = 4m → Area = π × 16 ≈ 50.3 m². At $8 per m² to tile → Cost ≈ $402.
+      </div>
+      <h4>Finding Unknowns</h4>
+      <p>If C = 94.2 cm, find r: r = C ÷ (2π) = 94.2 ÷ (2 × 3.14) = 15 cm</p>
+      <p>If A = 78.5 m², find r: r = √(A÷π) = √(78.5÷3.14) = √25 = 5 m</p>
+    `
+  },
+  {
+    id: 'volume',
+    icon: '□³',
+    name: 'Volume of Prisms',
+    badge: 'VCMMG289',
+    html: `
+      <h4>Key Formulas</h4>
+      <div class="formula">
+        Volume of any prism: V = Area of cross-section × length (height)<br>
+        Rectangular prism (cuboid): V = l × w × h<br>
+        Triangular prism: V = ½ × b × h × length<br>
+        Cylinder: V = πr²h
+      </div>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        🐠 <strong>Fish tank:</strong> 60 cm long, 30 cm wide, 35 cm high → V = 60 × 30 × 35 = 63,000 cm³ = 63 litres. (1 litre = 1000 cm³)
+        <br><br>🏊 <strong>Swimming pool:</strong> Olympic pool = 50m × 25m × 2m deep → V = 2,500 m³ = 2,500,000 litres of water!
+        <br><br>🍫 <strong>Toblerone box:</strong> Triangular prism. Base = 5cm, height = 4.3cm, length = 30cm → V = ½ × 5 × 4.3 × 30 = 322.5 cm³
+      </div>
+      <div class="tip">💡 Volume units: cm³ for small objects, m³ for rooms/pools. Converting: 1 m³ = 1,000,000 cm³ = 1000 litres</div>
+    `
+  },
+  {
+    id: 'pythagoras',
+    icon: 'c²',
+    name: "Pythagoras' Theorem",
+    badge: 'VCMMG',
+    html: `
+      <h4>The Theorem</h4>
+      <p>In a <strong>right-angled triangle</strong>, the square of the hypotenuse (longest side) equals the sum of the squares of the other two sides.</p>
+      <div class="formula">c² = a² + b² &nbsp;→&nbsp; c = √(a² + b²)</div>
+      <p>The <strong>hypotenuse</strong> is always opposite the right angle (90°) — it's always the longest side.</p>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        📐 <strong>Screen size:</strong> A TV is 60 cm wide and 34 cm tall. Diagonal = √(60² + 34²) = √(3600 + 1156) = √4756 ≈ 69 cm (the "69-inch" TV diagonal!)
+        <br><br>⚽ <strong>Football field:</strong> A goal kick starts at one corner. Goal is 100m down the sideline, 50m across. Distance of kick = √(100² + 50²) = √12500 ≈ 112 m
+        <br><br>🧱 <strong>Builders:</strong> Use "3-4-5 rule" — if one side = 3m, another = 4m, diagonal MUST = 5m to guarantee a right angle corner.
+      </div>
+      <h4>Finding a Shorter Side</h4>
+      <p>If c = 13, a = 5, find b:<br>
+      b² = c² − a² = 169 − 25 = 144 → b = √144 = 12</p>
+    `
+  },
+  {
+    id: 'congruence',
+    icon: '≅',
+    name: 'Congruence & Quadrilaterals',
+    badge: 'VCMMG291-293',
+    html: `
+      <h4>Congruent Shapes</h4>
+      <p>Two shapes are <strong>congruent</strong> if they are exactly the same shape and size (one can be flipped or rotated to match the other).</p>
+      <h4>Congruence Tests for Triangles</h4>
+      <table><tr><th>Test</th><th>Condition</th><th>Meaning</th></tr>
+      <tr><td>SSS</td><td>Side-Side-Side</td><td>All 3 sides equal</td></tr>
+      <tr><td>SAS</td><td>Side-Angle-Side</td><td>2 sides + included angle equal</td></tr>
+      <tr><td>AAS</td><td>Angle-Angle-Side</td><td>2 angles + one side equal</td></tr>
+      <tr><td>RHS</td><td>Right-Hypotenuse-Side</td><td>Right angle + hypotenuse + one side equal</td></tr></table>
+      <h4>Properties of Quadrilaterals</h4>
+      <table><tr><th>Shape</th><th>Key Properties</th></tr>
+      <tr><td>Square</td><td>All sides equal, all angles 90°</td></tr>
+      <tr><td>Rectangle</td><td>Opposite sides equal, all angles 90°</td></tr>
+      <tr><td>Rhombus</td><td>All sides equal, diagonals bisect at 90°</td></tr>
+      <tr><td>Parallelogram</td><td>Opposite sides parallel and equal</td></tr>
+      <tr><td>Trapezium</td><td>One pair of parallel sides</td></tr>
+      <tr><td>Kite</td><td>Two pairs of adjacent equal sides</td></tr></table>
+      <div class="example">🏗️ <strong>Engineering:</strong> Bridges use congruent triangular trusses — because triangles are rigid (unlike squares which can collapse). Engineers prove congruence to show all sections carry equal load.</div>
+    `
+  }
+];
+
+const mathStatsTopics = [
+  {
+    id: 'probability',
+    icon: '🎲',
+    name: 'Chance & Probability',
+    badge: 'VCMSP294-296',
+    html: `
+      <h4>Probability Basics</h4>
+      <div class="formula">P(event) = number of favourable outcomes ÷ total possible outcomes</div>
+      <p>Probability is always between 0 (impossible) and 1 (certain). Percentages are also used (0% to 100%).</p>
+      <h4>Complementary Events</h4>
+      <div class="formula">P(not A) = 1 − P(A)</div>
+      <p><strong>Example:</strong> If P(rain tomorrow) = 0.3, then P(no rain) = 1 − 0.3 = 0.7</p>
+      <h4>Venn Diagrams & Two-Way Tables</h4>
+      <p>Used to show events and their relationships. "AND" = intersection. "OR" = union.</p>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        🎮 <strong>Video game loot box:</strong> 40 items in box: 5 legendary (rare), 15 rare, 20 common. P(legendary) = 5/40 = 0.125 = 12.5%
+        <br><br>⚽ <strong>Penalty shootout:</strong> A goalkeeper saves 30% of penalties. P(saving) = 0.3, P(goal scored) = 0.7. In 5 kicks: expected saves = 5 × 0.3 = 1.5 saves.
+        <br><br>🎰 <strong>Lotto:</strong> Powerball — P(jackpot) ≈ 1 in 134 million. This is why "expected value" matters more than lottery dreams!
+      </div>
+      <div class="tip">💡 "At least one" problems: P(at least one) = 1 − P(none at all)</div>
+    `
+  },
+  {
+    id: 'data',
+    icon: '📊',
+    name: 'Data Collection & Sampling',
+    badge: 'VCMSP297-299',
+    html: `
+      <h4>Key Terms</h4>
+      <table><tr><th>Term</th><th>Definition</th></tr>
+      <tr><td>Population</td><td>The entire group being studied</td></tr>
+      <tr><td>Sample</td><td>A subset of the population used for investigation</td></tr>
+      <tr><td>Census</td><td>Collecting data from EVERY member of the population</td></tr>
+      <tr><td>Sampling</td><td>Collecting data from a selected portion</td></tr>
+      <tr><td>Random sample</td><td>Every member has equal chance of being chosen</td></tr>
+      <tr><td>Bias</td><td>When a sample doesn't fairly represent the population</td></tr></table>
+      <h4>Measures of Centre</h4>
+      <div class="formula">
+        Mean = sum of all values ÷ number of values<br>
+        Median = middle value when data is ordered<br>
+        Mode = most frequent value<br>
+        Range = maximum − minimum
+      </div>
+      <h4>Real-World Examples</h4>
+      <div class="example">
+        📺 <strong>TV ratings:</strong> The ABS surveys ~55,000 homes to represent 10 million Australian households — this is a sample. A census would be too expensive.
+        <br><br>🧪 <strong>Drug testing:</strong> Clinical trials use a sample of 1,000 patients from a population of millions. Researchers control for bias using randomisation.
+        <br><br>📱 <strong>App ratings:</strong> An app has 5,000 ratings but 50 million users. The ratings might be biased — only the most passionate users bother reviewing.
+      </div>
+    `
+  }
+];
+
+// ============================================================
+// SCIENCE TOPICS
+// ============================================================
+const sciBioTopics = [
+  {
+    id: 'cells',
+    icon: '🔬',
+    name: 'Cells: Structure & Function',
+    badge: 'VCSSU092',
+    sci: true,
+    html: `
+      <h4>What is a Cell?</h4>
+      <p>The cell is the <strong>basic unit of life</strong>. All living things are made of cells — some are single-celled (bacteria), others have trillions of cells (humans have ~37 trillion!).</p>
+      <h4>Cell Structures</h4>
+      <table><tr><th>Structure</th><th>Found In</th><th>Function</th></tr>
+      <tr><td>Cell membrane</td><td>All cells</td><td>Controls what enters/exits the cell</td></tr>
+      <tr><td>Nucleus</td><td>All cells (except bacteria)</td><td>Control centre; contains DNA</td></tr>
+      <tr><td>Cytoplasm</td><td>All cells</td><td>Jelly-like fluid holding organelles</td></tr>
+      <tr><td>Mitochondria</td><td>All cells</td><td>Energy production ("powerhouse")</td></tr>
+      <tr><td>Cell wall</td><td>Plant, fungi, bacteria</td><td>Rigid outer layer for support</td></tr>
+      <tr><td>Chloroplasts</td><td>Plant cells only</td><td>Photosynthesis — makes food from sunlight</td></tr>
+      <tr><td>Vacuole</td><td>Plant cells (large), animal cells (small)</td><td>Storage of water/nutrients</td></tr></table>
+      <h4>Real-World Examples</h4>
+      <div class="example sci">
+        🩸 <strong>Red blood cells:</strong> These are specialised — they have no nucleus so they can carry maximum haemoglobin to transport oxygen. Shape is biconcave disc (like a donut) to maximise surface area.
+        <br><br>🌿 <strong>Leaf cells:</strong> Packed with chloroplasts (up to 50 per cell!) to absorb maximum sunlight for photosynthesis. Australian gum trees have waxy cells to reduce water loss in hot weather.
+      </div>
+      <div class="tip">💡 Plant cells have: cell WALL, CHLOROPLASTS, large VACUOLE. Animal cells do NOT have any of these three.</div>
+    `
+  },
+  {
+    id: 'classification',
+    icon: '🌳',
+    name: 'Classification of Living Things',
+    badge: 'VCSSU091',
+    sci: true,
+    html: `
+      <h4>The Classification System</h4>
+      <p>Scientists classify organisms using a hierarchical system (from broadest to most specific):</p>
+      <div class="formula">Kingdom → Phylum → Class → Order → Family → Genus → Species</div>
+      <p><strong>Memory trick:</strong> "King Philip Came Over For Good Spaghetti"</p>
+      <h4>The 5 Kingdoms</h4>
+      <table><tr><th>Kingdom</th><th>Examples</th><th>Features</th></tr>
+      <tr><td>Animalia</td><td>Humans, kangaroos, fish</td><td>Multicellular, no cell wall, eat food</td></tr>
+      <tr><td>Plantae</td><td>Grass, trees, ferns</td><td>Multicellular, cell wall, photosynthesise</td></tr>
+      <tr><td>Fungi</td><td>Mushrooms, yeast, mould</td><td>Absorb food, cell wall (not cellulose)</td></tr>
+      <tr><td>Protista</td><td>Amoeba, algae</td><td>Mostly single-celled</td></tr>
+      <tr><td>Monera (Bacteria)</td><td>E. coli, Streptococcus</td><td>No nucleus, single-celled</td></tr></table>
+      <h4>Real-World Examples</h4>
+      <div class="example sci">
+        🦘 <strong>Kangaroo:</strong> Kingdom: Animalia → Phylum: Chordata → Class: Mammalia → Order: Diprotodontia → Family: Macropodidae → Genus: Macropus → Species: giganteus (Eastern Grey Kangaroo)
+        <br><br>🧫 <strong>COVID-19:</strong> Viruses aren't in any kingdom! They're not considered "alive" because they can't reproduce on their own.
+      </div>
+    `
+  },
+  {
+    id: 'body-systems',
+    icon: '🫀',
+    name: 'Body Systems',
+    badge: 'VCSSU094',
+    sci: true,
+    html: `
+      <h4>Major Body Systems</h4>
+      <table><tr><th>System</th><th>Organs</th><th>Function</th></tr>
+      <tr><td>Digestive</td><td>Mouth, oesophagus, stomach, small/large intestine</td><td>Break down food, absorb nutrients</td></tr>
+      <tr><td>Circulatory</td><td>Heart, arteries, veins, capillaries, blood</td><td>Transport oxygen, nutrients, waste</td></tr>
+      <tr><td>Respiratory</td><td>Nose, trachea, bronchi, lungs, diaphragm</td><td>Gas exchange — O₂ in, CO₂ out</td></tr>
+      <tr><td>Skeletal</td><td>206 bones, cartilage, joints</td><td>Support, protection, movement</td></tr>
+      <tr><td>Muscular</td><td>600+ muscles</td><td>Movement, posture, heat production</td></tr>
+      <tr><td>Nervous</td><td>Brain, spinal cord, nerves</td><td>Control centre, communication</td></tr>
+      <tr><td>Excretory</td><td>Kidneys, liver, skin, lungs</td><td>Remove waste from the body</td></tr></table>
+      <h4>Real-World Examples</h4>
+      <div class="example sci">
+        🏃 <strong>Exercise:</strong> When you sprint, your muscular system (muscles contract) uses the circulatory system (heart pumps faster, delivering more O₂ via blood), respiratory system (breathing rate doubles), and excretory system (sweat removes heat).
+        <br><br>🫁 <strong>Asthma:</strong> The airways (bronchi/bronchioles) narrow during an attack → less air reaches alveoli → less O₂ in blood. Ventolin puffer relaxes the muscles around airways.
+      </div>
+    `
+  },
+  {
+    id: 'food-webs',
+    icon: '🌐',
+    name: 'Food Chains & Food Webs',
+    badge: 'VCSSU093',
+    sci: true,
+    html: `
+      <h4>Key Terms</h4>
+      <table><tr><th>Term</th><th>Definition</th><th>Example</th></tr>
+      <tr><td>Producer</td><td>Makes own food via photosynthesis</td><td>Grass, algae, eucalyptus</td></tr>
+      <tr><td>Consumer</td><td>Eats other organisms</td><td>Kangaroo, kookaburra</td></tr>
+      <tr><td>Herbivore</td><td>Eats only plants</td><td>Rabbit, caterpillar</td></tr>
+      <tr><td>Carnivore</td><td>Eats only animals</td><td>Eagle, shark</td></tr>
+      <tr><td>Omnivore</td><td>Eats plants AND animals</td><td>Humans, quolls</td></tr>
+      <tr><td>Decomposer</td><td>Breaks down dead matter</td><td>Bacteria, fungi, worms</td></tr>
+      <tr><td>Apex predator</td><td>Top of food chain, no predators</td><td>Great White Shark, Saltwater Croc</td></tr></table>
+      <h4>Australian Food Web Example</h4>
+      <div class="example sci">
+        🌿 Grass → 🦗 Grasshopper → 🐸 Frog → 🐍 Snake → 🦅 Wedge-tailed Eagle
+        <br><br>🌿 Eucalyptus → 🐨 Koala → 🦅 Wedge-tailed Eagle
+        <br><br><strong>If grasshoppers were wiped out by pesticides:</strong> Frogs would decrease (less food) → snakes would decrease → eagles would decrease. But insects that compete with grasshoppers might increase.
+      </div>
+      <div class="tip">💡 In a food web, arrows show the direction of ENERGY flow — always from eaten → eater.</div>
+    `
+  }
+];
+
+const sciChemTopics = [
+  {
+    id: 'particles',
+    icon: '⚛️',
+    name: 'Particle Theory & States of Matter',
+    badge: 'VCSSU096',
+    sci: true,
+    html: `
+      <h4>The Particle Model</h4>
+      <p>All matter is made of tiny particles. The arrangement and movement of these particles explains the <strong>three states of matter</strong>.</p>
+      <table><tr><th>State</th><th>Particle Arrangement</th><th>Movement</th><th>Shape/Volume</th></tr>
+      <tr><td>Solid</td><td>Tightly packed, regular pattern</td><td>Vibrate in fixed positions</td><td>Fixed shape, fixed volume</td></tr>
+      <tr><td>Liquid</td><td>Close together, irregular</td><td>Move around each other</td><td>No fixed shape, fixed volume</td></tr>
+      <tr><td>Gas</td><td>Far apart, random</td><td>Move rapidly in all directions</td><td>No fixed shape or volume</td></tr></table>
+      <h4>Changes of State</h4>
+      <div class="formula">Solid ⇄ Liquid: Melting (heating) / Freezing (cooling)<br>Liquid ⇄ Gas: Evaporation/Boiling (heating) / Condensation (cooling)<br>Solid → Gas: Sublimation (e.g. dry ice)</div>
+      <h4>Real-World Examples</h4>
+      <div class="example sci">
+        🍦 <strong>Ice cream melting:</strong> As temperature rises, ice cream particles gain energy → move faster → solid becomes liquid. Adding salt to ice on roads: salt lowers freezing point, keeping water liquid at temperatures below 0°C.
+        <br><br>☁️ <strong>Clouds:</strong> Water evaporates from oceans (liquid→gas) → rises, cools → condenses into tiny droplets (gas→liquid) = clouds → falls as rain.
+      </div>
+    `
+  },
+  {
+    id: 'mixtures',
+    icon: '🧪',
+    name: 'Mixtures & Separation Techniques',
+    badge: 'VCSSU097',
+    sci: true,
+    html: `
+      <h4>Types of Mixtures</h4>
+      <table><tr><th>Type</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Solution</td><td>Solute dissolved in solvent, clear</td><td>Salt water, cordial</td></tr>
+      <tr><td>Suspension</td><td>Particles float temporarily</td><td>Muddy water, orange juice</td></tr>
+      <tr><td>Colloid</td><td>Particles dispersed, don't settle</td><td>Milk, fog, mayonnaise</td></tr></table>
+      <h4>Separation Techniques</h4>
+      <table><tr><th>Technique</th><th>Separates</th><th>Example</th></tr>
+      <tr><td>Filtration</td><td>Solid from liquid</td><td>Muddy water through filter paper</td></tr>
+      <tr><td>Evaporation</td><td>Dissolved solid from liquid</td><td>Getting salt from seawater</td></tr>
+      <tr><td>Distillation</td><td>Liquids with different boiling points</td><td>Making pure water from salt water</td></tr>
+      <tr><td>Chromatography</td><td>Mixtures of coloured compounds</td><td>Separating ink dyes</td></tr>
+      <tr><td>Magnetic separation</td><td>Magnetic material from non-magnetic</td><td>Iron filings from sand</td></tr>
+      <tr><td>Sieving</td><td>Different sized solids</td><td>Gravel from sand</td></tr></table>
+      <div class="example sci">
+        🏭 <strong>Desalination plants:</strong> Australia has desalination plants (e.g. Melbourne's Wonthaggi plant) using distillation and membrane filtration to turn seawater into drinking water. Removes salt, bacteria and chemicals.
+      </div>
+    `
+  },
+  {
+    id: 'chemical-change',
+    icon: '🔥',
+    name: 'Chemical Change vs Physical Change',
+    badge: 'VCSSU098',
+    sci: true,
+    html: `
+      <h4>Physical Change</h4>
+      <p>A physical change changes the <strong>form or shape</strong> of matter but <strong>not its chemical composition</strong>. It's usually reversible.</p>
+      <p>Examples: ice melting, paper tearing, dissolving sugar in water, bending a metal rod.</p>
+      <h4>Chemical Change</h4>
+      <p>A chemical change produces <strong>new substances</strong> with different properties. Usually irreversible.</p>
+      <h4>Evidence of Chemical Change</h4>
+      <table><tr><th>Sign</th><th>Example</th></tr>
+      <tr><td>Colour change</td><td>Iron rusting (grey → orange)</td></tr>
+      <tr><td>Gas production (bubbles)</td><td>Vinegar + bicarb soda → CO₂</td></tr>
+      <tr><td>Heat/light produced</td><td>Wood burning → heat + light</td></tr>
+      <tr><td>Precipitate forms</td><td>Cloudy solid appears in clear solution</td></tr>
+      <tr><td>Smell change</td><td>Bread baking → new smell</td></tr></table>
+      <div class="example sci">
+        🥩 <strong>Cooking a steak:</strong> Raw steak (pink, soft) → cooked steak (brown, firm). Chemical change — proteins denature (change shape), Maillard reaction creates new flavour molecules. You can't "un-cook" a steak!
+        <br><br>🦺 <strong>Car rust:</strong> Iron + oxygen + water → iron oxide (rust). 4Fe + 3O₂ → 2Fe₂O₃. Australia spends $32 billion a year fighting corrosion.
+      </div>
+    `
+  }
+];
+
+const sciEarthTopics = [
+  {
+    id: 'seasons',
+    icon: '🌍',
+    name: 'Seasons, Eclipses & Earth-Sun-Moon',
+    badge: 'VCSSU099',
+    sci: true,
+    html: `
+      <h4>Seasons</h4>
+      <p>Seasons occur because Earth is <strong>tilted at 23.5°</strong> on its axis as it orbits the Sun. NOT because of distance from the Sun.</p>
+      <table><tr><th>Season</th><th>Australia</th><th>What happens</th></tr>
+      <tr><td>Summer (Dec-Feb)</td><td>Southern hemisphere tilted toward Sun</td><td>More direct sunlight, longer days</td></tr>
+      <tr><td>Winter (Jun-Aug)</td><td>Southern hemisphere tilted away from Sun</td><td>Less direct sunlight, shorter days</td></tr></table>
+      <h4>Eclipses</h4>
+      <table><tr><th>Type</th><th>What happens</th><th>When</th></tr>
+      <tr><td>Solar eclipse</td><td>Moon passes between Earth and Sun</td><td>New Moon phase</td></tr>
+      <tr><td>Lunar eclipse</td><td>Earth's shadow falls on Moon</td><td>Full Moon phase</td></tr></table>
+      <h4>Real-World Example</h4>
+      <div class="example sci">
+        🇦🇺 <strong>Australia's climate:</strong> Melbourne gets just 8.5 hours of daylight in winter (June) vs 14.5 hours in summer (December). The angle of sunlight is also lower in winter, spreading heat over a larger area — so it feels cooler.
+        <br><br>🔭 <strong>Total solar eclipse 2028:</strong> A total solar eclipse will cross Australia in 2028 — the Moon will completely cover the Sun over Sydney for about 3 minutes.
+      </div>
+    `
+  },
+  {
+    id: 'rocks',
+    icon: '🪨',
+    name: 'Rock Types & Formation',
+    badge: 'VCSSU102',
+    sci: true,
+    html: `
+      <h4>Three Rock Types</h4>
+      <table><tr><th>Type</th><th>How Formed</th><th>Examples</th></tr>
+      <tr><td>Igneous</td><td>Magma/lava cools and solidifies</td><td>Granite, basalt, obsidian</td></tr>
+      <tr><td>Sedimentary</td><td>Layers of sediment compressed over time</td><td>Sandstone, limestone, coal</td></tr>
+      <tr><td>Metamorphic</td><td>Existing rock changed by heat/pressure</td><td>Marble (from limestone), slate</td></tr></table>
+      <h4>The Rock Cycle</h4>
+      <div class="formula">Magma → cools → Igneous rock → weathering/erosion → sediment → compaction → Sedimentary rock → heat/pressure → Metamorphic rock → melting → Magma</div>
+      <h4>Real-World Examples</h4>
+      <div class="example sci">
+        🏔️ <strong>Blue Mountains NSW:</strong> Formed from sandstone (sedimentary rock) deposited 250 million years ago when the area was a shallow sea. Rivers carved the valleys over millions of years.
+        <br><br>🌋 <strong>Victoria's basalt plains:</strong> Western Vic (Ballarat to Portland) is covered in basalt — solidified lava from volcanic eruptions 30,000 years ago. The soil is very fertile.
+      </div>
+    `
+  },
+  {
+    id: 'water-cycle',
+    icon: '💧',
+    name: 'Water Cycle & Resources',
+    badge: 'VCSSU100-101',
+    sci: true,
+    html: `
+      <h4>The Water Cycle Steps</h4>
+      <table><tr><th>Step</th><th>Process</th><th>Change of State</th></tr>
+      <tr><td>Evaporation</td><td>Water from oceans/lakes turns to vapour</td><td>Liquid → Gas</td></tr>
+      <tr><td>Condensation</td><td>Water vapour cools and forms clouds</td><td>Gas → Liquid</td></tr>
+      <tr><td>Precipitation</td><td>Water falls as rain, snow, hail</td><td>Gas/Liquid → Liquid/Solid</td></tr>
+      <tr><td>Runoff/Infiltration</td><td>Water flows into rivers or soaks into ground</td><td>No change</td></tr>
+      <tr><td>Transpiration</td><td>Plants release water vapour through leaves</td><td>Liquid → Gas</td></tr></table>
+      <h4>Renewable vs Non-Renewable Resources</h4>
+      <table><tr><th>Renewable</th><th>Non-Renewable</th></tr>
+      <tr><td>Solar, wind, water (hydro), biomass, geothermal</td><td>Coal, oil, natural gas, uranium</td></tr>
+      <tr><td>Replenishes naturally within human timescales</td><td>Takes millions of years to form</td></tr></table>
+      <div class="example sci">
+        🌊 <strong>Murray-Darling Basin:</strong> Australia's largest river system. Over-extraction for farming has reduced water flow — the river sometimes doesn't reach the sea! This shows human impact on the water cycle.
+      </div>
+    `
+  }
+];
+
+const sciPhysTopics = [
+  {
+    id: 'forces',
+    icon: '⚡',
+    name: 'Forces & Motion',
+    badge: 'VCSSU103',
+    sci: true,
+    html: `
+      <h4>What is a Force?</h4>
+      <p>A force is a push or pull. Forces can change an object's speed, direction, or shape. Measured in <strong>Newtons (N)</strong>.</p>
+      <h4>Balanced vs Unbalanced Forces</h4>
+      <table><tr><th>Type</th><th>Effect</th><th>Example</th></tr>
+      <tr><td>Balanced forces</td><td>No change in motion (constant speed or stationary)</td><td>Book sitting on table</td></tr>
+      <tr><td>Unbalanced forces</td><td>Object accelerates or changes direction</td><td>Kicking a football</td></tr></table>
+      <h4>Types of Forces</h4>
+      <ul>
+        <li><strong>Gravity:</strong> Pulls objects toward Earth's centre (g ≈ 9.8 N/kg)</li>
+        <li><strong>Friction:</strong> Opposes motion between surfaces</li>
+        <li><strong>Normal force:</strong> Surface pushes back on object</li>
+        <li><strong>Tension:</strong> Force through strings/cables</li>
+        <li><strong>Buoyancy:</strong> Upward force on objects in fluid</li>
+      </ul>
+      <div class="formula">Weight = mass × gravity &nbsp;|&nbsp; W = m × g &nbsp;|&nbsp; W = m × 9.8</div>
+      <h4>Simple Machines</h4>
+      <table><tr><th>Machine</th><th>How it helps</th><th>Example</th></tr>
+      <tr><td>Lever</td><td>Multiplies force</td><td>Seesaw, bottle opener</td></tr>
+      <tr><td>Pulley</td><td>Changes direction of force, can multiply force</td><td>Flagpole, crane</td></tr>
+      <tr><td>Inclined plane</td><td>Reduces force needed to lift</td><td>Ramp, screw</td></tr>
+      <tr><td>Wheel & axle</td><td>Multiplies force or speed</td><td>Doorknob, bicycle wheel</td></tr></table>
+      <div class="example sci">
+        🛹 <strong>Skateboarding:</strong> Pushing off → unbalanced force forward. Friction from ground → slows you down. On a ramp, gravity (downward force) has a component along the slope → accelerates you.
+        <br><br>🏋️ <strong>Weightlifting:</strong> A 100 kg barbell. Weight = 100 × 9.8 = 980 N. The lifter must exert at least 980 N upward to lift it.
+      </div>
+    `
+  },
+  {
+    id: 'energy',
+    icon: '⚡',
+    name: 'Energy Forms & Transformations',
+    badge: 'VCSSU104',
+    sci: true,
+    html: `
+      <h4>Types of Energy</h4>
+      <table><tr><th>Energy Type</th><th>Description</th><th>Example</th></tr>
+      <tr><td>Kinetic</td><td>Energy of motion</td><td>Moving car, spinning wheel</td></tr>
+      <tr><td>Potential (Gravitational)</td><td>Stored energy due to height</td><td>Ball on a cliff, water in dam</td></tr>
+      <tr><td>Elastic Potential</td><td>Stored in stretched/compressed objects</td><td>Spring, stretched rubber band</td></tr>
+      <tr><td>Chemical</td><td>Stored in bonds between atoms</td><td>Food, batteries, petrol</td></tr>
+      <tr><td>Thermal (Heat)</td><td>Energy due to particle movement</td><td>Hot coffee, electric heater</td></tr>
+      <tr><td>Light (Radiant)</td><td>Energy from electromagnetic waves</td><td>Sunlight, torch, fire</td></tr>
+      <tr><td>Sound</td><td>Vibrations through matter</td><td>Music, speech, thunder</td></tr>
+      <tr><td>Electrical</td><td>Energy from moving charges</td><td>Lightning, power lines</td></tr>
+      <tr><td>Nuclear</td><td>Energy from atomic nuclei</td><td>Nuclear power plants, Sun</td></tr></table>
+      <h4>Energy Transformations</h4>
+      <div class="example sci">
+        💡 <strong>Phone charging:</strong> Electrical energy (from power point) → Chemical energy (stored in battery) → Electrical energy → Light + sound when using phone
+        <br><br>🚗 <strong>Electric car:</strong> Chemical energy (battery) → Electrical energy → Kinetic energy → (braking) → Electrical energy (regenerative braking back to battery)
+        <br><br>🏄 <strong>Snowy Hydro:</strong> Gravitational PE of water → Kinetic energy (rushing water) → Electrical energy (turbine/generator) → Heats your home
+      </div>
+      <div class="tip">💡 <strong>Law of Conservation of Energy:</strong> Energy cannot be created or destroyed, only transformed from one form to another. Total energy always stays the same.</div>
+    `
+  }
+];
+
+// ============================================================
+// QUIZ DATA
+// ============================================================
+const allQuestions = [
+  // MATH QUESTIONS
+  {subj:'math',q:'What is 3⁴ × 3² simplified?',opts:['3⁸','3⁶','3²','9⁶'],ans:1,exp:'Same base → add indices: 4 + 2 = 6. So 3⁴ × 3² = 3⁶ = 729.'},
+  {subj:'math',q:'What is any number raised to the power of zero?',opts:['0','The number itself','1','Undefined'],ans:2,exp:'Any non-zero number raised to the power 0 = 1. e.g. 7⁰ = 1, 100⁰ = 1.'},
+  {subj:'math',q:'Simplify (2⁵) ÷ (2³)',opts:['2²','2⁸','2¹⁵','4²'],ans:0,exp:'Same base, dividing → subtract indices: 5 − 3 = 2. Answer = 2² = 4.'},
+  {subj:'math',q:'What is (−4) × (−7)?',opts:['−28','28','−11','11'],ans:1,exp:'Negative × Negative = Positive. 4 × 7 = 28, so (−4) × (−7) = +28.'},
+  {subj:'math',q:'A jacket costs $120 and is on sale for 25% off. What is the sale price?',opts:['$90','$95','$85','$100'],ans:0,exp:'25% of $120 = $30 discount. Sale price = $120 − $30 = $90.'},
+  {subj:'math',q:'Melbourne temperature was −5°C at 6am and 19°C at 2pm. What was the temperature rise?',opts:['14°C','24°C','19°C','14°C'],ans:1,exp:'Change = 19 − (−5) = 19 + 5 = 24°C rise.'},
+  {subj:'math',q:'What is ⅓ as a decimal?',opts:['0.3','0.333...','0.13','0.34'],ans:1,exp:'1 ÷ 3 = 0.333... (recurring). The dot over 3 means it repeats forever.'},
+  {subj:'math',q:'π is an example of what type of number?',opts:['Integer','Rational','Irrational','Natural'],ans:2,exp:'π = 3.14159... goes on forever without repeating → irrational. It cannot be written as a fraction.'},
+  {subj:'math',q:'Expand: 4(3x − 2)',opts:['12x − 8','12x − 2','7x − 2','12x + 8'],ans:0,exp:'Distribute: 4 × 3x = 12x, 4 × (−2) = −8. Answer: 12x − 8.'},
+  {subj:'math',q:'Factorise: 15x + 10',opts:['5(3x + 2)','5(3x + 10)','15(x + 10)','10(x + 5)'],ans:0,exp:'HCF of 15 and 10 is 5. Take out 5: 5(3x + 2). Check: 5×3x + 5×2 = 15x + 10 ✓'},
+  {subj:'math',q:'Solve: 2x + 6 = 18',opts:['x = 6','x = 12','x = 3','x = 9'],ans:0,exp:'2x = 18 − 6 = 12. x = 12 ÷ 2 = 6.'},
+  {subj:'math',q:'A car travels 240 km in 3 hours. What is its speed?',opts:['80 km/h','72 km/h','90 km/h','60 km/h'],ans:0,exp:'Speed = Distance ÷ Time = 240 ÷ 3 = 80 km/h.'},
+  {subj:'math',q:'A circle has diameter 14 cm. What is its circumference? (Use π ≈ 3.14)',opts:['43.96 cm','87.92 cm','21.98 cm','153.94 cm'],ans:0,exp:'C = πd = 3.14 × 14 = 43.96 cm.'},
+  {subj:'math',q:'What is the area of a circle with radius 5 cm? (Use π ≈ 3.14)',opts:['31.4 cm²','78.5 cm²','15.7 cm²','157 cm²'],ans:1,exp:'A = πr² = 3.14 × 5² = 3.14 × 25 = 78.5 cm².'},
+  {subj:'math',q:'A right triangle has legs of 6 cm and 8 cm. What is the hypotenuse?',opts:['10 cm','14 cm','12 cm','7 cm'],ans:0,exp:'c² = 6² + 8² = 36 + 64 = 100. c = √100 = 10 cm. (This is a 3-4-5 triple scaled by 2!)'},
+  {subj:'math',q:'What is the volume of a rectangular prism 5m × 4m × 3m?',opts:['60 m³','47 m³','20 m³','12 m³'],ans:0,exp:'V = l × w × h = 5 × 4 × 3 = 60 m³.'},
+  {subj:'math',q:'If P(rain) = 0.35, what is P(no rain)?',opts:['0.65','0.35','0.75','0.25'],ans:0,exp:'P(not rain) = 1 − P(rain) = 1 − 0.35 = 0.65 (complementary events always add to 1).'},
+  {subj:'math',q:'Which of these is NOT a congruence condition for triangles?',opts:['SSS','SAS','AAA','AAS'],ans:2,exp:'AAA (Angle-Angle-Angle) proves SIMILARITY (same shape) but not congruence (same size). You need at least one side.'},
+  {subj:'math',q:'A rectangle has area 48 m² and width 6 m. What is its length?',opts:['8 m','42 m','4 m','12 m'],ans:0,exp:'A = l × w → l = A ÷ w = 48 ÷ 6 = 8 m.'},
+  {subj:'math',q:'Which of these decimals is terminating?',opts:['⅓ = 0.333...','⅙ = 0.1666...','¼ = 0.25','⅑ = 0.111...'],ans:2,exp:'¼ = 0.25 — it ends after 2 decimal places. All the others are recurring (they go on forever).'},
+  {subj:'math',q:'Simplify: 5x + 3y − 2x + 4y',opts:['3x + 7y','7x + 7y','3x + y','10xy'],ans:0,exp:'Collect like terms: (5x − 2x) + (3y + 4y) = 3x + 7y.'},
+  {subj:'math',q:'A TV has a 60cm wide, 34cm tall screen. What is the diagonal? (Use Pythagoras)',opts:['~69 cm','~94 cm','~45 cm','~52 cm'],ans:0,exp:'c = √(60² + 34²) = √(3600 + 1156) = √4756 ≈ 69 cm.'},
+  {subj:'math',q:'What type of number is √9?',opts:['Irrational','Rational','Imaginary','Undefined'],ans:1,exp:'√9 = 3, which is a whole number (rational). Only square roots of non-perfect squares are irrational.'},
+  {subj:'math',q:'In a class of 30 students, 18 play sport. A student is chosen at random. What is P(plays sport)?',opts:['0.5','0.6','0.4','0.18'],ans:1,exp:'P = 18/30 = 3/5 = 0.6 = 60%.'},
+  {subj:'math',q:'A triangle has base 10 cm and height 8 cm. What is its area?',opts:['40 cm²','80 cm²','18 cm²','20 cm²'],ans:0,exp:'A = ½ × base × height = ½ × 10 × 8 = 40 cm².'},
+  {subj:'math',q:'The gradient of y = −3x + 5 is:',opts:['−3','5','3','−5'],ans:0,exp:'In y = mx + c, m is the gradient and c is the y-intercept. Here m = −3, c = 5.'},
+  {subj:'math',q:'What percentage profit is made if a bike is bought for $200 and sold for $250?',opts:['25%','50%','20%','30%'],ans:0,exp:'Profit = $250 − $200 = $50. % Profit = 50/200 × 100 = 25%.'},
+  {subj:'math',q:'A drink recipe uses orange juice and water in ratio 2:5. How much orange juice is needed for 700mL total?',opts:['200 mL','350 mL','100 mL','280 mL'],ans:0,exp:'Total parts = 2 + 5 = 7. OJ part = 2/7 × 700 = 200 mL.'},
+  {subj:'math',q:'What is the y-intercept of y = 4x − 3?',opts:['4','−3','3','0'],ans:1,exp:'In y = mx + c, c is the y-intercept (where the line crosses the y-axis). Here c = −3.'},
+  {subj:'math',q:'In a survey of 200 people, 120 prefer chocolate ice cream. A person is selected at random. P(chooses chocolate)?',opts:['0.6','0.4','0.12','0.8'],ans:0,exp:'P = 120/200 = 0.6 = 60%.'},
+
+  // SCIENCE QUESTIONS
+  {subj:'sci',q:'Which organelle is known as the "powerhouse of the cell"?',opts:['Nucleus','Ribosome','Mitochondria','Chloroplast'],ans:2,exp:'Mitochondria produce ATP (energy) through cellular respiration. Without them, cells couldn\'t function.'},
+  {subj:'sci',q:'Which of the following is found in plant cells BUT NOT in animal cells?',opts:['Nucleus','Mitochondria','Cell membrane','Cell wall'],ans:3,exp:'Plant cells have a cell wall (made of cellulose), chloroplasts, and a large vacuole. Animal cells have none of these.'},
+  {subj:'sci',q:'A kangaroo belongs to which Kingdom?',opts:['Plantae','Fungi','Animalia','Protista'],ans:2,exp:'Kangaroos are multicellular, cannot make their own food, and have no cell wall → Kingdom Animalia.'},
+  {subj:'sci',q:'In which state of matter are particles far apart and moving rapidly?',opts:['Solid','Liquid','Gas','Plasma'],ans:2,exp:'In a gas, particles are far apart, have the most energy, and move rapidly in random directions.'},
+  {subj:'sci',q:'Which separation technique would you use to separate sand from water?',opts:['Distillation','Chromatography','Filtration','Evaporation'],ans:2,exp:'Filtration uses a filter (like filter paper) to separate an insoluble solid (sand) from a liquid (water).'},
+  {subj:'sci',q:'Cooking an egg is an example of:',opts:['Physical change','Chemical change','Mixture','Filtration'],ans:1,exp:'Cooking an egg is a chemical change — the proteins permanently change structure (denature). You cannot "un-cook" an egg.'},
+  {subj:'sci',q:'What causes seasons on Earth?',opts:['Distance from the Sun','Earth\'s tilt on its axis','The Moon\'s gravity','Solar flares'],ans:1,exp:'Seasons are caused by Earth\'s 23.5° tilt. When your hemisphere tilts toward the Sun, it\'s summer; tilting away = winter.'},
+  {subj:'sci',q:'In a food chain: Grass → Grasshopper → Frog → Snake. Which is the producer?',opts:['Grasshopper','Frog','Snake','Grass'],ans:3,exp:'Producers make their own food via photosynthesis. Grass is the producer — it doesn\'t eat other organisms.'},
+  {subj:'sci',q:'What type of rock is formed when magma or lava cools and solidifies?',opts:['Sedimentary','Metamorphic','Igneous','Fossil'],ans:2,exp:'Igneous rock forms from cooling magma (underground) or lava (above ground). Examples: granite, basalt, obsidian.'},
+  {subj:'sci',q:'A 50 kg student stands on the ground. What is their weight? (g = 9.8 N/kg)',opts:['50 N','490 N','9.8 N','500 N'],ans:1,exp:'Weight = mass × gravity = 50 × 9.8 = 490 N. Note: mass (kg) and weight (N) are different!'},
+  {subj:'sci',q:'Which type of energy does a stretched rubber band have?',opts:['Kinetic energy','Thermal energy','Elastic potential energy','Chemical energy'],ans:2,exp:'A stretched rubber band has elastic potential energy — energy stored in stretched or compressed objects.'},
+  {subj:'sci',q:'Water evaporating from a lake is which step in the water cycle?',opts:['Condensation','Precipitation','Evaporation','Transpiration'],ans:2,exp:'Evaporation is when liquid water changes to water vapour (gas) due to heat. It\'s the start of the water cycle.'},
+  {subj:'sci',q:'Which of these is a RENEWABLE energy source?',opts:['Coal','Natural gas','Solar power','Uranium'],ans:2,exp:'Solar power is renewable — it replenishes naturally every day. Coal, natural gas and uranium are non-renewable.'},
+  {subj:'sci',q:'Red blood cells have no nucleus. Why?',opts:['They don\'t need to reproduce','To carry maximum haemoglobin for oxygen transport','They are too small','They are not living cells'],ans:1,exp:'Red blood cells sacrifice their nucleus to maximise haemoglobin content — more haemoglobin = more oxygen carried to body cells.'},
+  {subj:'sci',q:'What is produced when vinegar reacts with bicarb soda?',opts:['Oxygen gas','Hydrogen gas','Carbon dioxide gas','Nitrogen gas'],ans:2,exp:'Vinegar (acetic acid) + sodium bicarbonate → CO₂ gas (bubbles), water, and sodium acetate. A classic chemical change!'},
+  {subj:'sci',q:'A solar eclipse occurs when:',opts:['Earth is between the Sun and Moon','Moon is between Earth and the Sun','Sun is between Earth and Moon','Moon is full'],ans:1,exp:'Solar eclipse: Moon passes between Earth and the Sun, blocking sunlight from reaching Earth. Occurs at New Moon.'},
+  {subj:'sci',q:'Which kingdom does yeast belong to?',opts:['Animalia','Plantae','Fungi','Bacteria'],ans:2,exp:'Yeast is a fungus — single-celled, with a cell wall, and it absorbs nutrients from its environment (doesn\'t photosynthesise).'},
+  {subj:'sci',q:'An arrow in a food chain shows:',opts:['Where animals live','The direction of energy flow','Who eats who in reverse','Population size'],ans:1,exp:'Arrows show the flow of energy: from what is being eaten → to who is eating it. Grass → Rabbit means energy flows from grass to rabbit.'},
+  {subj:'sci',q:'Which of these is a physical change?',opts:['Iron rusting','Wood burning','Ice melting','Bread baking'],ans:2,exp:'Ice melting is physical — water changes state (solid→liquid) but remains H₂O. The other options create new substances (chemical change).'},
+  {subj:'sci',q:'Marble is an example of which rock type?',opts:['Igneous','Sedimentary','Metamorphic','Volcanic'],ans:2,exp:'Marble is metamorphic rock — formed when limestone (sedimentary) is subjected to intense heat and pressure underground.'},
+  {subj:'sci',q:'What happens to particles in a gas when it is cooled?',opts:['They speed up and spread further apart','They slow down and move closer together','They disappear','They turn into a solid immediately'],ans:1,exp:'Cooling removes energy from particles → they slow down and move closer together. The gas may become a liquid then solid.'},
+  {subj:'sci',q:'The diaphragm is part of which body system?',opts:['Digestive system','Circulatory system','Respiratory system','Excretory system'],ans:2,exp:'The diaphragm is a dome-shaped muscle below the lungs. It contracts to increase lung volume, drawing air in (inhalation). It\'s part of the respiratory system.'},
+  {subj:'sci',q:'A boulder on top of a hill has which type of energy?',opts:['Kinetic energy','Thermal energy','Chemical energy','Gravitational potential energy'],ans:3,exp:'An object at height has gravitational potential energy (GPE) = stored energy due to its position. When it rolls down, GPE converts to kinetic energy.'},
+  {subj:'sci',q:'Basalt is found across western Victoria. What type of rock is it?',opts:['Sedimentary','Metamorphic','Igneous','Fossil rock'],ans:2,exp:'Basalt is igneous rock — solidified from lava. The western Victorian plains were covered in lava flows ~30,000 years ago.'},
+  {subj:'sci',q:'Which technique separates dissolved salt from water?',opts:['Filtration','Magnetic separation','Evaporation','Sieving'],ans:2,exp:'Evaporation — heating the salt water causes water to evaporate (turn to steam), leaving the salt behind as crystals.'},
+];
+
+// ============================================================
+// CHEAT SHEET DATA
+// ============================================================
+const cheatSections = [
+  {
+    id: 'math-formulas', label: 'Maths Formulas', isSci: false,
+    html: `
+      <div class="f-grid">
+        <div class="f-item"><div class="f-label">Index Laws</div><div class="f-val">aᵐ × aⁿ = aᵐ⁺ⁿ | aᵐ ÷ aⁿ = aᵐ⁻ⁿ | (aᵐ)ⁿ = aᵐⁿ | a⁰ = 1</div></div>
+        <div class="f-item"><div class="f-label">Percentage Change</div><div class="f-val">% change = (change ÷ original) × 100</div></div>
+        <div class="f-item"><div class="f-label">Profit</div><div class="f-val">Profit = SP − CP | % Profit = (Profit ÷ CP) × 100</div></div>
+        <div class="f-item"><div class="f-label">Speed, Distance, Time</div><div class="f-val">Speed = Distance ÷ Time | D = S × T | T = D ÷ S</div></div>
+        <div class="f-item"><div class="f-label">Pythagoras</div><div class="f-val">c² = a² + b² | c = √(a² + b²)</div></div>
+        <div class="f-item"><div class="f-label">Circumference</div><div class="f-val">C = πd = 2πr</div></div>
+        <div class="f-item"><div class="f-label">Area of Circle</div><div class="f-val">A = πr²</div></div>
+        <div class="f-item"><div class="f-label">Area of Triangle</div><div class="f-val">A = ½ × base × height</div></div>
+        <div class="f-item"><div class="f-label">Area of Trapezium</div><div class="f-val">A = ½ × (a + b) × h</div></div>
+        <div class="f-item"><div class="f-label">Area of Rhombus/Kite</div><div class="f-val">A = ½ × d₁ × d₂</div></div>
+        <div class="f-item"><div class="f-label">Volume (Prism)</div><div class="f-val">V = cross-section area × length</div></div>
+        <div class="f-item"><div class="f-label">Volume (Rectangular)</div><div class="f-val">V = l × w × h</div></div>
+        <div class="f-item"><div class="f-label">Linear Equation</div><div class="f-val">y = mx + c | m = gradient | c = y-intercept</div></div>
+        <div class="f-item"><div class="f-label">Probability</div><div class="f-val">P(E) = favourable ÷ total | P(not E) = 1 − P(E)</div></div>
+        <div class="f-item"><div class="f-label">Percentage Error</div><div class="f-val">% Error = |est − actual| ÷ actual × 100</div></div>
+        <div class="f-item"><div class="f-label">Mean</div><div class="f-val">Mean = sum of values ÷ number of values</div></div>
+      </div>
+    `
+  },
+  {
+    id: 'algebra-rules', label: 'Algebra Rules', isSci: false,
+    html: `
+      <div class="cheat-box"><h3>🔑 Key Rules</h3>
+      <ul>
+        <li><strong>Expanding:</strong> a(b + c) = ab + ac</li>
+        <li><strong>Factorising:</strong> ab + ac = a(b + c) — take out HCF</li>
+        <li><strong>Like terms:</strong> Only add/subtract terms with same variable and power (3x + 5x = 8x, but 3x + 5y cannot simplify)</li>
+        <li><strong>Solving equations:</strong> Whatever you do to one side, do to the other</li>
+        <li><strong>Positive gradient (m > 0):</strong> Line goes up left-to-right</li>
+        <li><strong>Negative gradient (m < 0):</strong> Line goes down left-to-right</li>
+        <li><strong>Zero gradient (m = 0):</strong> Horizontal line</li>
+      </ul></div>
+      <div class="cheat-box"><h3>📐 Congruence Conditions</h3>
+      <ul>
+        <li><strong>SSS:</strong> All 3 sides equal</li>
+        <li><strong>SAS:</strong> 2 sides + included angle equal</li>
+        <li><strong>AAS:</strong> 2 angles + corresponding side equal</li>
+        <li><strong>RHS:</strong> Right angle + hypotenuse + one side equal</li>
+      </ul>
+      <p style="margin-top:8px;font-size:12px;color:#f59e0b">⚠️ AAA proves similarity, NOT congruence!</p></div>
+    `
+  },
+  {
+    id: 'math-memory', label: 'Maths Memory Tricks', isSci: false,
+    html: `
+      <div class="cheat-box"><h3>🧠 Memory Tricks</h3>
+      <ul>
+        <li><strong>Index laws:</strong> ×→ADD, ÷→SUBTRACT, power of power→MULTIPLY</li>
+        <li><strong>Negative × Negative = Positive</strong> (only for × and ÷, not adding)</li>
+        <li><strong>"SOH CAH TOA"</strong> — not needed yet but coming in Year 9 trig!</li>
+        <li><strong>3-4-5 triangle:</strong> The classic Pythagorean triple. Also 5-12-13, 8-15-17</li>
+        <li><strong>Trapezium area:</strong> Average the parallel sides, times the height: ½(a+b)×h</li>
+        <li><strong>π ≈ 3.14159</strong> — "How I wish I could calculate pi" = 3.14159 (count letters)</li>
+        <li><strong>y = mx + c:</strong> m is the slope (gradient), c is where it crosses the y-axis</li>
+        <li><strong>Complementary events:</strong> Always add to 1. P(A) + P(not A) = 1</li>
+      </ul></div>
+    `
+  },
+  {
+    id: 'cells-body', label: 'Cells & Body Systems', isSci: true,
+    html: `
+      <div class="cheat-box"><h3>🔬 Cell Comparison</h3>
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <tr style="background:#21262d"><th style="padding:6px;border:1px solid #30363d">Structure</th><th style="padding:6px;border:1px solid #30363d">Animal</th><th style="padding:6px;border:1px solid #30363d">Plant</th><th style="padding:6px;border:1px solid #30363d">Bacteria</th></tr>
+      <tr><td style="padding:6px;border:1px solid #30363d">Cell membrane</td><td style="padding:6px;border:1px solid #30363d">✅</td><td style="padding:6px;border:1px solid #30363d">✅</td><td style="padding:6px;border:1px solid #30363d">✅</td></tr>
+      <tr><td style="padding:6px;border:1px solid #30363d">Cell wall</td><td style="padding:6px;border:1px solid #30363d">❌</td><td style="padding:6px;border:1px solid #30363d">✅</td><td style="padding:6px;border:1px solid #30363d">✅</td></tr>
+      <tr><td style="padding:6px;border:1px solid #30363d">Nucleus</td><td style="padding:6px;border:1px solid #30363d">✅</td><td style="padding:6px;border:1px solid #30363d">✅</td><td style="padding:6px;border:1px solid #30363d">❌</td></tr>
+      <tr><td style="padding:6px;border:1px solid #30363d">Chloroplasts</td><td style="padding:6px;border:1px solid #30363d">❌</td><td style="padding:6px;border:1px solid #30363d">✅</td><td style="padding:6px;border:1px solid #30363d">❌</td></tr>
+      <tr><td style="padding:6px;border:1px solid #30363d">Large vacuole</td><td style="padding:6px;border:1px solid #30363d">❌</td><td style="padding:6px;border:1px solid #30363d">✅</td><td style="padding:6px;border:1px solid #30363d">❌</td></tr>
+      </table></div>
+      <div class="cheat-box"><h3>🫀 Body Systems Quick Reference</h3>
+      <ul>
+        <li><strong>Digestive:</strong> Mouth → Oesophagus → Stomach → Small intestine → Large intestine → Anus</li>
+        <li><strong>Circulatory:</strong> Heart pumps blood through arteries (away), veins (to heart), capillaries (tiny)</li>
+        <li><strong>Respiratory:</strong> Nose/mouth → Trachea → Bronchi → Bronchioles → Alveoli (gas exchange)</li>
+        <li><strong>Alveoli:</strong> Tiny air sacs in lungs, thin walls, huge surface area — O₂ in, CO₂ out</li>
+      </ul></div>
+    `
+  },
+  {
+    id: 'chemistry-key', label: 'Chemistry Key Terms', isSci: true,
+    html: `
+      <div class="cheat-box"><h3>⚗️ States of Matter</h3>
+      <ul>
+        <li><strong>Solid:</strong> Fixed shape, fixed volume, particles vibrate</li>
+        <li><strong>Liquid:</strong> No fixed shape, fixed volume, particles slide past each other</li>
+        <li><strong>Gas:</strong> No fixed shape or volume, particles move freely and fast</li>
+        <li><strong>Melting:</strong> Solid → Liquid (heating) | <strong>Freezing:</strong> Liquid → Solid (cooling)</li>
+        <li><strong>Evaporation/Boiling:</strong> Liquid → Gas | <strong>Condensation:</strong> Gas → Liquid</li>
+        <li><strong>Sublimation:</strong> Solid → Gas directly (e.g. dry ice, CO₂)</li>
+      </ul></div>
+      <div class="cheat-box"><h3>🔬 Chemical Change Signs</h3>
+      <ul>
+        <li>Colour change (e.g. iron rusting: silver → orange)</li>
+        <li>Gas production (bubbles) — e.g. vinegar + bicarb → CO₂</li>
+        <li>Heat or light released (e.g. burning)</li>
+        <li>Precipitate forms (cloudy solid appears)</li>
+        <li>Irreversible — cannot easily be undone</li>
+      </ul></div>
+      <div class="cheat-box"><h3>🧫 Separation Techniques</h3>
+      <ul>
+        <li><strong>Filtration:</strong> Solid from liquid (sand + water)</li>
+        <li><strong>Evaporation:</strong> Dissolved solid from liquid (salt from seawater)</li>
+        <li><strong>Distillation:</strong> Liquids with different boiling points</li>
+        <li><strong>Chromatography:</strong> Ink dyes, food colouring</li>
+        <li><strong>Magnetic separation:</strong> Iron from non-magnetic materials</li>
+      </ul></div>
+    `
+  },
+  {
+    id: 'earth-phys', label: 'Earth & Physical Science', isSci: true,
+    html: `
+      <div class="cheat-box"><h3>🌍 Rocks & Earth</h3>
+      <ul>
+        <li><strong>Igneous:</strong> Cooled magma/lava → granite, basalt</li>
+        <li><strong>Sedimentary:</strong> Compressed sediment layers → sandstone, limestone, coal</li>
+        <li><strong>Metamorphic:</strong> Heat + pressure changes rock → marble, slate</li>
+        <li><strong>Seasons:</strong> Caused by Earth's 23.5° TILT (not distance from Sun)</li>
+        <li><strong>Solar eclipse:</strong> Moon between Earth + Sun → blocks sunlight</li>
+        <li><strong>Lunar eclipse:</strong> Earth between Moon + Sun → Earth's shadow on Moon</li>
+      </ul></div>
+      <div class="cheat-box"><h3>⚡ Forces & Energy</h3>
+      <ul>
+        <li><strong>Weight formula:</strong> W = m × g (g = 9.8 N/kg on Earth)</li>
+        <li><strong>Balanced forces:</strong> No change in motion (stationary or constant speed)</li>
+        <li><strong>Unbalanced forces:</strong> Object accelerates or changes direction</li>
+        <li><strong>Conservation of Energy:</strong> Energy cannot be created or destroyed, only transformed</li>
+        <li><strong>GPE (gravitational potential energy):</strong> Energy stored due to height</li>
+        <li><strong>KE (kinetic energy):</strong> Energy of moving objects</li>
+      </ul></div>
+      <div class="cheat-box"><h3>🍽️ Ecology Quick Reference</h3>
+      <ul>
+        <li><strong>Producer:</strong> Makes own food (photosynthesis) — always at BASE of food chain</li>
+        <li><strong>Consumer:</strong> Eats other organisms</li>
+        <li><strong>Decomposer:</strong> Breaks down dead matter → fungi, bacteria, worms</li>
+        <li><strong>Apex predator:</strong> Top of food chain — no natural predators</li>
+        <li><strong>Food chain arrows:</strong> Show direction of ENERGY flow, not who eats who (grass→rabbit = energy goes from grass to rabbit)</li>
+      </ul></div>
+    `
+  },
+  {
+    id: 'classification-table', label: 'Classification Table', isSci: true,
+    html: `
+      <div class="cheat-box"><h3>🌳 Classification Hierarchy</h3>
+      <p style="font-size:12.5px;color:#c9d1d9;margin-bottom:8px"><strong>Memory trick:</strong> "King Philip Came Over For Good Spaghetti"</p>
+      <div class="f-grid">
+        <div class="f-item"><div class="f-label">Kingdom</div><div class="f-val" style="color:#60a5fa">Broadest group (e.g. Animalia)</div></div>
+        <div class="f-item"><div class="f-label">Phylum</div><div class="f-val" style="color:#60a5fa">e.g. Chordata (has backbone)</div></div>
+        <div class="f-item"><div class="f-label">Class</div><div class="f-val" style="color:#60a5fa">e.g. Mammalia (mammals)</div></div>
+        <div class="f-item"><div class="f-label">Order</div><div class="f-val" style="color:#60a5fa">e.g. Diprotodontia (kangaroos)</div></div>
+        <div class="f-item"><div class="f-label">Family</div><div class="f-val" style="color:#60a5fa">e.g. Macropodidae</div></div>
+        <div class="f-item"><div class="f-label">Genus</div><div class="f-val" style="color:#60a5fa">e.g. Macropus</div></div>
+        <div class="f-item"><div class="f-label">Species</div><div class="f-val" style="color:#60a5fa">Most specific (e.g. giganteus)</div></div>
+        <div class="f-item"><div class="f-label">Scientific Name</div><div class="f-val" style="color:#60a5fa">Genus + species (italicised)</div></div>
+      </div></div>
+      <div class="cheat-box"><h3>🦁 5 Kingdoms</h3>
+      <ul>
+        <li><strong>Animalia:</strong> Multicellular, no cell wall, eat food → kangaroos, humans, fish</li>
+        <li><strong>Plantae:</strong> Multicellular, cell wall, photosynthesise → grass, trees, ferns</li>
+        <li><strong>Fungi:</strong> Cell wall (not cellulose), absorb food → mushrooms, yeast, mould</li>
+        <li><strong>Protista:</strong> Mostly single-celled → amoeba, algae</li>
+        <li><strong>Monera (Bacteria):</strong> No nucleus, prokaryotic → E. coli, Streptococcus</li>
+      </ul></div>
+    `
+  }
+];
+
+// ============================================================
+// RENDERING ENGINE
+// ============================================================
+function renderTopics(containerId, topics, isSci) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
+  topics.forEach(topic => {
+    const div = document.createElement('div');
+    div.className = 'topic-item' + (isSci ? ' sci-topic' : '') + (state.completedTopics[topic.id] ? ' completed' : '');
+    div.id = 'topic-wrap-' + topic.id;
+    div.innerHTML = `
+      <div class="topic-header" onclick="toggleTopic('${topic.id}', this)">
+        <div class="topic-icon" style="background:${isSci?'var(--sci-dim)':'var(--math-dim)'}; color:${isSci?'var(--sci-light)':'var(--math-light)'}">${topic.icon}</div>
+        <div class="topic-name">${topic.name}</div>
+        <span class="topic-badge" style="background:${isSci?'var(--sci-dim)':'var(--math-dim)'}; color:${isSci?'var(--sci-light)':'var(--math-light)'}">${topic.badge}</span>
+        ${state.completedTopics[topic.id] ? '<span style="color:var(--sci);font-size:16px">✓</span>' : ''}
+        <svg style="flex-shrink:0;color:var(--muted);transition:transform 0.2s" class="chevron-${topic.id}" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="topic-body" id="body-${topic.id}">
+        <div class="scroll">${topic.html}</div>
+        <button class="complete-btn ${isSci?'sci-btn':''} ${state.completedTopics[topic.id]?'done':''}" id="btn-${topic.id}" onclick="markComplete('${topic.id}', ${isSci})">
+          ${state.completedTopics[topic.id] ? '✓ Completed' : 'Mark as Complete'}
+        </button>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+function toggleTopic(id, header) {
+  const body = document.getElementById('body-' + id);
+  const chevron = document.querySelector('.chevron-' + id);
+  const isOpen = body.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.topic-body.open').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('[class*="chevron-"]').forEach(c => c.style.transform = 'rotate(0deg)');
+  if (!isOpen) {
+    body.classList.add('open');
+    chevron.style.transform = 'rotate(180deg)';
+  }
+}
+
+function markComplete(id, isSci) {
+  if (state.completedTopics[id]) return;
+  state.completedTopics[id] = true;
+  const btn = document.getElementById('btn-' + id);
+  btn.textContent = '✓ Completed';
+  btn.classList.add('done');
+  const wrap = document.getElementById('topic-wrap-' + id);
+  wrap.classList.add('completed');
+  updateDashboard();
+}
+
+// ============================================================
+// QUIZ ENGINE
+// ============================================================
+function startQuiz() {
+  const subject = document.getElementById('quiz-subject').value;
+  const count = parseInt(document.getElementById('quiz-count').value);
+  let pool = allQuestions.filter(q => subject === 'all' || q.subj === subject);
+  // Shuffle
+  pool = pool.sort(() => Math.random() - 0.5).slice(0, count);
+  state.currentQuiz = pool;
+  state.currentAnswers = {};
+  state.quizSubmitted = false;
+
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-score-bar').style.display = 'flex';
+  updateScoreBar();
+
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+  pool.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = 'qcard-' + i;
+    card.innerHTML = `
+      <div class="q-num">Question ${i+1} of ${pool.length} · <span style="color:${q.subj==='math'?'var(--math-light)':'var(--sci-light)'}">${q.subj==='math'?'Maths':'Science'}</span></div>
+      <div class="q-text">${q.q}</div>
+      <div class="q-options" id="opts-${i}">
+        ${q.opts.map((opt, j) => `<div class="q-opt" id="opt-${i}-${j}" onclick="selectAnswer(${i}, ${j})">${String.fromCharCode(65+j)}. ${opt}</div>`).join('')}
+      </div>
+      <div class="q-explanation" id="exp-${i}">💡 ${q.exp}</div>
+    `;
+    container.appendChild(card);
+  });
+
+  // Submit button
+  const submitDiv = document.createElement('div');
+  submitDiv.style = 'text-align:center;margin-top:20px';
+  submitDiv.innerHTML = `<button class="quiz-btn quiz-btn-sci" onclick="submitQuiz()">Submit All Answers</button>`;
+  submitDiv.id = 'submit-btn-wrap';
+  container.appendChild(submitDiv);
+}
+
+function selectAnswer(qIdx, optIdx) {
+  if (state.quizSubmitted) return;
+  const q = state.currentQuiz[qIdx];
+  state.currentAnswers[qIdx] = optIdx;
+  // Update UI
+  document.querySelectorAll(`#opts-${qIdx} .q-opt`).forEach((el, j) => {
+    el.classList.toggle('selected', j === optIdx);
+  });
+}
+
+function submitQuiz() {
+  if (state.quizSubmitted) return;
+  state.quizSubmitted = true;
+  let correct = 0;
+  state.wrongQuestions = []; // track wrong answer objects for drill mode
+  state.currentQuiz.forEach((q, i) => {
+    const chosen = state.currentAnswers[i];
+    const opts = document.querySelectorAll(`#opts-${i} .q-opt`);
+    opts.forEach((el, j) => {
+      if (j === q.ans) el.classList.add('correct');
+      else if (j === chosen && j !== q.ans) el.classList.add('wrong');
+    });
+    document.getElementById('exp-' + i).classList.add('show');
+    if (chosen === q.ans) {
+      correct++;
+    } else {
+      state.wrongQuestions.push(q); // save for drill
+    }
+  });
+
+  state.totalCorrect += correct;
+  state.totalAnswered += state.currentQuiz.length;
+  state.quizzesTaken++;
+
+  const pct = Math.round((correct / state.currentQuiz.length) * 100);
+  document.getElementById('qs-val').textContent = `${correct}/${state.currentQuiz.length}`;
+  document.getElementById('qs-prog').style.width = pct + '%';
+  document.getElementById('qs-status').textContent = pct >= 70 ? '🎉 Great work!' : 'Keep practising!';
+
+  document.getElementById('submit-btn-wrap').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'block';
+  const score = document.getElementById('result-score');
+  score.textContent = pct + '%';
+  score.style.color = pct >= 80 ? 'var(--sci)' : pct >= 60 ? 'var(--accent)' : 'var(--red)';
+  document.getElementById('result-msg').textContent = pct >= 90 ? 'Outstanding! You clearly understand this material.' :
+    pct >= 80 ? 'Excellent work! Just a few areas to revisit.' :
+    pct >= 70 ? 'Good job! Review the explanations above for any you missed.' :
+    pct >= 60 ? 'Not bad — check the cheat sheet and try again.' :
+    'Keep going — review the study material and try again!';
+
+  // Show drill button if there are wrong answers
+  const drillWrap = document.getElementById('drill-launch-wrap');
+  const wrongCount = state.wrongQuestions.length;
+  if (wrongCount > 0) {
+    document.getElementById('drill-wrong-count').textContent =
+      wrongCount + ' missed ' + (wrongCount === 1 ? 'question' : 'questions');
+    drillWrap.style.display = 'block';
+  } else {
+    drillWrap.style.display = 'none';
+  }
+
+  updateDashboard();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function resetQuiz() {
+  state.currentQuiz = [];
+  state.currentAnswers = {};
+  state.quizSubmitted = false;
+  document.getElementById('quiz-container').innerHTML = '';
+  document.getElementById('quiz-score-bar').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'none';
+}
+
+function updateScoreBar() {
+  const total = state.currentQuiz.length;
+  document.getElementById('qs-val').textContent = `0/${total}`;
+  document.getElementById('qs-prog').style.width = '0%';
+  document.getElementById('qs-status').textContent = 'In Progress';
+}
+
+// ============================================================
+// DRILL MODE
+// ============================================================
+
+/**
+ * Generate a simplified hint from the question's explanation.
+ * Strips the answer value and gives a directional nudge.
+ */
+function generateHint(q) {
+  const exp = q.exp || '';
+  // Return the first sentence of the explanation as a hint
+  // (it typically describes the method without spoiling the number)
+  const firstSentence = exp.split(/\.\s+/)[0];
+  // If it starts with the answer itself, return the whole exp as a gentle clue
+  if (firstSentence.length < 20) return '💡 ' + exp;
+  return '💡 ' + firstSentence + '...';
+}
+
+function startDrillMode() {
+  if (!state.wrongQuestions || state.wrongQuestions.length === 0) return;
+  // Shuffle the wrong questions for the drill
+  state.drillQueue = state.wrongQuestions.slice().sort(() => Math.random() - 0.5);
+  state.drillIdx = 0;
+  state.drillAnswers = {};
+  state.drillCorrect = 0;
+
+  // Hide the normal quiz result and show drill container
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-container').style.display = 'none';
+  document.getElementById('quiz-score-bar').style.display = 'none';
+  const drillEl = document.getElementById('drill-container');
+  drillEl.style.display = 'block';
+  renderDrillCard();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderDrillCard() {
+  const drillEl = document.getElementById('drill-container');
+  const q = state.drillQueue[state.drillIdx];
+  const total = state.drillQueue.length;
+  const idx = state.drillIdx;
+  const pct = Math.round((idx / total) * 100);
+  const subjLabel = q.subj === 'math' ? '📐 Mathematics' : '🔬 Science';
+  const subjColor = q.subj === 'math' ? 'var(--math-light)' : 'var(--sci-light)';
+  const hint = generateHint(q);
+
+  drillEl.innerHTML = `
+    <div class="drill-header">
+      <div class="drill-title">🔁 Drill Mode <span style="font-size:12px;font-weight:500;color:var(--muted)">${state.wrongQuestions.length} missed questions</span></div>
+      <div class="drill-progress-text">Question ${idx + 1} of ${total}</div>
+    </div>
+    <div class="drill-progress-bar-wrap">
+      <div class="drill-progress-bar" id="drill-pbar" style="width:${pct}%"></div>
+    </div>
+    <div class="drill-card" id="drill-card-main">
+      <div class="drill-q-num">🚨 Missed this one &nbsp;·&nbsp; <span style="color:${subjColor}">${subjLabel}</span></div>
+      <div class="drill-q-text">${q.q}</div>
+      <div class="drill-q-subj">Answer it again — this time use the hint if you need it!</div>
+
+      <button class="drill-hint-toggle" id="drill-hint-btn" onclick="toggleDrillHint()">💡 Show Hint</button>
+      <div class="drill-hint" id="drill-hint-box">${hint}</div>
+
+      <div class="drill-options" id="drill-opts">
+        ${q.opts.map((opt, j) => `<div class="drill-opt" id="dopt-${j}" onclick="selectDrillAnswer(${j})">${String.fromCharCode(65 + j)}. ${opt}</div>`).join('')}
+      </div>
+
+      <div class="drill-exp" id="drill-exp">💡 ${q.exp}</div>
+
+      <div class="drill-actions">
+        <button class="drill-check-btn" id="drill-check-btn" onclick="checkDrillAnswer()">Check Answer</button>
+        <button class="drill-next-btn" id="drill-next-btn" onclick="drillNext()">${idx + 1 < total ? 'Next Question →' : 'See Results 🎉'}</button>
+        <button class="drill-skip-btn" onclick="drillSkip()">Skip</button>
+      </div>
+    </div>
+  `;
+}
+
+function toggleDrillHint() {
+  const hintBox = document.getElementById('drill-hint-box');
+  const btn = document.getElementById('drill-hint-btn');
+  if (hintBox.classList.contains('show')) {
+    hintBox.classList.remove('show');
+    btn.textContent = '💡 Show Hint';
+  } else {
+    hintBox.classList.add('show');
+    btn.textContent = '💡 Hide Hint';
+  }
+}
+
+function selectDrillAnswer(optIdx) {
+  // If already checked, ignore
+  if (document.getElementById('drill-check-btn') &&
+      document.getElementById('drill-check-btn').disabled) return;
+  state.drillAnswers[state.drillIdx] = optIdx;
+  document.querySelectorAll('.drill-opt').forEach((el, j) => {
+    el.classList.toggle('selected-drill', j === optIdx);
+  });
+}
+
+function checkDrillAnswer() {
+  const idx = state.drillIdx;
+  const q = state.drillQueue[idx];
+  const chosen = state.drillAnswers[idx];
+  if (chosen === undefined) {
+    // nudge: flash hint
+    const hint = document.getElementById('drill-hint-box');
+    if (!hint.classList.contains('show')) { hint.classList.add('show'); }
+    document.getElementById('drill-hint-btn').textContent = '💡 Hint shown!';
+    return;
+  }
+  // Lock options
+  document.querySelectorAll('.drill-opt').forEach((el, j) => {
+    el.classList.add('locked');
+    if (j === q.ans) el.classList.add('drill-correct');
+    else if (j === chosen && j !== q.ans) el.classList.add('drill-wrong');
+  });
+  // Show explanation
+  document.getElementById('drill-exp').classList.add('show');
+  // Score
+  if (chosen === q.ans) { state.drillCorrect++; }
+  // Swap buttons
+  document.getElementById('drill-check-btn').style.display = 'none';
+  document.getElementById('drill-next-btn').style.display = 'inline-flex';
+  document.getElementById('drill-next-btn').style.alignItems = 'center';
+  // Disable skip
+  const skipBtn = document.querySelector('.drill-skip-btn');
+  if (skipBtn) skipBtn.style.display = 'none';
+}
+
+function drillSkip() {
+  state.drillIdx++;
+  if (state.drillIdx >= state.drillQueue.length) {
+    showDrillComplete();
+  } else {
+    renderDrillCard();
+  }
+}
+
+function drillNext() {
+  state.drillIdx++;
+  if (state.drillIdx >= state.drillQueue.length) {
+    showDrillComplete();
+  } else {
+    renderDrillCard();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function showDrillComplete() {
+  const total = state.drillQueue.length;
+  const correct = state.drillCorrect;
+  const pct = Math.round((correct / total) * 100);
+  let chipClass, icon, headline, subtext;
+  if (pct >= 80) {
+    chipClass = 'great'; icon = '🎉';
+    headline = 'Nailed it! Seriously impressive.';
+    subtext = 'You got most of those right second time around. That is exactly how you get better — face the tricky ones head-on!';
+  } else if (pct >= 50) {
+    chipClass = 'ok'; icon = '💪';
+    headline = 'Good progress!';
+    subtext = 'You\'re getting there. The ones you still missed — check the cheat sheet for those topics and run the drill again.';
+  } else {
+    chipClass = 'retry'; icon = '🔄';
+    headline = 'Keep going — you can do this.';
+    subtext = 'These topics need a bit more study. Read through the explanations above, hit the cheat sheet, then drill again.';
+  }
+
+  const drillEl = document.getElementById('drill-container');
+  drillEl.innerHTML = `
+    <div class="drill-complete">
+      <div class="drill-complete-icon">${icon}</div>
+      <h2>${headline}</h2>
+      <div class="drill-score-chip ${chipClass}">${correct} / ${total} correct in drill</div>
+      <p>${subtext}</p>
+      <div class="drill-btn-row">
+        <button class="quiz-btn" style="background:#ef4444;color:#fff;padding:10px 22px;font-weight:700" onclick="startDrillMode()">🔁 Drill Again</button>
+        <button class="quiz-btn quiz-btn-primary" onclick="exitDrillMode()">Try a New Quiz</button>
+        <button class="quiz-btn quiz-btn-secondary" onclick="showPage('cheatsheet',null)">Cheat Sheet</button>
+      </div>
+    </div>
+  `;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function exitDrillMode() {
+  document.getElementById('drill-container').style.display = 'none';
+  document.getElementById('quiz-container').style.display = 'block';
+  // Reset and let them start fresh
+  resetQuiz();
+}
+
+// ============================================================
+// CHEAT SHEET
+// ============================================================
+function renderCheatSheet() {
+  const nav = document.getElementById('cheat-nav');
+  const sections = document.getElementById('cheat-sections');
+  nav.innerHTML = '';
+  sections.innerHTML = '';
+  cheatSections.forEach((s, i) => {
+    const tab = document.createElement('div');
+    tab.className = 'cheat-tab' + (s.isSci ? ' sci-tab' : '') + (i === 0 ? ' active' : '');
+    tab.textContent = s.label;
+    tab.onclick = () => {
+      document.querySelectorAll('.cheat-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.cheat-section').forEach(s => s.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('cs-' + s.id).classList.add('active');
+    };
+    nav.appendChild(tab);
+
+    const sec = document.createElement('div');
+    sec.className = 'cheat-section' + (i === 0 ? ' active' : '');
+    sec.id = 'cs-' + s.id;
+    sec.innerHTML = s.html;
+    sections.appendChild(sec);
+  });
+}
+
+// ============================================================
+// DASHBOARD
+// ============================================================
+function updateDashboard() {
+  const allTopics = [...mathNumberTopics, ...mathGeometryTopics, ...mathStatsTopics, ...sciBioTopics, ...sciChemTopics, ...sciEarthTopics, ...sciPhysTopics];
+  const completedCount = Object.keys(state.completedTopics).length;
+  document.getElementById('kpi-topics').textContent = completedCount;
+  document.getElementById('kpi-correct').textContent = state.totalCorrect;
+  document.getElementById('kpi-streak').textContent = state.quizzesTaken;
+  if (state.totalAnswered > 0) {
+    const avg = Math.round((state.totalCorrect / state.totalAnswered) * 100);
+    document.getElementById('kpi-score').textContent = avg + '%';
+  }
+
+  // Math progress
+  const mathTopics = [...mathNumberTopics, ...mathGeometryTopics, ...mathStatsTopics];
+  const sciTopics = [...sciBioTopics, ...sciChemTopics, ...sciEarthTopics, ...sciPhysTopics];
+  const mathDone = mathTopics.filter(t => state.completedTopics[t.id]).length;
+  const sciDone = sciTopics.filter(t => state.completedTopics[t.id]).length;
+
+  const mathProg = document.getElementById('math-progress-items');
+  const sciProg = document.getElementById('sci-progress-items');
+
+  const groups = [
+    {name:'Number & Algebra', topics: mathNumberTopics, key:'math'},
+    {name:'Measurement & Geometry', topics: mathGeometryTopics, key:'math'},
+    {name:'Statistics & Probability', topics: mathStatsTopics, key:'math'},
+  ];
+  const sciGroups = [
+    {name:'Biological Sciences', topics: sciBioTopics, key:'sci'},
+    {name:'Chemical Sciences', topics: sciChemTopics, key:'sci'},
+    {name:'Earth & Space', topics: sciEarthTopics, key:'sci'},
+    {name:'Physical Sciences', topics: sciPhysTopics, key:'sci'},
+  ];
+
+  mathProg.innerHTML = groups.map(g => {
+    const done = g.topics.filter(t => state.completedTopics[t.id]).length;
+    const pct = Math.round((done / g.topics.length) * 100);
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--text)">${g.name}</span><span style="color:var(--muted)">${done}/${g.topics.length}</span></div>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="background:var(--math);width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+
+  sciProg.innerHTML = sciGroups.map(g => {
+    const done = g.topics.filter(t => state.completedTopics[t.id]).length;
+    const pct = Math.round((done / g.topics.length) * 100);
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span style="color:var(--text)">${g.name}</span><span style="color:var(--muted)">${done}/${g.topics.length}</span></div>
+      <div class="prog-bar-wrap"><div class="prog-bar" style="background:var(--sci);width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showPage(id, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  if (el) el.classList.add('active');
+  // Close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+  window.scrollTo({top:0});
+}
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const isOpen = sidebar.classList.contains('open');
+  if (isOpen) {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  } else {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+  }
+}
+
+// Close sidebar when clicking overlay area (outside sidebar width)
+document.addEventListener('click', function(e) {
+  const sidebar = document.getElementById('sidebar');
+  if (!sidebar.classList.contains('open')) return;
+  const rect = sidebar.getBoundingClientRect();
+  if (e.clientX > rect.right) {
+    sidebar.classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+});
+
+// ============================================================
+// FUN MATHS DATA
+// ============================================================
+const funChallenges = [
+  {
+    id: 'skate1',
+    theme: 'skate',
+    emoji: '🛹',
+    label: 'Skateboarding',
+    color: '#f59e0b',
+    colorDim: '#451a03',
+    title: 'The Ramp Angle',
+    hook: 'Pro skaters pick their ramp angle using geometry — steeper = more speed!',
+    setup: 'A skate ramp rises 1.5 m over a horizontal run of 2 m.',
+    steps: [
+      'The ramp forms a right-angled triangle.',
+      'Hypotenuse (ramp length) = √(1.5² + 2²) = √(2.25 + 4) = √6.25 = <strong>2.5 m</strong>',
+      'Steeper ramp (rise 2 m, run 2 m) → hypotenuse = √(4+4) = √8 ≈ <strong>2.83 m</strong>',
+      'More ramp length = more speed at the bottom. That\'s Pythagoras helping you skate faster!'
+    ],
+    challenge: 'A ramp rises 0.9 m over 1.2 m. What is the ramp length?',
+    answer: '1.5 m (it\'s a 3-4-5 triangle scaled by 0.3!)',
+    vcaa: 'Pythagoras · Measurement & Geometry'
+  },
+  {
+    id: 'skate2',
+    theme: 'skate',
+    emoji: '🛹',
+    label: 'Skateboarding',
+    color: '#f59e0b',
+    colorDim: '#451a03',
+    title: 'Speed at the Bottom',
+    hook: 'Skaters feel physics — but it\'s actually maths governing every drop!',
+    setup: 'You drop into a half-pipe from 2.5 m height. Speed at bottom ≈ √(2 × 10 × h) m/s.',
+    steps: [
+      'Formula: speed = √(2 × g × h) where g = 10 m/s²',
+      'h = 2.5 m → speed = √(2 × 10 × 2.5) = √50 ≈ <strong>7.07 m/s</strong>',
+      'That\'s about 25 km/h — from just rolling in!',
+      'Double the height to 5 m → speed = √100 = <strong>10 m/s</strong> = 36 km/h. Height matters a LOT.'
+    ],
+    challenge: 'A mini ramp is 0.8 m tall. What speed do you hit at the bottom?',
+    answer: '√(2×10×0.8) = √16 = 4 m/s ≈ 14.4 km/h',
+    vcaa: 'Irrational Numbers · Square Roots · Number'
+  },
+  {
+    id: 'skate3',
+    theme: 'skate',
+    emoji: '🛹',
+    label: 'Skateboarding',
+    color: '#f59e0b',
+    colorDim: '#451a03',
+    title: 'Trick Scoring Percentages',
+    hook: 'Competition judges score out of 100 — percentages decide who wins the trophy!',
+    setup: 'In a skate comp, you land 7 out of 10 tricks cleanly. Your friend lands 13 out of 17.',
+    steps: [
+      'Your score: 7 ÷ 10 × 100 = <strong>70%</strong>',
+      'Friend\'s score: 13 ÷ 17 × 100 ≈ <strong>76.5%</strong>',
+      'Friend wins — but only because you counted their 17 attempts vs your 10.',
+      'If you landed 8/10 next time: 80% — you\'d take the lead!'
+    ],
+    challenge: 'You land 9 out of 12 tricks. What percentage did you land?',
+    answer: '9 ÷ 12 × 100 = 75%',
+    vcaa: 'Percentages · Number & Algebra'
+  },
+  {
+    id: 'game1',
+    theme: 'gaming',
+    emoji: '🎮',
+    label: 'Gaming',
+    color: '#a855f7',
+    colorDim: '#3b0764',
+    title: 'XP & Level Equations',
+    hook: 'Every game has a hidden maths engine deciding when you level up!',
+    setup: 'You need 500 XP to reach Level 10. You earn 45 XP per match.',
+    steps: [
+      'Let m = number of matches needed.',
+      'Equation: 45m = 500',
+      'm = 500 ÷ 45 ≈ <strong>11.1 matches</strong>',
+      'So you need <strong>12 matches</strong> (you can\'t play 0.1 of a match!).',
+      'Games literally use algebra like this to design progression systems.'
+    ],
+    challenge: 'You have 200 XP and earn 35 per match. How many matches to reach 500 XP?',
+    answer: '(500-200) ÷ 35 = 300 ÷ 35 ≈ 8.6 → 9 matches',
+    vcaa: 'Linear Equations · Number & Algebra'
+  },
+  {
+    id: 'game2',
+    theme: 'gaming',
+    emoji: '🎮',
+    label: 'Gaming',
+    color: '#a855f7',
+    colorDim: '#3b0764',
+    title: 'Loot Box Probability',
+    hook: 'Game companies use probability to keep you hooked — know the maths and never get tricked!',
+    setup: 'A loot box has 50 items: 2 legendary, 8 rare, 40 common.',
+    steps: [
+      'P(legendary) = 2/50 = <strong>4%</strong>',
+      'P(rare) = 8/50 = <strong>16%</strong>',
+      'P(common) = 40/50 = <strong>80%</strong>',
+      'P(not legendary) = 1 − 0.04 = <strong>96%</strong> — you almost certainly get common!',
+      'Games DESIGN these odds. Knowing probability means you see through the hype.'
+    ],
+    challenge: 'If the box now has 5 legendary out of 50, what is P(legendary)?',
+    answer: '5/50 = 1/10 = 10%',
+    vcaa: 'Probability · Statistics'
+  },
+  {
+    id: 'game3',
+    theme: 'gaming',
+    emoji: '🎮',
+    label: 'Gaming',
+    color: '#a855f7',
+    colorDim: '#3b0764',
+    title: 'K/D Ratio is a Rate!',
+    hook: 'Your kill/death ratio in any shooter is literally a maths rate — just like speed!',
+    setup: 'You get 24 kills and 8 deaths in a session.',
+    steps: [
+      'K/D ratio = kills ÷ deaths = 24 ÷ 8 = <strong>3.0</strong>',
+      'This is a <em>rate</em> — comparing two different quantities.',
+      'Next session: 15 kills, 10 deaths → K/D = 1.5 (worse performance).',
+      'Average K/D = (3.0 + 1.5) ÷ 2 = <strong>2.25</strong>',
+      'Rates and averages. You already knew this — now you know it\'s Year 8 maths!'
+    ],
+    challenge: 'Over 3 games: 20K/5D, 12K/6D, 18K/9D. What is your overall K/D?',
+    answer: 'Total: 50 kills ÷ 20 deaths = 2.5',
+    vcaa: 'Rates & Ratios · Number'
+  },
+  {
+    id: 'game4',
+    theme: 'gaming',
+    emoji: '🎮',
+    label: 'Gaming',
+    color: '#a855f7',
+    colorDim: '#3b0764',
+    title: 'Spending Smarter with Algebra',
+    hook: 'Two game subscriptions want your money — algebra tells you which is cheaper!',
+    setup: 'Game A: $15/month flat. Game B: $5/month + $2 per extra map pack.',
+    steps: [
+      'Cost of Game A = 15',
+      'Cost of Game B = 5 + 2m (where m = map packs bought)',
+      'Set equal to find break-even: 15 = 5 + 2m → 2m = 10 → m = <strong>5 map packs</strong>',
+      'Buy fewer than 5 map packs? Game B is cheaper.',
+      'Buy more than 5? Game A is the better deal. That\'s algebra saving your pocket money!'
+    ],
+    challenge: 'Game C costs $8 + $3 per DLC. When does it equal Game A ($15 flat)?',
+    answer: '8 + 3d = 15 → 3d = 7 → d ≈ 2.3, so at 3 DLCs Game A becomes cheaper',
+    vcaa: 'Linear Equations · Graphing'
+  },
+  {
+    id: 'mc1',
+    theme: 'minecraft',
+    emoji: '⛏️',
+    label: 'Minecraft',
+    color: '#10b981',
+    colorDim: '#064e3b',
+    title: 'Building a Castle Wall',
+    hook: 'Every Minecraft build is secretly a volume and area problem!',
+    setup: 'You want to build a castle wall that is 40 blocks long, 8 blocks tall, 2 blocks thick.',
+    steps: [
+      'Volume of wall = length × height × thickness',
+      'V = 40 × 8 × 2 = <strong>640 blocks</strong>',
+      'If you have 500 stone blocks already, you need 640 − 500 = <strong>140 more blocks</strong>.',
+      'Mining rate: 20 blocks per minute → 140 ÷ 20 = <strong>7 minutes of mining</strong>.',
+      'Volume + rates. You\'ve been doing maths every Minecraft session without knowing it!'
+    ],
+    challenge: 'A wall is 60 blocks long, 10 tall, 3 thick. How many blocks total?',
+    answer: '60 × 10 × 3 = 1,800 blocks',
+    vcaa: 'Volume of Prisms · Measurement'
+  },
+  {
+    id: 'mc2',
+    theme: 'minecraft',
+    emoji: '⛏️',
+    label: 'Minecraft',
+    color: '#10b981',
+    colorDim: '#064e3b',
+    title: 'Circle Floor Design',
+    hook: 'Minecraft players hand-draw circles — and it all comes down to the circle formulas!',
+    setup: 'You want a circular arena with a diameter of 20 blocks.',
+    steps: [
+      'Radius = 10 blocks',
+      'Circumference = 2πr = 2 × 3.14 × 10 ≈ <strong>62.8 blocks</strong> for the outer ring',
+      'Area = πr² = 3.14 × 100 = <strong>314 blocks</strong> for the floor',
+      'If each block costs 1 wood plank, you need 314 planks for the floor!',
+      'Builders in Minecraft use circle generators — which are just πr² calculated automatically.'
+    ],
+    challenge: 'A circular pond has radius 5 blocks. What is its area?',
+    answer: 'π × 5² = 3.14 × 25 = 78.5 blocks²',
+    vcaa: 'Circles · Circumference & Area'
+  },
+  {
+    id: 'mc3',
+    theme: 'minecraft',
+    emoji: '⛏️',
+    label: 'Minecraft',
+    color: '#10b981',
+    colorDim: '#064e3b',
+    title: 'Diamond Mining Probability',
+    hook: 'Finding diamonds in Minecraft is literally a probability problem!',
+    setup: 'Diamonds spawn in roughly 1 of every 200 stone blocks at y-level 12.',
+    steps: [
+      'P(diamond in 1 block) = 1/200 = <strong>0.5%</strong>',
+      'P(no diamond in 1 block) = 1 − 0.005 = <strong>99.5%</strong>',
+      'Mine 200 blocks → expected diamonds = 200 × 0.005 = <strong>1 diamond</strong>',
+      'Mine 1000 blocks → expected = 1000 × 0.005 = <strong>5 diamonds</strong>',
+      'This is exactly what game devs calculate when designing loot rates!'
+    ],
+    challenge: 'If P(diamond) = 1/150, how many diamonds expected from mining 600 blocks?',
+    answer: '600 × (1/150) = 4 diamonds',
+    vcaa: 'Probability · Statistics'
+  },
+  {
+    id: 'mc4',
+    theme: 'minecraft',
+    emoji: '⛏️',
+    label: 'Minecraft',
+    color: '#10b981',
+    colorDim: '#064e3b',
+    title: 'Staircase Pythagoras',
+    hook: 'Diagonal staircases between floors in Minecraft use Pythagoras every single time!',
+    setup: 'Your base is at ground level (y=64). Your storage room is 12 blocks across and 9 blocks up.',
+    steps: [
+      'The staircase forms a right triangle: horizontal = 12, vertical = 9.',
+      'Staircase length = √(12² + 9²) = √(144 + 81) = √225 = <strong>15 blocks</strong>',
+      'This is a 3-4-5 Pythagorean triple scaled by 3! (3×3=9, 4×3=12, 5×3=15)',
+      'Minecraft world seed coordinates also use distance = √(x² + z²) from spawn!'
+    ],
+    challenge: 'A tunnel goes 8 blocks across and 6 blocks down. How long is the diagonal?',
+    answer: '√(8² + 6²) = √(64+36) = √100 = 10 blocks',
+    vcaa: 'Pythagoras · Measurement & Geometry'
+  },
+  {
+    id: 'afl1',
+    theme: 'afl',
+    emoji: '🏉',
+    label: 'AFL',
+    color: '#3b82f6',
+    colorDim: '#1d3a6e',
+    title: 'Goal Kicking Percentage',
+    hook: 'Every AFL team\'s performance is tracked using percentages — this is how they pick the top 8!',
+    setup: 'The Demons score 96 points (from 12 goals & 24 behinds). The Cats score 78 (10 goals & 18 behinds).',
+    steps: [
+      'Score: goals × 6 + behinds × 1',
+      'Demons: 12×6 + 24 = 72 + 24 = <strong>96 points ✓</strong>',
+      'Cats: 10×6 + 18 = 60 + 18 = <strong>78 points ✓</strong>',
+      'Ladder percentage = (points scored ÷ points conceded) × 100',
+      'If Demons gave up 80: % = (96 ÷ 80) × 100 = <strong>120%</strong> — above 100% means winning more than losing!'
+    ],
+    challenge: 'A team scores 108 and concedes 90. What is their percentage?',
+    answer: '(108 ÷ 90) × 100 = 120%',
+    vcaa: 'Percentages · Number'
+  },
+  {
+    id: 'afl2',
+    theme: 'afl',
+    emoji: '🏉',
+    label: 'AFL',
+    color: '#3b82f6',
+    colorDim: '#1d3a6e',
+    title: 'Kick Distance — Pythagoras!',
+    hook: 'When a player kicks across the oval, they\'re covering the hypotenuse of a triangle!',
+    setup: 'A player runs 30 m down the wing and kicks 40 m across field.',
+    steps: [
+      'The path forms a right triangle: legs = 30 m and 40 m.',
+      'Direct distance = √(30² + 40²) = √(900 + 1600) = √2500 = <strong>50 m</strong>',
+      'This is the classic 3-4-5 triangle scaled by 10!',
+      'AFL scouts calculate player reach zones exactly this way using coordinate geometry.',
+      'Your maths class literally teaches what AFL analysts use every match day.'
+    ],
+    challenge: 'A kick travels 24 m forward and 7 m sideways. What is the straight-line distance?',
+    answer: '√(24² + 7²) = √(576 + 49) = √625 = 25 m',
+    vcaa: 'Pythagoras · Geometry'
+  },
+  {
+    id: 'afl3',
+    theme: 'afl',
+    emoji: '🏉',
+    label: 'AFL',
+    color: '#3b82f6',
+    colorDim: '#1d3a6e',
+    title: 'Player Stats — Averages & Data',
+    hook: 'Fantasy AFL is pure statistics — knowing maths literally wins you fantasy leagues!',
+    setup: 'Your player\'s disposal counts over 5 games: 28, 32, 19, 35, 26.',
+    steps: [
+      'Mean = (28+32+19+35+26) ÷ 5 = 140 ÷ 5 = <strong>28 disposals/game</strong>',
+      'Ordered: 19, 26, 28, 32, 35 → Median = <strong>28</strong> (middle value)',
+      'Range = 35 − 19 = <strong>16</strong> (shows inconsistency)',
+      'A consistent player has a small range. An inconsistent one has a large range.',
+      'Fantasy coaches pick players with high mean AND low range — steady performers!'
+    ],
+    challenge: 'Scores over 4 games: 22, 30, 26, 18. Find the mean and range.',
+    answer: 'Mean = 96 ÷ 4 = 24. Range = 30 − 18 = 12',
+    vcaa: 'Mean, Median, Range · Statistics'
+  },
+  {
+    id: 'afl4',
+    theme: 'afl',
+    emoji: '🏉',
+    label: 'AFL',
+    color: '#3b82f6',
+    colorDim: '#1d3a6e',
+    title: 'Oval Area — Geometry at the MCG',
+    hook: 'The MCG ground crew mow, fertilise and re-turf using area calculations!',
+    setup: 'The MCG playing surface is approximately an ellipse: 160 m long, 140 m wide.',
+    steps: [
+      'Approximate as a rectangle × π/4 (ellipse formula):',
+      'Area ≈ π × a × b where a = 80 m (half-length), b = 70 m (half-width)',
+      'Area ≈ 3.14 × 80 × 70 ≈ <strong>17,584 m²</strong>',
+      'At $12 per m² to re-turf: cost = 17,584 × $12 = <strong>$210,000</strong>!',
+      'Groundskeepers calculate this every off-season. That\'s your geometry at work.'
+    ],
+    challenge: 'A smaller oval is 120 m × 100 m. Estimate its area using π × 60 × 50.',
+    answer: '3.14 × 60 × 50 = 9,420 m²',
+    vcaa: 'Area · Circles · Measurement'
+  },
+  {
+    id: 'bonus1',
+    theme: 'bonus',
+    emoji: '🎵',
+    label: 'Music & Beats',
+    color: '#ec4899',
+    colorDim: '#500724',
+    title: 'BPM — Rates in Music',
+    hook: 'Every song has a BPM (beats per minute) — that\'s literally a rate in maths!',
+    setup: 'A hip-hop track plays at 90 BPM. A pop song plays at 120 BPM.',
+    steps: [
+      'Rate = beats ÷ time',
+      'In 3 minutes of hip-hop: 90 × 3 = <strong>270 beats</strong>',
+      'In 3 minutes of pop: 120 × 3 = <strong>360 beats</strong>',
+      'Ratio of hip-hop to pop beats: 270:360 = <strong>3:4</strong>',
+      'DJs use ratios to mix songs seamlessly. Maths is literally what makes music sound good!'
+    ],
+    challenge: 'A song is 4 minutes at 100 BPM. How many beats total?',
+    answer: '100 × 4 = 400 beats',
+    vcaa: 'Rates & Ratios · Number'
+  },
+  {
+    id: 'bonus2',
+    theme: 'bonus',
+    emoji: '🚀',
+    label: 'Space & Science',
+    color: '#06b6d4',
+    colorDim: '#164e63',
+    title: 'How Far is the Moon?',
+    hook: 'Scientists calculated the Moon\'s distance using the same geometry you learn in class!',
+    setup: 'Light travels at 300,000 km/s. A laser takes 1.28 seconds to bounce back from the Moon.',
+    steps: [
+      'Total distance there AND back = speed × time = 300,000 × 1.28 = <strong>384,000 km</strong>',
+      'Distance to Moon = 384,000 ÷ 2 = <strong>192,000 km</strong>... wait, real answer is ~384,000 km one way.',
+      'Actual: 300,000 × 1.28 ÷ 2 = <strong>192,000 km</strong> is each leg — hmm!',
+      'Scientists confirmed: Moon is ~384,400 km. Distance = Speed × Time, and the laser found it.',
+      'That\'s D = S × T — a formula you already know!'
+    ],
+    challenge: 'Light takes 8.3 minutes to reach Earth from the Sun. How far is the Sun? (c = 300,000 km/s)',
+    answer: '300,000 × (8.3 × 60) = 300,000 × 498 = 149,400,000 km ≈ 150 million km',
+    vcaa: 'Rates · Distance-Time · Number'
+  }
+];
+
+const themeFilters = [
+  { id: 'all', label: '⚡ All Challenges', color: '#e6edf3' },
+  { id: 'skate', label: '🛹 Skateboarding', color: '#f59e0b' },
+  { id: 'gaming', label: '🎮 Gaming', color: '#a855f7' },
+  { id: 'minecraft', label: '⛏️ Minecraft', color: '#10b981' },
+  { id: 'afl', label: '🏉 AFL', color: '#3b82f6' },
+  { id: 'bonus', label: '🎁 Bonus', color: '#ec4899' }
+];
+
+let activeTheme = 'all';
+let timerIntervals = {};
+let timerStartTimes = {};   // cardId → Date.now() when timer started
+let timerElapsed = {};      // cardId → seconds elapsed at solve time
+let lbEntries = [];         // { name, challenge, theme, color, emoji, secs, timestamp }
+let lbFilter = 'all';
+let pendingSolve = null;    // { id, secs } waiting for name input
+
+function renderFunMaths() {
+  const container = document.getElementById('funmaths-container');
+  if (!container) return;
+
+  // Filter tabs
+  let tabsHtml = '<div class="fm-tabs" id="fm-tabs">';
+  themeFilters.forEach(t => {
+    tabsHtml += `<button class="fm-tab${t.id === activeTheme ? ' active' : ''}" style="${t.id === activeTheme ? `border-color:${t.color};color:${t.color};background:${t.color}18` : ''}" onclick="filterFunMaths('${t.id}')">${t.label}</button>`;
+  });
+  tabsHtml += '</div>';
+
+  // Stat bar
+  const solvedCount = funChallenges.filter(c => document.getElementById('solved-' + c.id)?.classList.contains('solved-done')).length;
+  tabsHtml += `<div class="fm-stats">
+    <span>⚡ <strong>${funChallenges.length} challenges</strong> — tap a card, start the 60-second timer, solve it!</span>
+    <span class="fm-badge" id="fm-solved-count">0 / ${funChallenges.length} solved</span>
+  </div>`;
+
+  // Cards grid
+  const filtered = activeTheme === 'all' ? funChallenges : funChallenges.filter(c => c.theme === activeTheme);
+  let cardsHtml = '<div class="fm-grid">';
+  filtered.forEach(c => {
+    cardsHtml += `
+    <div class="fm-card" id="fmcard-${c.id}" style="border-color:${c.color}40">
+      <div class="fm-card-header" style="background:${c.colorDim};border-bottom:1px solid ${c.color}40">
+        <div class="fm-label" style="color:${c.color}">${c.emoji} ${c.label}</div>
+        <div class="fm-timer-wrap">
+          <div class="fm-timer" id="timer-${c.id}">⏱ 60s</div>
+          <button class="fm-start-btn" style="background:${c.color}" onclick="startTimer('${c.id}')" id="startbtn-${c.id}">Start</button>
+        </div>
+      </div>
+      <div class="fm-card-body">
+        <div class="fm-title">${c.title}</div>
+        <div class="fm-hook">${c.hook}</div>
+        <div class="fm-divider"></div>
+        <div class="fm-setup"><strong>📋 Setup:</strong> ${c.setup}</div>
+        <div class="fm-steps" id="steps-${c.id}" style="display:none">
+          <div class="fm-steps-label">Step-by-step:</div>
+          ${c.steps.map((s,i) => `<div class="fm-step"><span class="fm-step-num">${i+1}</span><span>${s}</span></div>`).join('')}
+        </div>
+        <div class="fm-challenge-wrap">
+          <div class="fm-challenge">🎯 <strong>Your challenge:</strong> ${c.challenge}</div>
+          <div class="fm-answer-wrap" id="ans-${c.id}" style="display:none">
+            <div class="fm-answer">✅ <strong>Answer:</strong> ${c.answer}</div>
+          </div>
+          <div class="fm-btns">
+            <button class="fm-action-btn" style="background:${c.color}20;border-color:${c.color};color:${c.color}" onclick="revealSteps('${c.id}')" id="stepsbtn-${c.id}">Show Steps</button>
+            <button class="fm-action-btn" style="background:${c.color}20;border-color:${c.color};color:${c.color}" onclick="revealAnswer('${c.id}','${c.color}')" id="ansbtn-${c.id}">Reveal Answer</button>
+            <button class="fm-solve-btn" id="solved-${c.id}" onclick="markSolved('${c.id}','${c.color}')" style="border-color:${c.color};color:${c.color}">Got it! 💪</button>
+          </div>
+        </div>
+        <div class="fm-vcaa"><span>📚 VCAA:</span> ${c.vcaa}</div>
+      </div>
+    </div>`;
+  });
+  cardsHtml += '</div>';
+
+  container.innerHTML = tabsHtml + cardsHtml;
+  updateSolvedCount();
+}
+
+function filterFunMaths(theme) {
+  activeTheme = theme;
+  renderFunMaths();
+}
+
+function startTimer(id) {
+  if (timerIntervals[id]) { clearInterval(timerIntervals[id]); }
+  const btn = document.getElementById('startbtn-' + id);
+  const timerEl = document.getElementById('timer-' + id);
+  let secs = 60;
+  timerStartTimes[id] = Date.now();
+  timerElapsed[id] = 0;
+  btn.textContent = 'Restart';
+  timerEl.style.color = '#f59e0b';
+  timerIntervals[id] = setInterval(() => {
+    secs--;
+    timerElapsed[id] = 60 - secs;
+    timerEl.textContent = `⏱ ${secs}s`;
+    if (secs <= 10) timerEl.style.color = '#ef4444';
+    if (secs <= 0) {
+      clearInterval(timerIntervals[id]);
+      timerEl.textContent = '⏱ Done!';
+      timerEl.style.color = '#10b981';
+      timerElapsed[id] = 60;
+    }
+  }, 1000);
+}
+
+function revealSteps(id) {
+  const el = document.getElementById('steps-' + id);
+  const btn = document.getElementById('stepsbtn-' + id);
+  if (el.style.display === 'none') {
+    el.style.display = 'block';
+    btn.textContent = 'Hide Steps';
+  } else {
+    el.style.display = 'none';
+    btn.textContent = 'Show Steps';
+  }
+}
+
+function revealAnswer(id, color) {
+  const el = document.getElementById('ans-' + id);
+  el.style.display = 'block';
+  document.getElementById('ansbtn-' + id).textContent = 'Answer shown ✓';
+}
+
+function markSolved(id, color) {
+  const btn = document.getElementById('solved-' + id);
+  const card = document.getElementById('fmcard-' + id);
+  btn.textContent = '⭐ Solved!';
+  btn.classList.add('solved-done');
+  btn.style.background = color;
+  btn.style.color = '#fff';
+  card.style.borderColor = color;
+  updateSolvedCount();
+  // Show leaderboard modal to capture name + time
+  const elapsed = timerElapsed[id] || null;
+  if (elapsed !== null && elapsed > 0) {
+    openLeaderboardModal(id, elapsed);
+  }
+}
+
+function updateSolvedCount() {
+  const solved = document.querySelectorAll('.solved-done').length;
+  const el = document.getElementById('fm-solved-count');
+  if (el) el.textContent = `${solved} / ${funChallenges.length} solved`;
+  // Also update dashboard KPI
+  const kpiSolved = document.getElementById('kpi-topics');
+  // (already handled by topics)
+}
+
+// ============================================================
+// LEADERBOARD
+// ============================================================
+const RANK_MEDALS = ['🥇','🥈','🥉'];
+const RANK_CLASSES = ['gold','silver','bronze'];
+
+function openLeaderboardModal(id, secs) {
+  pendingSolve = { id, secs };
+  const challenge = funChallenges.find(c => c.id === id);
+  const label = challenge ? challenge.title : 'Challenge';
+  const timeLabel = secs >= 60 ? '60s (full time!)' : `${secs}s`;
+  const modal = document.getElementById('lb-modal');
+  const timeEl = document.getElementById('lb-modal-time');
+  const input = document.getElementById('lb-name-input');
+  timeEl.innerHTML = `${timeLabel} <small>⏱ your solve time for “${label}”</small>`;
+  input.value = '';
+  modal.style.display = 'flex';
+  setTimeout(() => input.focus(), 100);
+}
+
+function handleModalOverlayClick(e) {
+  // Close if clicking the dark overlay (not the modal box itself)
+  if (e.target === document.getElementById('lb-modal')) {
+    skipLeaderboardEntry();
+  }
+}
+
+function submitLeaderboardEntry() {
+  if (!pendingSolve) return;
+  const input = document.getElementById('lb-name-input');
+  let name = (input.value || '').trim();
+  if (!name) name = 'Anonymous';
+  name = name.substring(0, 20);
+  const challenge = funChallenges.find(c => c.id === pendingSolve.id);
+  if (challenge) {
+    lbEntries.push({
+      name,
+      id: pendingSolve.id,
+      challenge: challenge.title,
+      theme: challenge.theme,
+      color: challenge.color,
+      emoji: challenge.emoji || '⚡',
+      secs: pendingSolve.secs,
+      timestamp: Date.now()
+    });
+    renderLeaderboard();
+  }
+  closeLeaderboardModal();
+}
+
+function skipLeaderboardEntry() {
+  closeLeaderboardModal();
+}
+
+function closeLeaderboardModal() {
+  document.getElementById('lb-modal').style.display = 'none';
+  pendingSolve = null;
+}
+
+function setLbFilter(theme, btn) {
+  lbFilter = theme;
+  document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  renderLeaderboard();
+}
+
+function clearLeaderboard() {
+  if (lbEntries.length === 0) return;
+  if (!confirm('Clear the leaderboard? This removes all entries for this session.')) return;
+  lbEntries = [];
+  renderLeaderboard();
+}
+
+function copyLeaderboard() {
+  const filtered = lbFilter === 'all' ? [...lbEntries] : lbEntries.filter(e => e.theme === lbFilter);
+  if (filtered.length === 0) {
+    alert('No entries to copy yet!');
+    return;
+  }
+  const sorted = filtered.sort((a, b) => a.secs - b.secs);
+  let lines = ['🏆 Fun Maths Leaderboard — Year 8 Study Hub', '='.repeat(40)];
+  sorted.forEach((e, i) => {
+    const medal = i < 3 ? RANK_MEDALS[i] + ' ' : ('#' + (i + 1) + ' ');
+    lines.push(medal + e.name + ' — ' + e.secs + 's (' + e.challenge + ')');
+  });
+  lines.push('');
+  lines.push('🚀 Try it yourself: ' + window.location.href);
+  const text = lines.join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('lb-copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => { btn.textContent = '📋 Share Results'; }, 2000);
+  }).catch(() => {
+    // Fallback: show in a prompt
+    prompt('Copy this and share with your mates! 🏆', text);
+  });
+}
+
+function getTimeClass(secs) {
+  if (secs <= 20) return 'fast';
+  if (secs <= 40) return 'medium';
+  return 'slow';
+}
+
+function renderLeaderboard() {
+  const listEl = document.getElementById('lb-list');
+  const countEl = document.getElementById('lb-entry-count');
+  if (!listEl) return;
+
+  const filtered = lbFilter === 'all' ? [...lbEntries] : lbEntries.filter(e => e.theme === lbFilter);
+  // Sort: fastest first, then by timestamp if tied
+  const sorted = filtered.sort((a, b) => a.secs !== b.secs ? a.secs - b.secs : a.timestamp - b.timestamp);
+
+  if (countEl) countEl.textContent = lbEntries.length > 0 ? `(${lbEntries.length} ${lbEntries.length === 1 ? 'entry' : 'entries'})` : '';
+
+  if (sorted.length === 0) {
+    listEl.innerHTML = `
+      <div class="lb-empty">
+        <div class="lb-empty-icon">🏆</div>
+        <div>No entries yet — solve a challenge to appear here!</div>
+        <div style="margin-top:6px;font-size:12px">💡 Tip: start the timer first, then hit <strong>Got it!</strong> to record your time</div>
+      </div>`;
+    return;
+  }
+
+  // Find personal best per person
+  const personalBests = {};
+  lbEntries.forEach(e => {
+    if (!personalBests[e.name] || e.secs < personalBests[e.name]) {
+      personalBests[e.name] = e.secs;
+    }
+  });
+
+  listEl.innerHTML = sorted.map((e, i) => {
+    const rankHtml = i < 3
+      ? `<div class="lb-rank ${RANK_CLASSES[i]}">${RANK_MEDALS[i]}</div>`
+      : `<div class="lb-rank">#${i + 1}</div>`;
+    const timeClass = getTimeClass(e.secs);
+    const isPersonalBest = e.secs === personalBests[e.name];
+    const pbTag = isPersonalBest && lbEntries.filter(x => x.name === e.name).length > 1 ? ' <span style="font-size:10px;background:#10b98120;color:#34d399;padding:1px 5px;border-radius:6px;border:1px solid #10b98130">PB</span>' : '';
+    return `
+      <div class="lb-row">
+        ${rankHtml}
+        <div>
+          <div class="lb-name">${e.name}${pbTag}</div>
+          <div class="lb-challenge">
+            <span class="lb-badge" style="background:${e.color}20;color:${e.color};border:1px solid ${e.color}40">${e.emoji} ${e.challenge}</span>
+          </div>
+        </div>
+        <div class="lb-time ${timeClass}">${e.secs}s</div>
+      </div>`;
+  }).join('');
+}
+
+// ============================================================
+// STUDY PLANNER
+// ============================================================
+function updatePlannerProgress() {
+  const allBoxes = document.querySelectorAll('#page-planner input[type=checkbox]');
+  const checkedBoxes = document.querySelectorAll('#page-planner input[type=checkbox]:checked');
+  const total = allBoxes.length;
+  const done = checkedBoxes.length;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const fillEl = document.getElementById('planner-fill');
+  const countEl = document.getElementById('planner-count');
+  if (fillEl) fillEl.style.width = pct + '%';
+  if (countEl) countEl.textContent = `${done} / ${total} weeks done`;
+}
+
+// ============================================================
+// INIT
+// ============================================================
+(function init() {
+  renderTopics('topics-math-number', mathNumberTopics, false);
+  renderTopics('topics-math-geometry', mathGeometryTopics, false);
+  renderTopics('topics-math-stats', mathStatsTopics, false);
+  renderTopics('topics-sci-bio', sciBioTopics, true);
+  renderTopics('topics-sci-chem', sciChemTopics, true);
+  renderTopics('topics-sci-earth', sciEarthTopics, true);
+  renderTopics('topics-sci-phys', sciPhysTopics, true);
+  renderCheatSheet();
+  renderFunMaths();
+  renderLeaderboard();
+  updateDashboard();
+})();
+</script>
+</body>
+</html>
