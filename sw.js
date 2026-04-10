@@ -1,69 +1,75 @@
-// Year 8 Study Hub — Service Worker
-// Caches everything for offline use
+// Year 8 Study Hub — Service Worker v4
+const CACHE_NAME = 'year8-hub-v4';
 
-const CACHE_NAME = 'year8-hub-v3';
 const URLS_TO_CACHE = [
   '/year8-study-hub/',
   '/year8-study-hub/index.html',
   '/year8-study-hub/manifest.json',
+  '/year8-study-hub/favicon.png',
+  // Icons
+  '/year8-study-hub/icon-57.png',
+  '/year8-study-hub/icon-60.png',
+  '/year8-study-hub/icon-72.png',
+  '/year8-study-hub/icon-76.png',
+  '/year8-study-hub/icon-114.png',
+  '/year8-study-hub/icon-120.png',
+  '/year8-study-hub/icon-144.png',
+  '/year8-study-hub/icon-152.png',
+  '/year8-study-hub/icon-167.png',
+  '/year8-study-hub/icon-180.png',
   '/year8-study-hub/icon-192.png',
-  '/year8-study-hub/icon-512.png'
+  '/year8-study-hub/icon-512.png',
+  '/year8-study-hub/icon-1024.png',
+  // Splash screens
+  '/year8-study-hub/splash-iphone-se.png',
+  '/year8-study-hub/splash-iphone-8.png',
+  '/year8-study-hub/splash-iphone-xr.png',
+  '/year8-study-hub/splash-iphone-x.png',
+  '/year8-study-hub/splash-iphone-12.png',
+  '/year8-study-hub/splash-iphone-14pro.png',
+  '/year8-study-hub/splash-iphone-14promax.png'
 ];
 
-// Install — pre-cache all assets
 self.addEventListener('install', event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(URLS_TO_CACHE).catch(err => {
-        // Non-fatal — still installs
-        console.warn('[SW] Pre-cache partial fail:', err);
-      });
-    })
+    caches.open(CACHE_NAME).then(cache => cache.addAll(URLS_TO_CACHE).catch(() => {}))
   );
 });
 
-// Activate — clean old caches
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
   );
 });
 
-// Fetch — cache-first for same-origin, network-first for Google Fonts
 self.addEventListener('fetch', event => {
+  if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
 
-  // Skip non-GET
-  if (event.request.method !== 'GET') return;
-
-  // Google Fonts — network first, fallback to cache
+  // Google Fonts — network first, cache fallback
   if (url.hostname.includes('fonts.googleapis.com') || url.hostname.includes('fonts.gstatic.com')) {
     event.respondWith(
       fetch(event.request)
-        .then(response => {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-          return response;
-        })
+        .then(r => { const c = r.clone(); caches.open(CACHE_NAME).then(cache => cache.put(event.request, c)); return r; })
         .catch(() => caches.match(event.request))
     );
     return;
   }
 
-  // Same-origin — cache first, fall back to network, update cache
+  // Everything else — cache first, update in background
   event.respondWith(
     caches.match(event.request).then(cached => {
-      const networkFetch = fetch(event.request).then(response => {
-        if (response && response.status === 200) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+      const network = fetch(event.request).then(r => {
+        if (r && r.status === 200) {
+          const c = r.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put(event.request, c));
         }
-        return response;
+        return r;
       });
-      return cached || networkFetch;
+      return cached || network;
     })
   );
 });
