@@ -2501,6 +2501,28 @@ document.addEventListener('DOMContentLoaded', function() {
     tab.removeAttribute('onclick');
     _iosTouch(tab, function() { if(typeof showCheatTab==='function') showCheatTab(tabId, tab); });
   });
+
+  // PWA banner — Install + Dismiss buttons
+  var pwaInstallBtn = document.getElementById('pwa-install-btn');
+  if (pwaInstallBtn) {
+    _iosTouch(pwaInstallBtn, function() { if(typeof installPWA==='function') installPWA(); });
+  }
+  var pwaDismissBtn = document.getElementById('pwa-dismiss-btn');
+  if (pwaDismissBtn) {
+    _iosTouch(pwaDismissBtn, function() {
+      var b = document.getElementById('pwa-banner');
+      if (b) b.style.display = 'none';
+    });
+  }
+
+  // iOS tip — Got it button
+  var iosTipDismiss = document.getElementById('ios-tip-dismiss');
+  if (iosTipDismiss) {
+    _iosTouch(iosTipDismiss, function() {
+      var t = document.getElementById('ios-tip');
+      if (t) t.style.display = 'none';
+    });
+  }
 });
 
 // ============================================================
@@ -3236,23 +3258,29 @@ function updatePlannerProgress() {
 </div>
 
 <!-- PWA Install Banner -->
-<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#1d3a6e,#064e3b);border-top:1px solid #30363d;padding:14px 16px;padding-bottom:calc(14px + env(safe-area-inset-bottom));display:none;align-items:center;gap:12px;font-family:'Plus Jakarta Sans',sans-serif">
+<div id="pwa-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#1d3a6e,#064e3b);border-top:1px solid #30363d;padding:14px 16px;padding-bottom:calc(14px + env(safe-area-inset-bottom));align-items:center;gap:12px;font-family:'Plus Jakarta Sans',sans-serif">
   <div style="width:40px;height:40px;background:#0d1117;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px">🎓</div>
   <div style="flex:1">
     <div style="font-size:13px;font-weight:700;color:#e6edf3">Add Study Hub to Home Screen</div>
     <div style="font-size:11px;color:#8b949e;margin-top:2px">Works offline &bull; Feels like a real app</div>
   </div>
-  <button onclick="installPWA()" style="background:#3b82f6;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0">Install</button>
-  <button onclick="document.getElementById('pwa-banner').style.display='none'" style="background:none;border:none;color:#8b949e;font-size:20px;cursor:pointer;padding:4px;flex-shrink:0;line-height:1">&times;</button>
+  <button id="pwa-install-btn" style="background:#3b82f6;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0;-webkit-appearance:none">Install</button>
+  <button id="pwa-dismiss-btn" style="background:none;border:none;color:#8b949e;font-size:20px;cursor:pointer;padding:4px;flex-shrink:0;line-height:1;-webkit-appearance:none">&times;</button>
 </div>
 
-<!-- iOS Install Tip (shown only in Safari on iOS, not in standalone mode) -->
-<div id="ios-tip" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:9999;background:linear-gradient(135deg,#1d3a6e,#064e3b);border-top:1px solid #30363d;padding:14px 16px;padding-bottom:calc(14px + env(safe-area-inset-bottom));align-items:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif">
+<!-- iOS Install Tip — sits ABOVE the bottom toolbar so it never covers Safari's Share button -->
+<div id="ios-tip" style="display:none;position:fixed;bottom:60px;left:12px;right:12px;z-index:9999;background:linear-gradient(135deg,#1d3a6e,#064e3b);border:1px solid #3b82f6;border-radius:16px;padding:14px 16px;align-items:center;gap:10px;font-family:'Plus Jakarta Sans',sans-serif;box-shadow:0 4px 24px rgba(0,0,0,0.5)">
+  <!-- Arrow pointing down toward Safari Share button -->
+  <div style="position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:10px solid #3b82f6"></div>
   <div style="flex:1">
-    <div style="font-size:13px;font-weight:700;color:#e6edf3">📲 Install on your iPhone</div>
-    <div style="font-size:11px;color:#8b949e;margin-top:3px">Tap the <strong style="color:#3b82f6">Share</strong> button below, then <strong style="color:#3b82f6">&ldquo;Add to Home Screen&rdquo;</strong> &mdash; works offline!</div>
+    <div style="font-size:13px;font-weight:700;color:#e6edf3">📲 Add to Home Screen</div>
+    <div style="font-size:11px;color:#8b949e;margin-top:4px;line-height:1.5">
+      1. Tap the <strong style="color:#3b82f6">Share &#x2197;</strong> button in Safari's toolbar below<br>
+      2. Scroll down and tap <strong style="color:#3b82f6">&ldquo;Add to Home Screen&rdquo;</strong><br>
+      3. Tap <strong style="color:#3b82f6">Add</strong> — works offline!
+    </div>
   </div>
-  <button onclick="document.getElementById('ios-tip').style.display='none'" style="background:none;border:1px solid #30363d;color:#8b949e;border-radius:8px;padding:6px 10px;font-size:11px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0">Got it</button>
+  <button id="ios-tip-dismiss" style="background:none;border:1px solid #3b82f6;color:#3b82f6;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;flex-shrink:0;-webkit-appearance:none;align-self:flex-start">Got it</button>
 </div>
 
 <script>
