@@ -322,7 +322,7 @@ nav{flex:1;padding:12px 8px;overflow-y:auto}
   .sidebar.open{transform:translateX(0)}
   .overlay.show{display:block}
   .main{margin-left:0}
-  .page{padding:72px 16px 32px}
+  .page{padding:72px 16px 200px}
   .kpi-grid{grid-template-columns:1fr 1fr}
   .grid-2{grid-template-columns:1fr}
   .grid-3{grid-template-columns:1fr}
@@ -486,8 +486,10 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
 .planner-progress-fill{height:100%;background:linear-gradient(90deg,var(--math),#60a5fa);border-radius:4px;transition:width 0.4s ease}
 .planner-progress-count{font-size:12px;color:var(--text-secondary);white-space:nowrap}
 @media(max-width:768px){
-  .planner-table th:nth-child(3),.planner-table td:nth-child(3){display:none}
+  .planner-table th:nth-child(2),.planner-table td:nth-child(2){display:none}
   .planner-table{font-size:12px}
+  .planner-term-header{flex-direction:column;align-items:flex-start;gap:4px}
+  .planner-term-dates{margin-left:0;font-size:11px}
 }
 @media print{
   body{background:#fff!important;color:#000!important}
@@ -695,7 +697,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="topbar">
     <div>
       <div class="page-title">Number &amp; Algebra</div>
-      <div class="page-subtitle">Mathematics · Victorian Curriculum Level 8</div>
+      <div class="page-subtitle">Mathematics · Victorian Curriculum · Level 8</div>
     </div>
     <span class="badge badge-math">Mathematics</span>
   </div>
@@ -707,7 +709,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="topbar">
     <div>
       <div class="page-title">Measurement &amp; Geometry</div>
-      <div class="page-subtitle">Mathematics · Victorian Curriculum Level 8</div>
+      <div class="page-subtitle">Mathematics · Victorian Curriculum · Level 8</div>
     </div>
     <span class="badge badge-math">Mathematics</span>
   </div>
@@ -719,7 +721,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="topbar">
     <div>
       <div class="page-title">Statistics &amp; Probability</div>
-      <div class="page-subtitle">Mathematics · Victorian Curriculum Level 8</div>
+      <div class="page-subtitle">Mathematics · Victorian Curriculum · Level 8</div>
     </div>
     <span class="badge badge-math">Mathematics</span>
   </div>
@@ -731,7 +733,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="topbar">
     <div>
       <div class="page-title">Biological Sciences</div>
-      <div class="page-subtitle">Science · Victorian Curriculum Level 8</div>
+      <div class="page-subtitle">Science · Victorian Curriculum · Level 8</div>
     </div>
     <span class="badge badge-sci">Science</span>
   </div>
@@ -743,7 +745,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="topbar">
     <div>
       <div class="page-title">Chemical Sciences</div>
-      <div class="page-subtitle">Science · Victorian Curriculum Level 8</div>
+      <div class="page-subtitle">Science · Victorian Curriculum · Level 8</div>
     </div>
     <span class="badge badge-sci">Science</span>
   </div>
@@ -755,7 +757,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="topbar">
     <div>
       <div class="page-title">Earth &amp; Space Sciences</div>
-      <div class="page-subtitle">Science · Victorian Curriculum Level 8</div>
+      <div class="page-subtitle">Science · Victorian Curriculum · Level 8</div>
     </div>
     <span class="badge badge-sci">Science</span>
   </div>
@@ -767,7 +769,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="topbar">
     <div>
       <div class="page-title">Physical Sciences</div>
-      <div class="page-subtitle">Science · Victorian Curriculum Level 8</div>
+      <div class="page-subtitle">Science · Victorian Curriculum · Level 8</div>
     </div>
     <span class="badge badge-sci">Science</span>
   </div>
@@ -795,8 +797,8 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
       <option value="20">20 Questions</option>
       <option value="30">30 Questions</option>
     </select>
-    <button class="quiz-btn quiz-btn-primary" onclick="startQuiz()">Start Quiz</button>
-    <button class="quiz-btn quiz-btn-secondary" onclick="resetQuiz()">Reset</button>
+    <button class="quiz-btn quiz-btn-primary" id="start-quiz-btn">Start Quiz</button>
+    <button class="quiz-btn quiz-btn-secondary" id="reset-quiz-btn">Reset</button>
   </div>
 
   <div id="quiz-score-bar" style="display:none" class="q-score">
@@ -824,11 +826,11 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
           <div style="font-size:13.5px;font-weight:700;color:#f87171;margin-bottom:4px">🔁 <span id="drill-wrong-count"></span> to drill</div>
           <div style="font-size:12.5px;color:var(--muted)">Review each one with a hint, answer it again, and see the explanation.</div>
         </div>
-        <button class="quiz-btn" style="background:#ef4444;color:#fff;padding:11px 28px;font-size:14px;font-weight:700" onclick="startDrillMode()">🔁 Drill Wrong Answers</button>
+        <button class="quiz-btn" id="drill-launch-btn" style="background:#ef4444;color:#fff;padding:11px 28px;font-size:14px;font-weight:700">🔁 Drill Wrong Answers</button>
       </div>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-        <button class="quiz-btn quiz-btn-primary" onclick="startQuiz()">Try Again</button>
-        <button class="quiz-btn quiz-btn-secondary" onclick="showPage('cheatsheet',null)">Review Cheat Sheet</button>
+        <button class="quiz-btn quiz-btn-primary" id="try-again-btn">Try Again</button>
+        <button class="quiz-btn quiz-btn-secondary" id="review-cheat-btn">Review Cheat Sheet</button>
       </div>
     </div>
   </div>
@@ -856,31 +858,31 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
         <div class="lb-subtitle">Fastest solve times this session — who's the maths champion? 👑</div>
       </div>
       <div class="lb-actions">
-        <button class="lb-copy-btn" onclick="copyLeaderboard()" id="lb-copy-btn">📋 Share Results</button>
-        <button class="lb-clear-btn" onclick="clearLeaderboard()">🗑 Clear</button>
+        <button class="lb-copy-btn" id="lb-copy-btn">📋 Share Results</button>
+        <button class="lb-clear-btn" id="lb-clear-btn">🗑 Clear</button>
       </div>
     </div>
     <div class="lb-tabs" id="lb-tabs">
-      <button class="lb-tab active" onclick="setLbFilter('all',this)">All Challenges</button>
-      <button class="lb-tab" onclick="setLbFilter('skate',this)">🛹 Skate</button>
-      <button class="lb-tab" onclick="setLbFilter('gaming',this)">🎮 Gaming</button>
-      <button class="lb-tab" onclick="setLbFilter('minecraft',this)">⛏️ Minecraft</button>
-      <button class="lb-tab" onclick="setLbFilter('afl',this)">🏉 AFL</button>
-      <button class="lb-tab" onclick="setLbFilter('bonus',this)">🎁 Bonus</button>
+      <button class="lb-tab active" data-lb-filter="all">All Challenges</button>
+      <button class="lb-tab" data-lb-filter="skate">🛹 Skate</button>
+      <button class="lb-tab" data-lb-filter="gaming">🎮 Gaming</button>
+      <button class="lb-tab" data-lb-filter="minecraft">⛏️ Minecraft</button>
+      <button class="lb-tab" data-lb-filter="afl">🏉 AFL</button>
+      <button class="lb-tab" data-lb-filter="bonus">🎁 Bonus</button>
     </div>
     <div id="lb-list"></div>
   </div>
 
   <!-- NAME ENTRY MODAL (hidden by default) -->
-  <div class="lb-modal-overlay" id="lb-modal" style="display:none" onclick="handleModalOverlayClick(event)">
+  <div class="lb-modal-overlay" id="lb-modal" style="display:none">
     <div class="lb-modal">
       <h3>🎉 Challenge Solved!</h3>
       <p>Enter your name to add your time to the leaderboard.</p>
       <div class="lb-modal-time" id="lb-modal-time">0s <small>your solve time</small></div>
       <input class="lb-name-input" id="lb-name-input" type="text" placeholder="Your name (e.g. Alex 🔥)" maxlength="20" autocomplete="off" onkeydown="if(event.key==='Enter')submitLeaderboardEntry()">
       <div class="lb-modal-btns">
-        <button class="lb-modal-submit" onclick="submitLeaderboardEntry()">Add to Leaderboard 🚀</button>
-        <button class="lb-modal-skip" onclick="skipLeaderboardEntry()">Skip</button>
+        <button class="lb-modal-submit" id="lb-modal-submit-btn">Add to Leaderboard 🚀</button>
+        <button class="lb-modal-skip" id="lb-modal-skip-btn">Skip</button>
       </div>
     </div>
   </div>
@@ -901,7 +903,7 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
       <h3>📋 How to use this planner</h3>
       <p>Each row is one week. The coloured labels show which subject strand you'll be covering. Tick the checkbox when you finish the week's work. Hit <strong>Print Planner</strong> to get a clean A4 copy for your wall or folder — no sidebars, no dark background, just the table.</p>
     </div>
-    <button class="planner-print-btn" onclick="window.print()">🖨️ Print Planner</button>
+    <button class="planner-print-btn" id="planner-print-btn">🖨️ Print Planner</button>
   </div>
 
   <div class="planner-legend">
@@ -2502,6 +2504,38 @@ document.addEventListener('DOMContentLoaded', function() {
     _iosTouch(tab, function() { if(typeof showCheatTab==='function') showCheatTab(tabId, tab); });
   });
 
+  // Quiz page static buttons
+  var startQuizBtn = document.getElementById('start-quiz-btn');
+  if (startQuizBtn) _iosTouch(startQuizBtn, function() { if(typeof startQuiz==='function') startQuiz(); });
+  var resetQuizBtn = document.getElementById('reset-quiz-btn');
+  if (resetQuizBtn) _iosTouch(resetQuizBtn, function() { if(typeof resetQuiz==='function') resetQuiz(); });
+  var drillLaunchBtn = document.getElementById('drill-launch-btn');
+  if (drillLaunchBtn) _iosTouch(drillLaunchBtn, function() { if(typeof startDrillMode==='function') startDrillMode(); });
+  var tryAgainBtn = document.getElementById('try-again-btn');
+  if (tryAgainBtn) _iosTouch(tryAgainBtn, function() { if(typeof startQuiz==='function') startQuiz(); });
+  var reviewCheatBtn = document.getElementById('review-cheat-btn');
+  if (reviewCheatBtn) _iosTouch(reviewCheatBtn, function() { showPage('cheatsheet', null); });
+
+  // Leaderboard buttons
+  var lbCopyBtn = document.getElementById('lb-copy-btn');
+  if (lbCopyBtn) _iosTouch(lbCopyBtn, function() { if(typeof copyLeaderboard==='function') copyLeaderboard(); });
+  var lbClearBtn = document.getElementById('lb-clear-btn');
+  if (lbClearBtn) _iosTouch(lbClearBtn, function() { if(typeof clearLeaderboard==='function') clearLeaderboard(); });
+  var lbModalSubmit = document.getElementById('lb-modal-submit-btn');
+  if (lbModalSubmit) _iosTouch(lbModalSubmit, function() { if(typeof submitLeaderboardEntry==='function') submitLeaderboardEntry(); });
+  var lbModalSkip = document.getElementById('lb-modal-skip-btn');
+  if (lbModalSkip) _iosTouch(lbModalSkip, function() { if(typeof skipLeaderboardEntry==='function') skipLeaderboardEntry(); });
+
+  // Leaderboard filter tabs (data-lb-filter)
+  document.querySelectorAll('.lb-tab[data-lb-filter]').forEach(function(tab) {
+    var filter = tab.getAttribute('data-lb-filter');
+    _iosTouch(tab, function() { if(typeof setLbFilter==='function') setLbFilter(filter, tab); });
+  });
+
+  // Planner print button
+  var plannerPrintBtn = document.getElementById('planner-print-btn');
+  if (plannerPrintBtn) _iosTouch(plannerPrintBtn, function() { window.print(); });
+
   // PWA banner — Install + Dismiss buttons
   var pwaInstallBtn = document.getElementById('pwa-install-btn');
   if (pwaInstallBtn) {
@@ -2513,6 +2547,12 @@ document.addEventListener('DOMContentLoaded', function() {
       var b = document.getElementById('pwa-banner');
       if (b) b.style.display = 'none';
     });
+  }
+
+  // Leaderboard modal overlay (tap outside to close)
+  var lbModal = document.getElementById('lb-modal');
+  if (lbModal) {
+    _iosTouch(lbModal, function(e) { if(typeof handleModalOverlayClick==='function') handleModalOverlayClick(e); });
   }
 
   // iOS tip — Got it button
@@ -3248,7 +3288,65 @@ function updatePlannerProgress() {
       var parts = btn.id.split('-'); // dopt-{j}
       if (parts.length >= 2) selectDrillAnswer(parseInt(parts[1]));
     }, { passive: false });
+
+    // Drill action buttons (hint, check, next, skip) — also injected dynamically
+    drillContainer.addEventListener('touchend', function(e) {
+      var btn = e.target.closest('button');
+      if (!btn) return;
+      if (btn.classList.contains('drill-hint-toggle')) { e.preventDefault(); if(typeof toggleDrillHint==='function') toggleDrillHint(); }
+      else if (btn.classList.contains('drill-check-btn')) { e.preventDefault(); if(typeof checkDrillAnswer==='function') checkDrillAnswer(); }
+      else if (btn.classList.contains('drill-next-btn')) { e.preventDefault(); if(typeof drillNext==='function') drillNext(); }
+      else if (btn.classList.contains('drill-skip-btn')) { e.preventDefault(); if(typeof drillSkip==='function') drillSkip(); }
+    }, { passive: false });
   }
+
+  // Drill result buttons (injected into drill-result div)
+  document.addEventListener('touchend', function(e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+    // Topic headers + complete buttons (injected by renderTopics)
+    if (btn.classList.contains('topic-header')) {
+      e.preventDefault();
+      var onc = btn.getAttribute('onclick');
+      if (onc) { var m = onc.match(/toggleTopic\('([^']+)'/); if(m && typeof toggleTopic==='function') toggleTopic(m[1], btn); }
+    } else if (btn.classList.contains('complete-btn') && !btn.classList.contains('done')) {
+      e.preventDefault();
+      var onc = btn.getAttribute('onclick');
+      if (onc) { var m = onc.match(/markComplete\('([^']+)',\s*(true|false)/); if(m && typeof markComplete==='function') markComplete(m[1], m[2]==='true'); }
+    }
+    // Fun Maths buttons
+    else if (btn.classList.contains('fm-start-btn')) {
+      e.preventDefault();
+      var onc = btn.getAttribute('onclick');
+      if (onc) { var m = onc.match(/startTimer\('([^']+)'/); if(m && typeof startTimer==='function') startTimer(m[1]); }
+    } else if (btn.classList.contains('fm-action-btn')) {
+      e.preventDefault();
+      var onc = btn.getAttribute('onclick');
+      if (onc) {
+        var ms = onc.match(/revealSteps\('([^']+)'/); if(ms && typeof revealSteps==='function') { revealSteps(ms[1]); return; }
+        var ma = onc.match(/revealAnswer\('([^']+)','([^']+)'/); if(ma && typeof revealAnswer==='function') revealAnswer(ma[1], ma[2]);
+      }
+    } else if (btn.classList.contains('fm-solve-btn')) {
+      e.preventDefault();
+      var onc = btn.getAttribute('onclick');
+      if (onc) { var m = onc.match(/markSolved\('([^']+)','([^']+)'/); if(m && typeof markSolved==='function') markSolved(m[1], m[2]); }
+    }
+    // Fun Maths filter tabs
+    else if (btn.classList.contains('fm-tab')) {
+      e.preventDefault();
+      var onc = btn.getAttribute('onclick');
+      if (onc) { var m = onc.match(/filterFunMaths\('([^']+)'/); if(m && typeof filterFunMaths==='function') filterFunMaths(m[1]); }
+    }
+    // Drill result: startDrillMode again, exitDrillMode
+    else if (btn.getAttribute('onclick') && btn.getAttribute('onclick').indexOf('startDrillMode') > -1) {
+      e.preventDefault();
+      if(typeof startDrillMode==='function') startDrillMode();
+    } else if (btn.getAttribute('onclick') && btn.getAttribute('onclick').indexOf('exitDrillMode') > -1) {
+      e.preventDefault();
+      if(typeof exitDrillMode==='function') exitDrillMode();
+    }
+  }, { passive: false });
+
 })();
 </script>
 
@@ -3342,8 +3440,12 @@ function installPWA() {
   if (isIOS && !isStandalone && isSafari) {
     setTimeout(() => {
       const tip = document.getElementById('ios-tip');
-      if (tip) tip.style.display = 'flex';
-    }, 2500); // Show after 2.5s so page loads first
+      if (tip) {
+        tip.style.display = 'flex';
+        // Auto-dismiss after 8 seconds so it never blocks content
+        setTimeout(() => { tip.style.display = 'none'; }, 8000);
+      }
+    }, 3000); // Show after 3s so page loads first
   }
 })();
 </script>
