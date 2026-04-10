@@ -50,7 +50,7 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 button,input,select,[onclick]{touch-action:manipulation;cursor:pointer}
 html{height:100%;-webkit-text-size-adjust:100%}
-body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;min-height:-webkit-fill-available;display:flex;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-overflow-scrolling:touch;position:relative}
 
 /* SIDEBAR */
 .sidebar{width:240px;min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:100;transition:transform 0.3s ease}
@@ -70,7 +70,7 @@ nav{flex:1;padding:12px 8px;overflow-y:auto}
 .vic-badge strong{color:var(--text);display:block;margin-bottom:2px}
 
 /* MAIN */
-.main{margin-left:240px;flex:1;min-height:100vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.main{margin-left:240px;min-height:100vh;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .page{display:none;padding:28px 32px;max-width:1200px}
 .page.active{display:block}
 
@@ -108,7 +108,7 @@ nav{flex:1;padding:12px 8px;overflow-y:auto}
 .topic-item.sci-topic:hover{border-color:var(--sci)}
 .topic-item.completed{border-left:3px solid var(--math)}
 .topic-item.sci-topic.completed{border-left-color:var(--sci)}
-.topic-header{display:flex;align-items:center;gap:10px}
+.topic-header{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:none;font-family:var(--font);color:var(--text);padding:0;cursor:pointer}
 .topic-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .topic-name{font-size:14px;font-weight:600;flex:1}
 .topic-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:0.05em}
@@ -145,7 +145,7 @@ nav{flex:1;padding:12px 8px;overflow-y:auto}
 .q-num{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px}
 .q-text{font-size:15px;font-weight:600;line-height:1.55;margin-bottom:18px}
 .q-options{display:flex;flex-direction:column;gap:8px}
-.q-opt{padding:12px 16px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--text);transition:all 0.15s;display:flex;align-items:center;gap:10px;background:var(--surface2)}
+.q-opt{padding:12px 16px;border:1px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--text);transition:all 0.15s;display:flex;align-items:center;gap:10px;background:var(--surface2);width:100%;text-align:left;font-family:var(--font);-webkit-appearance:none}
 .q-opt:hover{border-color:var(--math)}
 .q-opt.selected{border-color:var(--math);background:var(--math-dim)}
 .q-opt.correct{border-color:var(--sci);background:var(--sci-dim);color:#fff}
@@ -173,7 +173,7 @@ nav{flex:1;padding:12px 8px;overflow-y:auto}
 .drill-hint.show{display:block}
 .drill-hint strong{color:#fbbf24}
 .drill-options{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
-.drill-opt{padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--text);transition:all 0.15s;background:var(--surface2)}
+.drill-opt{padding:12px 16px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;font-size:13.5px;color:var(--text);transition:all 0.15s;background:var(--surface2);width:100%;text-align:left;font-family:var(--font);-webkit-appearance:none}
 .drill-opt:hover:not(.locked){border-color:#f87171;background:#ef444412}
 .drill-opt.selected-drill{border-color:#f87171;background:#ef444418}
 .drill-opt.drill-correct{border-color:var(--sci);background:var(--sci-dim);color:#fff;pointer-events:none}
@@ -1894,7 +1894,7 @@ function renderTopics(containerId, topics, isSci) {
     div.className = 'topic-item' + (isSci ? ' sci-topic' : '') + (state.completedTopics[topic.id] ? ' completed' : '');
     div.id = 'topic-wrap-' + topic.id;
     div.innerHTML = `
-      <div class="topic-header" onclick="toggleTopic('${topic.id}', this)">
+      <button class="topic-header" onclick="toggleTopic('${topic.id}', this)">
         <div class="topic-icon" style="background:${isSci?'var(--sci-dim)':'var(--math-dim)'}; color:${isSci?'var(--sci-light)':'var(--math-light)'}">${topic.icon}</div>
         <div class="topic-name">${topic.name}</div>
         <span class="topic-badge" style="background:${isSci?'var(--sci-dim)':'var(--math-dim)'}; color:${isSci?'var(--sci-light)':'var(--math-light)'}">${topic.badge}</span>
@@ -1963,7 +1963,7 @@ function startQuiz() {
       <div class="q-num">Question ${i+1} of ${pool.length} · <span style="color:${q.subj==='math'?'var(--math-light)':'var(--sci-light)'}">${q.subj==='math'?'Maths':'Science'}</span></div>
       <div class="q-text">${q.q}</div>
       <div class="q-options" id="opts-${i}">
-        ${q.opts.map((opt, j) => `<div class="q-opt" id="opt-${i}-${j}" onclick="selectAnswer(${i}, ${j})">${String.fromCharCode(65+j)}. ${opt}</div>`).join('')}
+        ${q.opts.map((opt, j) => `<button class="q-opt" id="opt-${i}-${j}" onclick="selectAnswer(${i}, ${j})">${String.fromCharCode(65+j)}. ${opt}</button>`).join('')}
       </div>
       <div class="q-explanation" id="exp-${i}">💡 ${q.exp}</div>
     `;
@@ -2122,7 +2122,7 @@ function renderDrillCard() {
       <div class="drill-hint" id="drill-hint-box">${hint}</div>
 
       <div class="drill-options" id="drill-opts">
-        ${q.opts.map((opt, j) => `<div class="drill-opt" id="dopt-${j}" onclick="selectDrillAnswer(${j})">${String.fromCharCode(65 + j)}. ${opt}</div>`).join('')}
+        ${q.opts.map((opt, j) => `<button class="drill-opt" id="dopt-${j}" onclick="selectDrillAnswer(${j})">${String.fromCharCode(65 + j)}. ${opt}</button>`).join('')}
       </div>
 
       <div class="drill-exp" id="drill-exp"><strong style="color:var(--sci-light)">✅ Full Explanation:</strong> ${q.exp}</div>
