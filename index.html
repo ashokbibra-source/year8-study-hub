@@ -816,7 +816,13 @@ hr.divider{border:none;border-top:1px solid var(--border);margin:16px 0}
     </div>
   </div>
 
-  <div id="quiz-container"></div>
+  <div id="quiz-container">
+    <div id="quiz-empty-state" style="text-align:center;padding:40px 20px;color:var(--muted)">
+      <div style="font-size:48px;margin-bottom:12px">🧠</div>
+      <div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Ready to test your knowledge?</div>
+      <div style="font-size:13px;line-height:1.6">Choose a subject and number of questions above,<br>then tap <strong style="color:var(--math)">Start Quiz</strong> to begin.</div>
+    </div>
+  </div>
   <div id="quiz-result" style="display:none" class="card">
     <div style="text-align:center;padding:20px">
       <div style="font-size:48px;font-weight:800;font-family:var(--mono)" id="result-score"></div>
@@ -2043,7 +2049,7 @@ function startQuiz() {
   updateScoreBar();
 
   const container = document.getElementById('quiz-container');
-  container.innerHTML = '';
+  container.innerHTML = ''; // clears empty state too
   pool.forEach((q, i) => {
     const card = document.createElement('div');
     card.className = 'q-card';
@@ -2136,7 +2142,7 @@ function resetQuiz() {
   state.currentQuiz = [];
   state.currentAnswers = {};
   state.quizSubmitted = false;
-  document.getElementById('quiz-container').innerHTML = '';
+  document.getElementById('quiz-container').innerHTML = '<div id="quiz-empty-state" style="text-align:center;padding:40px 20px;color:var(--muted)"><div style="font-size:48px;margin-bottom:12px">🧠</div><div style="font-size:16px;font-weight:700;color:var(--text);margin-bottom:8px">Ready to test your knowledge?</div><div style="font-size:13px;line-height:1.6">Choose a subject and number of questions above,<br>then tap <strong style="color:var(--math)">Start Quiz</strong> to begin.</div></div>';
   document.getElementById('quiz-score-bar').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'none';
 }
